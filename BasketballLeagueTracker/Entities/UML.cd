@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BasketballLeagueTracker.Domain.Entities.ApplicationUser">
+    <Position X="4" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAIAAAAAAAAACIACAAAAAAAAAAAIAAAAAAAIAA=</HashCode>
+      <FileName>Entities\ApplicationUser.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Articles" />
+      <Property Name="FavouritePlayers" />
+      <Property Name="FavouriteTeams" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.Article">
+    <Position X="6.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAgAAAEAAAAAAAAgAAAAAABAQgACEAAAAAAA=</HashCode>
+      <FileName>Entities\Article.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="League" />
+      <Property Name="User" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Images" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.ArticleImage">
+    <Position X="9.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAEAAAAAAAAAQAAABAAAA=</HashCode>
+      <FileName>Entities\ArticleImage.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Article" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.Comment">
+    <Position X="1" Y="1.25" Width="1.5" />
+    <AssociationLine Name="User" Type="BasketballLeagueTracker.Domain.Entities.ApplicationUser" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="1" Y="2.09" />
+        <Point X="0.625" Y="2.09" />
+        <Point X="0.625" Y="0.375" />
+        <Point X="4.438" Y="0.375" />
+        <Point X="4.438" Y="0.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAgAAAAAAAgAAAAAAAAAAAAAgAQAAAAAAAAA=</HashCode>
+      <FileName>Entities\Comment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.FavouriteTeam">
+    <Position X="2.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAACAAAAAAAAAAAAAAACAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Entities\FavouriteTeam.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="User" />
+      <Property Name="Team" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.FavouritePlayer">
+    <Position X="4.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAIAQAAAAA=</HashCode>
+      <FileName>Entities\FavourtiePlayer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.Game">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABEAAAAAAAAAIEAAAAAAAgAAAAQAACQAIAhAAA=</HashCode>
+      <FileName>Entities\Game.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="League" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.GamePlayerStats">
+    <Position X="13.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAUAAAAAAAkgAAAAAEAAAAAAAgAAgAAQAMIhQAAAAA=</HashCode>
+      <FileName>Entities\GamePlayerStats.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Game" />
+      <Property Name="Player" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.League">
+    <Position X="6.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAACQAAAQAAAAAAAAAAAAQgAAAAEAAQAAAABEAAAAA=</HashCode>
+      <FileName>Entities\League.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.Player">
+    <Position X="5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAEAAAABAAAAAAgAAAAAAQCBCIQAAAAMAAIAQAAAAA=</HashCode>
+      <FileName>Entities\Player.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Team" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="FavouritePlayers" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.SeasonStatistics">
+    <Position X="14.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAEIAAiAAAAAAAAAAACAAAAAAAwEACAAQAAAAA=</HashCode>
+      <FileName>Entities\SeasonStatistics.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="League" />
+      <Property Name="Team" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.Stadium">
+    <Position X="8.25" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAQCAAAAABAAEAAAAAAAAAA=</HashCode>
+      <FileName>Entities\Stadium.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Team" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BasketballLeagueTracker.Domain.Entities.Team">
+    <Position X="11" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAgAEAAAQCACAYCAAAgEAAQAACIAAAAAAA=</HashCode>
+      <FileName>Entities\Team.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="BasketballLeagueTracker.Domain.Entities.GameStatus" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAACAAAAIAAAAAAAAAQAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Entities\Game.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BasketballLeagueTracker.Domain.Entities.PlayerPosition" Collapsed="true">
+    <Position X="0.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAIAAAAEJAAg=</HashCode>
+      <FileName>Entities\Player.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
