@@ -1,0 +1,86 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
+
+namespace BasketballLeagueTracker.Migrations
+{
+    /// <inheritdoc />
+    public partial class test : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.RenameColumn(
+                name: "DateOfBirth",
+                table: "Players",
+                newName: "Birthday");
+
+            migrationBuilder.AlterColumn<byte>(
+                name: "Positions",
+                table: "Players",
+                type: "tinyint",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int");
+
+            migrationBuilder.UpdateData(
+                table: "Players",
+                keyColumn: "PlayerId",
+                keyValue: 1,
+                column: "Positions",
+                value: (byte)3);
+
+            migrationBuilder.UpdateData(
+                table: "Players",
+                keyColumn: "PlayerId",
+                keyValue: 2,
+                column: "Positions",
+                value: (byte)2);
+
+            migrationBuilder.UpdateData(
+                table: "Players",
+                keyColumn: "PlayerId",
+                keyValue: 3,
+                column: "Positions",
+                value: (byte)16);
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.RenameColumn(
+                name: "Birthday",
+                table: "Players",
+                newName: "DateOfBirth");
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Positions",
+                table: "Players",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(byte),
+                oldType: "tinyint");
+
+            migrationBuilder.UpdateData(
+                table: "Players",
+                keyColumn: "PlayerId",
+                keyValue: 1,
+                column: "Positions",
+                value: 3);
+
+            migrationBuilder.UpdateData(
+                table: "Players",
+                keyColumn: "PlayerId",
+                keyValue: 2,
+                column: "Positions",
+                value: 2);
+
+            migrationBuilder.UpdateData(
+                table: "Players",
+                keyColumn: "PlayerId",
+                keyValue: 3,
+                column: "Positions",
+                value: 16);
+        }
+    }
+}

@@ -3,31 +3,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace BasketballLeagueTracker.Models
 {
     [Flags]
     public enum PlayerPosition
     {
-        None = 0,
+        [Display(Name = "Trener")]
+        Coach = 0,
+
+        [Display(Name = "Rozgrywający")]
         PointGuard = 1,
-        ShootingForward = 2,
+
+        [Display(Name = "Rzucający obrońca")]
+        ShootingGuard = 2,
+
+        [Display(Name = "Niski skrzydłowy")]
         SmallForward = 4,
+
+        [Display(Name = "Silny skrzydłowy")]
         PowerForward = 8,
-        Center = 16
+
+        [Display(Name = "Środkowy")]
+        Center = 16    
     }
+
 
     public class Player
     {
         public int PlayerId { get; set; }
 
+        
+        [Display(Name = "Imię")]
         public string Name { get; set; }
+        [Display(Name = "Nazwisko")]
         public string? Surname { get; set; }
-        public DateTime? DateOfBirth { get; set; }
+        public DateTime? Birthday { get; set; }
 
         public int? UniformNumber { get; set; }
 
-        public PlayerPosition Position { get; set; }
+        [Display(Name = "Pozycje")]
+        public PlayerPosition Positions{ get; set; }
 
         public int? Height { get; set; }
         public double? Weight { get; set; }

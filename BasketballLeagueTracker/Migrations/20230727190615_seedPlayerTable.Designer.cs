@@ -4,6 +4,7 @@ using BasketballLeagueTracker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasketballLeagueTracker.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230727190615_seedPlayerTable")]
+    partial class seedPlayerTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,11 +302,11 @@ namespace BasketballLeagueTracker.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlayerId"));
 
-                    b.Property<DateTime?>("Birthday")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateOfBirth")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("GamesPlayed")
                         .HasColumnType("int");
@@ -318,8 +321,8 @@ namespace BasketballLeagueTracker.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Positions")
-                        .HasColumnType("tinyint");
+                    b.Property<int>("Positions")
+                        .HasColumnType("int");
 
                     b.Property<string>("Surname")
                         .HasColumnType("nvarchar(max)");
@@ -344,7 +347,7 @@ namespace BasketballLeagueTracker.Migrations
                         {
                             PlayerId = 1,
                             Name = "Bartosz",
-                            Positions = (byte)3,
+                            Positions = 3,
                             Surname = "Późniewski",
                             UniformNumber = 10
                         },
@@ -352,7 +355,7 @@ namespace BasketballLeagueTracker.Migrations
                         {
                             PlayerId = 2,
                             Name = "Tom",
-                            Positions = (byte)2,
+                            Positions = 2,
                             Surname = "Noname",
                             UniformNumber = 20
                         },
@@ -360,7 +363,7 @@ namespace BasketballLeagueTracker.Migrations
                         {
                             PlayerId = 3,
                             Name = "Test",
-                            Positions = (byte)16,
+                            Positions = 16,
                             Surname = "Example",
                             UniformNumber = 30
                         });
