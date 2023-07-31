@@ -35,9 +35,13 @@ namespace BasketballLeagueTracker.Models
     {
         public int PlayerId { get; set; }
 
-        
+
         [Display(Name = "Imię")]
+        [MinLength(2, ErrorMessage = "Imie jest zbyt krótkie")]
+        [MaxLength(40, ErrorMessage ="Imie jest zbyt długie")]
         public string Name { get; set; }
+        [MinLength(2, ErrorMessage = "Nazwisko jest zbyt krótkie")]
+        [MaxLength(50, ErrorMessage = "Nazwisko jest zbyt długie")]
         [Display(Name = "Nazwisko")]
         public string? Surname { get; set; }
         public DateTime? Birthday { get; set; }
@@ -59,7 +63,7 @@ namespace BasketballLeagueTracker.Models
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
 
-        public ICollection<FavouritePlayer> FavouritePlayers { get; set; }
+        public ICollection<FavouritePlayer>? FavouritePlayers { get; set; }
     }
 
 }
