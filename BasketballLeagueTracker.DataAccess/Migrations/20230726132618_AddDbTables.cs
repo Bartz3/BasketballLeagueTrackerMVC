@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BasketballLeagueTracker.Migrations
+namespace BasketballLeagueTracker.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddDbTables : Migration

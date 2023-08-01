@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace BasketballLeagueTracker.Data
+namespace BasketballLeagueTracker.DataAccess.Data
 {
     public class AppDbContext : IdentityDbContext
     {

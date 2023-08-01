@@ -5,13 +5,11 @@ VisualStudioVersion = 17.4.33829.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasketballLeagueTracker", "BasketballLeagueTracker\BasketballLeagueTracker.csproj", "{ED6C4B68-3FDE-43AA-8A8B-1E80A1081E38}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassLibrary1", "ClassLibrary1\ClassLibrary1.csproj", "{056540AE-83A3-4E93-ACEB-D3A45FEE024B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasketballLeagueTracker.DataAccess", "BasketballLeagueTracker.DataAccess\BasketballLeagueTracker.DataAccess.csproj", "{F082180B-9610-4065-9710-6DA884D4E528}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasketballLeagueTracker.DataAccess", "BasketballLeagueTracker.DataAccess\BasketballLeagueTracker.DataAccess.csproj", "{F082180B-9610-4065-9710-6DA884D4E528}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasketballLeagueTracker.Models", "BasketballLeagueTracker.Models\BasketballLeagueTracker.Models.csproj", "{B5107BE5-E9EF-450A-9681-60918454E0E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasketballLeagueTracker.Models", "BasketballLeagueTracker.Models\BasketballLeagueTracker.Models.csproj", "{B5107BE5-E9EF-450A-9681-60918454E0E4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasketballLeagueTracker.Utility", "BasketballLeagueTracker.Utility\BasketballLeagueTracker.Utility.csproj", "{C4C8EC2C-B921-439E-837A-F28C1E7EA358}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasketballLeagueTracker.Utility", "BasketballLeagueTracker.Utility\BasketballLeagueTracker.Utility.csproj", "{C4C8EC2C-B921-439E-837A-F28C1E7EA358}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +21,6 @@ Global
 		{ED6C4B68-3FDE-43AA-8A8B-1E80A1081E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED6C4B68-3FDE-43AA-8A8B-1E80A1081E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED6C4B68-3FDE-43AA-8A8B-1E80A1081E38}.Release|Any CPU.Build.0 = Release|Any CPU
-		{056540AE-83A3-4E93-ACEB-D3A45FEE024B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{056540AE-83A3-4E93-ACEB-D3A45FEE024B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{056540AE-83A3-4E93-ACEB-D3A45FEE024B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{056540AE-83A3-4E93-ACEB-D3A45FEE024B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F082180B-9610-4065-9710-6DA884D4E528}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F082180B-9610-4065-9710-6DA884D4E528}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F082180B-9610-4065-9710-6DA884D4E528}.Release|Any CPU.ActiveCfg = Release|Any CPU

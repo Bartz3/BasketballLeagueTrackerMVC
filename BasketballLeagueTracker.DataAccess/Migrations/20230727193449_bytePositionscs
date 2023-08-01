@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BasketballLeagueTracker.Migrations
+namespace BasketballLeagueTracker.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class test : Migration

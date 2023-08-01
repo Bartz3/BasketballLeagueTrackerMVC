@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace BasketballLeagueTracker.Migrations
+namespace BasketballLeagueTracker.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class seedPlayerTable : Migration

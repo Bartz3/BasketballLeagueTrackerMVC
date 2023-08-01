@@ -1,4 +1,4 @@
-using BasketballLeagueTracker.Data;
+using BasketballLeagueTracker.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BasketballLeagueTracker.Models\BasketballLeagueTracker.Models.csproj" />
+  </ItemGroup>
+
 </Project>

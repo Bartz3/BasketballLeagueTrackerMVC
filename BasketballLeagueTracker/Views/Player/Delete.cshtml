@@ -43,7 +43,7 @@
         {
             var displayAttribute = position.GetType().GetMember(position.ToString())
                 .FirstOrDefault()?.GetCustomAttributes(false)
-                .OfType<DisplayAttribute>()
+                .OfType<System.ComponentModel.DataAnnotations.DisplayAttribute>()
                 .FirstOrDefault();
 
             var name = displayAttribute?.GetName() ?? position.ToString();

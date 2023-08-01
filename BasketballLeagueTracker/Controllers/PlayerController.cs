@@ -1,4 +1,4 @@
-﻿using BasketballLeagueTracker.Data;
+﻿using BasketballLeagueTracker.DataAccess.Data;
 using BasketballLeagueTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 

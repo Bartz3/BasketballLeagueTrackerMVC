@@ -15,10 +15,10 @@ namespace BasketballLeagueTracker.Models
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
         public int LeagueId { get; set; }
-        public League League { get; set; }
+        public League? League { get; set; }
 
-        public string UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public ICollection<ArticleImage>? Images { get; set; }
     }
