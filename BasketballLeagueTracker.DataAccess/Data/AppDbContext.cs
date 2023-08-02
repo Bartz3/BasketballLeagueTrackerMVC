@@ -14,6 +14,9 @@ namespace BasketballLeagueTracker.DataAccess.Data
         public DbSet<League> Leagues { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
+        public DbSet<Game> Games { get; set; }
+        public DbSet<GamePlayerStats> GamePlayerStats { get; set; }
+
         public DbSet<Stadium> Stadiums { get; set; }
         public DbSet<SeasonStatistics> SeasonStatistics { get; set; }
 
@@ -27,8 +30,6 @@ namespace BasketballLeagueTracker.DataAccess.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserCommentRating> UserCommentRatings { get; set; }
 
-        public DbSet<Game> Games { get; set; }
-        public DbSet<GamePlayerStats> GamePlayerStats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

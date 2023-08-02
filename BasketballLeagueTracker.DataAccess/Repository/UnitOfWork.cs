@@ -1,0 +1,28 @@
+﻿using BasketballLeagueTracker.DataAccess.Data;
+using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BasketballLeagueTracker.DataAccess.Repository
+{
+    public class UnitOfWork : IUnitOfWork
+    {
+
+        public IPlayerRepository Player {get;private set;}
+        private  AppDbContext _db;
+
+        public UnitOfWork(AppDbContext db)
+        {
+            this._db = db;
+            Player= new PlayerRepository(_db);
+        }
+
+        public void Save()
+        {
+            _db.SaveChanges();
+        }
+    }
+}
