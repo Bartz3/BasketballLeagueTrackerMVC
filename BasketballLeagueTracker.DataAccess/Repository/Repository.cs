@@ -48,7 +48,10 @@ namespace BasketballLeagueTracker.DataAccess.Repository
         {
             IQueryable<T> query = dbSet;
 
-            return query.ToList();
+            if(query == null)
+            {
+                return Enumerable.Empty<T>();
+            }else return query.ToList();
         }
     }
 }

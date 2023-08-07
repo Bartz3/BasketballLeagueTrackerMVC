@@ -22,49 +22,67 @@ namespace BasketballLeagueTracker.Controllers
             return View(playersList);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
-            return View();
+            if(id == null || id == 0)
+            {
+                return View();
+            }
+            else
+            {
+                Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id);
+                return View(player);
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(Player player)
+        public IActionResult Upsert(Player player)
         {
+
             if (ModelState.IsValid)
             {
+                if(player.PlayerId ==0)
+                {
+
                 _unitOfWork.Player.Add(player);
-                _unitOfWork.Save();
                 TempData["success"] = "Zawodnik został dodany";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id);
-            if (player == null)
-            {
-                return NotFound();
-            }
-            return View(player);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Player player)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Player.Update(player);
+                }
+                else
+                {
+                    _unitOfWork.Player.Update(player);
+                    TempData["success"] = "Zawodnik został zmodyfikowany";
+                }
                 _unitOfWork.Save();
-                TempData["success"] = "Zawodnik został zmodyfikowany";
                 return RedirectToAction("Index");
             }
             return View();
         }
+        //public IActionResult Edit(int? id)
+        //{
+        //    if (id == null || id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id);
+        //    if (player == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(player);
+        //}
+
+        //[HttpPost]
+        //public IActionResult Edit(Player player)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.Player.Update(player);
+        //        _unitOfWork.Save();
+        //        TempData["success"] = "Zawodnik został zmodyfikowany";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
+        //}
 
         public IActionResult Delete(int? id)
         {
@@ -73,6 +91,7 @@ namespace BasketballLeagueTracker.Controllers
                 return NotFound();
             }
             Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id);
+
             if (player == null)
             {
                 return NotFound();

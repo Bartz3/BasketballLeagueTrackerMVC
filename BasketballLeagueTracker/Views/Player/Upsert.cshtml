@@ -1,10 +1,11 @@
-﻿@model Player
+﻿@using BasketballLeagueTracker.Helpers;
+@model Player
 
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-            <h2 class="text-white py-2">Dodaj zawodnika</h2>
+                <h2 class="text-white py-2">@(Model != null && Model.PlayerId != 0 ? "Edytuj" : "Dodaj")zawodnika</h2>
 
             </div>
         </div>
@@ -24,14 +25,27 @@
                     <span asp-validation-for="Surname" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <select asp-for="Positions" asp-items="@(GetPlayerPositions())" class="form-control border-0 shadow"></select>
+                    <select asp-for="Positions" asp-items="@(PlayerPositionsHelper.GetPlayerPositions())" class="form-control border-0 shadow"></select>
                     <label asp-for="Positions" class="ms-2"></label>
                     @*<select asp-for="Positions" asp-items="@(new SelectList(Enum.GetNames(typeof(PlayerPosition))))"></select>*@
                     @*  <select asp-for="Positions" asp-items="Html.GetEnumSelectList<PlayerPosition>()" class="form-control"></select>*@
                 </div>
+@*                <div class="mb-3 row p-1">
+                    <label asp-for="Photo" class="ms-2"></label>
+                    <input asp-for="Photo" type="file" class="form-control border-0 shadow" />
+                </div>*@
                 <div class="row">
                     <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-primary form-control">Stwórz</button>
+                        @if (Model!=null && Model.TeamId != 0)
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Edytuj</button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="btn btn-primary form-control">Stwórz</button>
+
+                        }
+                        
                     </div>
                     <div class="col-6 col-md-3">
                         <a asp-controller="Player" asp-action="Index" class="btn btn-outline-secondary form-control">Wróć do listy zawodników</a>
@@ -51,22 +65,3 @@
     }
 }
 
-@functions
-{
-    public List<SelectListItem> GetPlayerPositions()
-    {
-        var playerPositions = Enum.GetValues(typeof(PlayerPosition)).Cast<PlayerPosition>();
-        var selectListItems = playerPositions.Select(position =>
-        {
-            var displayAttribute = position.GetType().GetMember(position.ToString())
-                .FirstOrDefault()?.GetCustomAttributes(false)
-                .OfType<System.ComponentModel.DataAnnotations.DisplayAttribute>()
-                .FirstOrDefault();
-
-            var name = displayAttribute?.GetName() ?? position.ToString();
-            return new SelectListItem { Value = ((int)position).ToString(), Text = name };
-        }).ToList();
-
-        return selectListItems;
-    }
-}

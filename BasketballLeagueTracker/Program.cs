@@ -14,7 +14,9 @@ builder.Services.AddDbContext<AppDbContext>(o =>
 
 builder.Services.AddRepositories(); // Repositories register 
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).
+    AddEntityFrameworkStores<AppDbContext>();
+
 builder.Services.AddRazorPages(); // Added for login/reg
 
 var app = builder.Build();

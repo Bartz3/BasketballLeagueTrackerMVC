@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-
+using Microsoft.AspNetCore.Http;
 
 namespace BasketballLeagueTracker.Models
 {
@@ -44,6 +44,9 @@ namespace BasketballLeagueTracker.Models
         [MaxLength(50, ErrorMessage = "Nazwisko jest zbyt długie")]
         [Display(Name = "Nazwisko")]
         public string? Surname { get; set; }
+
+        public byte[]? Photo { get; set; }
+
         public DateTime? Birthday { get; set; }
 
         public int? UniformNumber { get; set; }
@@ -57,13 +60,15 @@ namespace BasketballLeagueTracker.Models
 
         public int? GamesPlayed { get; set; }
 
-        public bool? IsInTeam { get; set; }
+        public bool IsInTeam { get; set; }=false;
 
         // Jeden zawodnik należy do jednej drużyny Player ∞----1 Team
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
 
         public ICollection<FavouritePlayer>? FavouritePlayers { get; set; }
+
+        public string FullName => $"{Name} {Surname}";
     }
 
 }

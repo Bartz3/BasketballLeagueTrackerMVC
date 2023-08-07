@@ -1,4 +1,5 @@
-﻿@model Player
+﻿@using BasketballLeagueTracker.Helpers;
+@model Player
 
 <form method="post">
     <div class="border p-3 mt-4">
@@ -17,7 +18,7 @@
         </div>
         <div class="mb-3 row p-1">
             <label asp-for="Positions" class="p-0"></label>
-            <select asp-for="Positions" disabled asp-items="@(GetPlayerPositions())"></select>
+            <select asp-for="Positions" disabled asp-items="@(PlayerPositionsHelper.GetPlayerPositions())"></select>
             @*<select asp-for="Positions" asp-items="@(new SelectList(Enum.GetNames(typeof(PlayerPosition))))"></select>*@
             @*  <select asp-for="Positions" asp-items="Html.GetEnumSelectList<PlayerPosition>()" class="form-control"></select>*@
         </div>
@@ -32,24 +33,3 @@
         </div>
     </div>
 </form>
-
-
-@functions
-{
-    public List<SelectListItem> GetPlayerPositions()
-    {
-        var playerPositions = Enum.GetValues(typeof(PlayerPosition)).Cast<PlayerPosition>();
-        var selectListItems = playerPositions.Select(position =>
-        {
-            var displayAttribute = position.GetType().GetMember(position.ToString())
-                .FirstOrDefault()?.GetCustomAttributes(false)
-                .OfType<System.ComponentModel.DataAnnotations.DisplayAttribute>()
-                .FirstOrDefault();
-
-            var name = displayAttribute?.GetName() ?? position.ToString();
-            return new SelectListItem { Value = ((int)position).ToString(), Text = name };
-        }).ToList();
-
-        return selectListItems;
-    }
-}

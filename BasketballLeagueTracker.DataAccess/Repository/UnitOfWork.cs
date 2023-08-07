@@ -12,12 +12,14 @@ namespace BasketballLeagueTracker.DataAccess.Repository
     {
 
         public IPlayerRepository Player {get;private set;}
+        public ITeamRepository Team {get;private set;}
         private  AppDbContext _db;
 
         public UnitOfWork(AppDbContext db)
         {
             this._db = db;
             Player= new PlayerRepository(_db);
+            Team = new TeamRepository(_db);
         }
 
         public void Save()

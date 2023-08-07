@@ -1,0 +1,86 @@
+﻿@using BasketballLeagueTracker.ViewModels;
+@model TeamViewModel
+
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+
+               <h2 class="text-white py-2"> @(Model.Team != null && Model.Team.TeamId != 0 ? "Edytuj" : "Dodaj") drużynę </h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" asp-controller="Team" asp-action="Upsert" class="row" enctype="multipart/form-data">
+            <input asp-for="Team.TeamId" hidden />
+            <div class="border p-3">
+                @*<div asp-validation-summary="All"></div>*@
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Team.Name" class="form-control border-0 shadow" />
+                    <label asp-for="Team.Name" class="ms-2"></label>
+                    <span asp-validation-for="Team.Name" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Team.Description" class="form-control border-0 shadow" />
+                    <label asp-for="Team.Description" class="ms-2"></label>
+                    <span asp-validation-for="Team.Description" class="text-danger"></span>
+                </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="Team.TeamLogo" class="ms-2"></label>
+                    <input asp-for="Team.TeamLogo" name="file" type="file" class="form-control border-0 shadow " onchange="handleFileInputChange(this)" />
+                </div>
+                @if (Model.Team.TeamLogo != null)
+                {
+                    <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(Model.Team.TeamLogo))" alt="Team Logo" />
+
+                }
+
+                <div class="mb-3 row p-1">
+                    <img id="teamLogoPreview" src="#" alt="Podgląd logo drużyny" style="max-width: 200px; max-height: 200px;" />
+                </div>
+
+                <div class="row">
+                    <div class="col-6 col-md-3">
+                        @if (Model.Team.TeamId != 0)
+                        {
+                        <button type="submit" class="btn btn-primary form-control">Edytuj</button>
+                        }
+                        else
+                        {
+                        <button type="submit" class="btn btn-primary form-control">Stwórz</button>
+                            
+                        }
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <a asp-controller="Team" asp-action="Index" class="btn btn-outline-secondary form-control">Wróć do listy zawodników</a>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Show image after chosing one
+    function handleFileInputChange(input) {
+        var file = input.files[0];
+        if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('teamLogoPreview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('teamLogoPreview').src = '#';
+        }
+    }
+</script>
+
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
+

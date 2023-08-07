@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Drużyny";
+}
+
+@model List<Team>
+
+@*<partial name="_Notification" />*@
+<div class="container">
+    <div class="row pt-3">
+        <div class="col-6">
+            <h2 class="text-primary">
+                Drużyny
+            </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Team" asp-action="Upsert" class="btn btn-primary">
+                <i class="bi bi-patch-plus-fill"></i>
+                Dodaj nową drużynę
+            </a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Logo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var Team in Model)
+            {
+                <tr>
+                    <td>@Team.Name</td>
+                    <td>@Team.Description</td>
+                    <td>
+                        @if (Team.TeamLogo != null)
+                        {
+                            <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(Team.TeamLogo))" alt="Team Logo" />
+                        }
+                    </td>
+                    <td>
+
+                        <div class="w-50 btn-group" role="group">
+                            <a asp-controller="Team" asp-action="Upsert" asp-route-id="@Team.TeamId" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"> Edytuj</i>
+                            </a>
+                            <a asp-controller="Team" asp-action="Delete" asp-route-id="@Team.TeamId" class="btn btn-danger mx-2">
+                                <i class="bi bi-trash3 p-2"> Usuń</i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@*
+https://bootswatch.com/cerulean/
+https://bootswatch.com/lumen/
+https://bootswatch.com/morph/
+https://bootswatch.com/spacelab/
+https://bootswatch.com/zephyr/
+
+*@

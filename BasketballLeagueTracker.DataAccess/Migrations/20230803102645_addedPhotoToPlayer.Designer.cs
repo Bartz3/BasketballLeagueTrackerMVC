@@ -4,6 +4,7 @@ using BasketballLeagueTracker.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasketballLeagueTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230803102645_addedPhotoToPlayer")]
+    partial class addedPhotoToPlayer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -310,7 +313,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.Property<int?>("Height")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsInTeam")
+                    b.Property<bool?>("IsInTeam")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
@@ -347,7 +350,6 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                         new
                         {
                             PlayerId = 1,
-                            IsInTeam = false,
                             Name = "Bartosz",
                             Positions = (byte)3,
                             Surname = "Późniewski",
@@ -356,7 +358,6 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                         new
                         {
                             PlayerId = 2,
-                            IsInTeam = false,
                             Name = "Tom",
                             Positions = (byte)2,
                             Surname = "Noname",
@@ -365,7 +366,6 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                         new
                         {
                             PlayerId = 3,
-                            IsInTeam = false,
                             Name = "Test",
                             Positions = (byte)16,
                             Surname = "Example",
