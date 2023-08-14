@@ -19,6 +19,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
         {
             _db = appDb;
             this.dbSet = _db.Set<T>();
+            //_db.Players.Include(x => x.Team);
         }
 
         public void Add(T entity)
@@ -36,22 +37,42 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             dbSet.RemoveRange(entity);
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter, string? includeProp)
         {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
 
+            AddIncludedProperties(includeProp,ref query);
+
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+
+
+        public IEnumerable<T> GetAll(string? includeProp)
         {
             IQueryable<T> query = dbSet;
 
-            if(query == null)
+            AddIncludedProperties(includeProp,ref query);
+
+            if (query == null)
             {
                 return Enumerable.Empty<T>();
             }else return query.ToList();
         }
+
+        private void AddIncludedProperties(string includeProp,ref IQueryable<T> query)
+        {
+            if (!string.IsNullOrEmpty(includeProp))
+            {
+                string[] propArray = includeProp.Split(',');
+                propArray = propArray.Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
+                foreach (var prop in propArray)
+                {
+                    query = query.Include(prop);
+                }
+            }
+        }
+
     }
 }

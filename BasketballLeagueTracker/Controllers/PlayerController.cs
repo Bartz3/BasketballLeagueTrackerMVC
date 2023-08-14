@@ -3,6 +3,10 @@ using BasketballLeagueTracker.DataAccess.Repository;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Newtonsoft.Json;
+using BasketballLeagueTracker.ViewModels;
 
 namespace BasketballLeagueTracker.Controllers
 {
@@ -15,41 +19,132 @@ namespace BasketballLeagueTracker.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        public IActionResult AddPlayerToTeam(int? teamId)
+        {
+            var team = _unitOfWork.Team.Get(t=>t.TeamId == teamId,"Players");
+            ViewBag.TeamId = teamId;
+
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddPlayerToTeamPOST(int playerId,int teamId)
+        {
+            var player = _unitOfWork.Player.Get(p => p.PlayerId == playerId,null);
+
+            player.TeamId = teamId;
+            player.IsInTeam= true;
+
+            _unitOfWork.Save();
+
+
+            return Json(new { success = true });
+        }
+
+        [HttpGet]
+        public IActionResult GetAllPlayers()
+        {
+            var players = _unitOfWork.Player.GetAll(includeProp: "Team").ToList();
+
+            var ignoreCyclesInJSON = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles 
+            };
+
+            return Json(new { data = players }, ignoreCyclesInJSON);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllAvailablePlayers()
+        {
+            var players = _unitOfWork.Player.GetAll(includeProp: "Team").ToList();
+            List<Player> availablePlayers=new List<Player>();
+            foreach(var player in players)
+            {
+                if(player.IsInTeam==false)
+                    availablePlayers.Add(player);
+            }
+
+            var ignoreCyclesInJSON = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            return Json(new { data = availablePlayers.ToList()}, ignoreCyclesInJSON);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteSelectedPlayers(List<int> selectedPlayers)
+        {
+            List<Player> playersToDelete = new List<Player>();
+            if (selectedPlayers != null && selectedPlayers.Any())
+            {
+                foreach (int playerId in selectedPlayers)
+                {
+                    // Pobierz zawodnika z bazy danych i usuń go
+                    var player = _unitOfWork.Player.Get(p => p.PlayerId == playerId, null);
+                    playersToDelete.Add(player);
+                }
+
+                _unitOfWork.Player.DeleteRange(playersToDelete);
+                _unitOfWork.Save();
+                TempData["success"] = "Zawodnicy zostali usunięci";
+            }
+            else
+            {
+                TempData["error"] = "Nie wybrano żadnych zawodników do usunięcia";
+            }
+
+            return RedirectToAction("Index");
+        }
+
+
         public IActionResult Index()
         {
-            var playersList = _unitOfWork.Player.GetAll();
+            var playersList = _unitOfWork.Player.GetAll(includeProp: "Team");
 
             return View(playersList);
         }
 
         public IActionResult Upsert(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return View();
             }
             else
             {
-                Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id);
-                return View(player);
+                Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, null);
+                var playerVM = new PlayerViewModel();
+                playerVM.Player = player;
+                //playerVM.SelectedPositions = player.Positions;
+
+                return View(playerVM);
             }
         }
 
         [HttpPost]
-        public IActionResult Upsert(Player player)
+        public IActionResult Upsert(PlayerViewModel playerVM)
         {
 
             if (ModelState.IsValid)
             {
-                if(player.PlayerId ==0)
+                if (playerVM.SelectedPositions != null)
+                {
+                    foreach (var pos in playerVM.SelectedPositions)
+                    {
+                        playerVM.Player.Positions += pos;
+                    }
+                }
+
+                if (playerVM.Player.PlayerId == 0)
                 {
 
-                _unitOfWork.Player.Add(player);
-                TempData["success"] = "Zawodnik został dodany";
+                    _unitOfWork.Player.Add(playerVM.Player);
+                    TempData["success"] = "Zawodnik został dodany";
                 }
                 else
                 {
-                    _unitOfWork.Player.Update(player);
+                    _unitOfWork.Player.Update(playerVM.Player);
                     TempData["success"] = "Zawodnik został zmodyfikowany";
                 }
                 _unitOfWork.Save();
@@ -57,32 +152,6 @@ namespace BasketballLeagueTracker.Controllers
             }
             return View();
         }
-        //public IActionResult Edit(int? id)
-        //{
-        //    if (id == null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id);
-        //    if (player == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(player);
-        //}
-
-        //[HttpPost]
-        //public IActionResult Edit(Player player)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.Player.Update(player);
-        //        _unitOfWork.Save();
-        //        TempData["success"] = "Zawodnik został zmodyfikowany";
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View();
-        //}
 
         public IActionResult Delete(int? id)
         {
@@ -90,7 +159,7 @@ namespace BasketballLeagueTracker.Controllers
             {
                 return NotFound();
             }
-            Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id);
+            Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, null);
 
             if (player == null)
             {
@@ -102,7 +171,7 @@ namespace BasketballLeagueTracker.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id);
+            Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, null);
             if (player == null)
             {
                 return NotFound();

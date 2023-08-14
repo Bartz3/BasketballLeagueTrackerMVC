@@ -49,6 +49,11 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 .HasMany(t => t.Players)
                 .WithOne(p => p.Team)
                 .OnDelete(DeleteBehavior.NoAction);
+            // Jeden zawodnik - jedna drużyna
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.Team)
+                .WithMany(t => t.Players)
+                .HasForeignKey(p => p.TeamId);
             // Jedna drużyna ma jeden stadion
             modelBuilder.Entity<Team>()
                 .HasOne(t => t.Stadium)
@@ -147,7 +152,7 @@ namespace BasketballLeagueTracker.DataAccess.Data
             //     v => v.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(p => (PlayerPosition)byte.Parse(p)).ToList()
             // );
             modelBuilder.Entity<Player>().HasData(
-                new Player { PlayerId = 1, Name = "Bartosz", Surname = "Późniewski", UniformNumber = 10, Positions =  PlayerPosition.PointGuard | PlayerPosition.ShootingGuard  },
+                new Player { PlayerId = 1, Name = "Bartosz", Surname = "Późniewski", UniformNumber = 10, Positions =  PlayerPosition.PointGuard | PlayerPosition.ShootingGuard, TeamId=1,IsInTeam=true  },
                 new Player { PlayerId = 2, Name = "Tom", Surname = "Noname", UniformNumber = 20, Positions = PlayerPosition.ShootingGuard },
                 new Player { PlayerId = 3, Name = "Test", Surname = "Example", UniformNumber = 30, Positions =  PlayerPosition.Center  }
                 );

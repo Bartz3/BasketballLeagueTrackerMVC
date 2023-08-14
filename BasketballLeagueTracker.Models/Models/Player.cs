@@ -12,22 +12,22 @@ namespace BasketballLeagueTracker.Models
     public enum PlayerPosition
     {
         [Display(Name = "Trener")]
-        Coach = 0,
+        Coach = 1,
 
         [Display(Name = "Rozgrywający")]
-        PointGuard = 1,
+        PointGuard = 2,
 
         [Display(Name = "Rzucający obrońca")]
-        ShootingGuard = 2,
+        ShootingGuard = 4,
 
         [Display(Name = "Niski skrzydłowy")]
-        SmallForward = 4,
+        SmallForward = 8,
 
         [Display(Name = "Silny skrzydłowy")]
-        PowerForward = 8,
+        PowerForward = 16,
 
         [Display(Name = "Środkowy")]
-        Center = 16    
+        Center = 32    
     }
 
 
@@ -38,7 +38,7 @@ namespace BasketballLeagueTracker.Models
 
         [Display(Name = "Imię")]
         [MinLength(2, ErrorMessage = "Imie jest zbyt krótkie")]
-        [MaxLength(40, ErrorMessage ="Imie jest zbyt długie")]
+        [MaxLength(40, ErrorMessage = "Imie jest zbyt długie")]
         public string Name { get; set; }
         [MinLength(2, ErrorMessage = "Nazwisko jest zbyt krótkie")]
         [MaxLength(50, ErrorMessage = "Nazwisko jest zbyt długie")]
@@ -52,7 +52,7 @@ namespace BasketballLeagueTracker.Models
         public int? UniformNumber { get; set; }
 
         [Display(Name = "Pozycje")]
-        public PlayerPosition Positions{ get; set; }
+        public PlayerPosition Positions { get; set; }
 
         public int? Height { get; set; }
         public double? Weight { get; set; }
@@ -60,7 +60,7 @@ namespace BasketballLeagueTracker.Models
 
         public int? GamesPlayed { get; set; }
 
-        public bool IsInTeam { get; set; }=false;
+        public bool IsInTeam { get; set; } = false;
 
         // Jeden zawodnik należy do jednej drużyny Player ∞----1 Team
         public int? TeamId { get; set; }
@@ -69,6 +69,27 @@ namespace BasketballLeagueTracker.Models
         public ICollection<FavouritePlayer>? FavouritePlayers { get; set; }
 
         public string FullName => $"{Name} {Surname}";
+
+
+        public string GetPositionsString(PlayerPosition positions)
+        {
+            var positionNames = Enum.GetValues(typeof(PlayerPosition))
+                .Cast<PlayerPosition>()
+                .Where(p => positions.HasFlag(p))
+                .Select(p => GetDisplayAttributeValue(p));
+
+            return string.Join(", ", positionNames);
+        }
+
+        public static string GetDisplayAttributeValue(Enum value)
+        {
+            var displayAttribute = value.GetType().GetField(value.ToString())
+                .GetCustomAttributes(typeof(DisplayAttribute), false)
+                .OfType<DisplayAttribute>()
+                .FirstOrDefault();
+
+            return displayAttribute != null ? displayAttribute.GetName() : value.ToString();
+        }
     }
 
 }

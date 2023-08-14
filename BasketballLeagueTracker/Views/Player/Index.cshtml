@@ -17,40 +17,60 @@
                 <i class="bi bi-patch-plus-fill"></i>
                 Dodaj nowego zawodnika
             </a>
+            <button id="deleteSelectedBtn" class="btn btn-danger">Usuń zaznaczone</button>
+
         </div>
     </div>
-    <table class="table table-bordered table-striped">
+    <table id="playerData" class="table table-bordered table-striped" style="width:100%" data-from-addplayertoteam="false">
         <thead>
             <tr>
+                <th></th>
                 <th>Imie</th>
                 <th>Nazwisko</th>
                 <th>Pozycja</th>
+                <th>Drużyna</th>
+                <th></th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var player in Model)
-            {
-                <tr>
-                    <td>@player.Name</td>
-                    <td>@player.Surname</td>
-                    <td>@player.Positions</td>
-                    <td>
+        @*  <tbody>
 
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Player" asp-action="Upsert" asp-route-id="@player.PlayerId" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"> Edytuj</i>
-                            </a>
-                            <a asp-controller="Player" asp-action="Delete" asp-route-id="@player.PlayerId" class="btn btn-danger mx-2">
-                                <i class="bi bi-trash3 p-2"> Usuń</i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </tbody>
+        @foreach (var player in Model)
+        {
+        <tr>
+        <td>@player.Name</td>
+        <td>@player.Surname</td>
+        <td>@player.Positions</td>
+        <td>
+        @if (player.Team != null)
+        {
+        @player.Team.Name
+        }
+        else
+        {
+        <h3>nie manic</h3>
+        }
+
+        </td>
+        <td>
+
+        <div class="w-75 btn-group" role="group">
+        <a asp-controller="Player" asp-action="Upsert" asp-route-id="@player.PlayerId" class="btn btn-primary mx-2">
+        <i class="bi bi-pencil-square"> Edytuj</i>
+        </a>
+        <a asp-controller="Player" asp-action="Delete" asp-route-id="@player.PlayerId" class="btn btn-danger mx-2">
+        <i class="bi bi-trash3 p-2"> Usuń</i>
+        </a>
+        </div>
+        </td>
+        </tr>
+        }
+        </tbody>*@
     </table>
 </div>
+@section Scripts{
 
+    <script src="~/js/player.js"></script>
+}
 @*
 https://bootswatch.com/cerulean/
 https://bootswatch.com/lumen/

@@ -17,14 +17,17 @@
             <input asp-for="Surname" disabled class="form-control" />
         </div>
         <div class="mb-3 row p-1">
-            <label asp-for="Positions" class="p-0"></label>
-            <select asp-for="Positions" disabled asp-items="@(PlayerPositionsHelper.GetPlayerPositions())"></select>
+           
+            <span>@Model.GetPositionsString(Model.Positions)</span>
+
+@*            <label asp-for="Positions" class="p-0"></label>
+            <select asp-for="Positions" disabled asp-items="@(PlayerPositionsHelper.GetPlayerPositions())" multiple></select>*@
             @*<select asp-for="Positions" asp-items="@(new SelectList(Enum.GetNames(typeof(PlayerPosition))))"></select>*@
             @*  <select asp-for="Positions" asp-items="Html.GetEnumSelectList<PlayerPosition>()" class="form-control"></select>*@
         </div>
         <div class="row">
             <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-danger form-control">Usuń </button>
+                <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć tego zawodnika?')" class="btn btn-danger form-control">Usuń</button>
             </div>
             <div class="col-6 col-md-3">
                 <a asp-controller="Player" asp-action="Index" class="btn btn-outline-secondary form-control">Wróć do listy zawodników</a>

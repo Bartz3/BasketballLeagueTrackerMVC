@@ -31,7 +31,10 @@
             @foreach (var Team in Model)
             {
                 <tr>
-                    <td>@Team.Name</td>
+                    <td>
+                        <a asp-action="Details" asp-route-teamId="@Team.TeamId" style="text-decoration:none;color:black">@Team.Name</a>
+                        
+                    </td>
                     <td>@Team.Description</td>
                     <td>
                         @if (Team.TeamLogo != null)

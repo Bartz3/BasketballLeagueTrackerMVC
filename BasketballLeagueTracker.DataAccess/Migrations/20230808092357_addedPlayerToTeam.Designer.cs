@@ -4,6 +4,7 @@ using BasketballLeagueTracker.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasketballLeagueTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230808092357_addedPlayerToTeam")]
+    partial class addedPlayerToTeam
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -346,9 +349,9 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                         new
                         {
                             PlayerId = 1,
-                            IsInTeam = true,
+                            IsInTeam = false,
                             Name = "Bartosz",
-                            Positions = (byte)6,
+                            Positions = (byte)3,
                             Surname = "Późniewski",
                             TeamId = 1,
                             UniformNumber = 10
@@ -358,7 +361,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                             PlayerId = 2,
                             IsInTeam = false,
                             Name = "Tom",
-                            Positions = (byte)4,
+                            Positions = (byte)2,
                             Surname = "Noname",
                             UniformNumber = 20
                         },
@@ -367,7 +370,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                             PlayerId = 3,
                             IsInTeam = false,
                             Name = "Test",
-                            Positions = (byte)32,
+                            Positions = (byte)16,
                             Surname = "Example",
                             UniformNumber = 30
                         });

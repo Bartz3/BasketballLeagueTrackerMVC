@@ -20,9 +20,17 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Index()
         {
-            var teamsList = _unitOfWork.Team.GetAll();
+            var teamsList = _unitOfWork.Team.GetAll(null);
 
             return View(teamsList);
+        }
+
+        public IActionResult Details(int teamId)
+        {
+            var team = _unitOfWork.Team.Get(t=>t.TeamId== teamId, "Players");
+            //TempData["SelectedTeam"] = team;
+
+            return View(team);
         }
 
         public IActionResult Upsert(int? id)
@@ -39,9 +47,9 @@ namespace BasketballLeagueTracker.Controllers
             }
             else
             {
-                Team? team = _unitOfWork.Team.Get(p => p.TeamId == id);
+                Team? team = _unitOfWork.Team.Get(p => p.TeamId == id,null);
 
-                var availablePlayers = _unitOfWork.Player.GetAll()
+                var availablePlayers = _unitOfWork.Player.GetAll(null)
                     .Where(p => p.IsInTeam == false);
 
                 var teamVM = new TeamViewModel
@@ -94,7 +102,7 @@ namespace BasketballLeagueTracker.Controllers
             {
                 return NotFound();
             }
-            Team? team = _unitOfWork.Team.Get(p => p.TeamId == id);
+            Team? team = _unitOfWork.Team.Get(p => p.TeamId == id, null);
             if (team == null)
             {
                 return NotFound();
@@ -105,7 +113,7 @@ namespace BasketballLeagueTracker.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Team? team = _unitOfWork.Team.Get(p => p.TeamId == id);
+            Team? team = _unitOfWork.Team.Get(p => p.TeamId == id, null);
             if (team == null)
             {
                 return NotFound();

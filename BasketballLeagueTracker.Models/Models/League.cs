@@ -11,17 +11,17 @@ namespace BasketballLeagueTracker.Models
         public int LeagueId { get; set; }
         public string Name { get; set; }
 
-        public Player LeaugeMVP { get; set; }
-        public string Season { get; set; }
+        public Player? LeaugeMVP { get; set; }
+        public string? Season { get; set; }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public byte[] Logo { get; set; }
 
-        public ICollection<SeasonStatistics> SeasonStatistics { get; set; }
-        public ICollection<Team> Teams { get; set; }
+        public ICollection<SeasonStatistics>? SeasonStatistics { get; set; }
+        public ICollection<Team>? Teams { get; set; }
 
-        public ICollection<Game> Games { get; set; }
+        public ICollection<Game>? Games { get; set; }
         //public ApplicationUser UserId { get; set; }
     }
 }
