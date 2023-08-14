@@ -25,9 +25,9 @@ function loadTable() {
                 width: "2%",
                 render: function (data, type, row) {
                     if (fromAddPlayerToTeam) {
-                        return `<h1><button class="addPlayerBtn" data-playerid="${data}">
-                        <i class="bi bi-patch-plus-fill"> </i>
-                        </button>`;
+                        return `<a class="addPlayerBtn" data-playerid="${data}" style="cursor: pointer;" >
+                        <i class="bi bi-patch-plus-fill"></i>
+                        </a>`;
 
                         //return `<div class="w-75 btn-group" role="group">
                         // <a href="/player/addplayertoteampost?playerId=${data.PlayerId}">
@@ -97,30 +97,35 @@ function loadTable() {
 
 function addPlayerListener() {
     $('#playerData').on('click', '.addPlayerBtn', function () {
-        var playerId = $(this).data('playerid');
-        var teamId = $("#playerData").data("team-id");
-        console.log(playerId, teamId);
 
-        $.ajax({
-            url: '/player/addplayertoteampost',
-            type: 'POST',
-            data: {
-                playerId: playerId,
-                teamId: teamId
-            },
-            success: function (response) {
-                if (response.success) {
-                    alert('Zawodnik dodany do drużyny pomyślnie!');
-                    dataTable.ajax.reload(); // Przeładowanie danych w tabeli
-                } else {
-                    alert('Wystąpił błąd podczas dodawania zawodnika.');
+        if (confirm('Czy na pewno chcesz dodać tego zawodnika?')) {
+            var playerId = $(this).data('playerid');
+            var teamId = $("#playerData").data("team-id");
+            console.log(playerId, teamId);
+
+            $.ajax({
+                url: '/player/addplayertoteampost',
+                type: 'POST',
+                data: {
+                    playerId: playerId,
+                    teamId: teamId
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert('Zawodnik dodany do drużyny pomyślnie!');
+                        dataTable.ajax.reload(); // Przeładowanie danych w tabeli
+                    } else {
+                        alert('Wystąpił błąd podczas dodawania zawodnika.');
+                    }
+                },
+                error: function (error) {
+                    console.log(error.alert);
+                    alert('Wystąpił błąd podczas przetwarzania żądania.');
                 }
-            },
-            error: function (error) {
-                console.log(error.alert);
-                alert('Wystąpił błąd podczas przetwarzania żądania.');
-            }
-        });
+            });
+        } else {
+
+        alert('Dodawanie zawodnika anulowane');}
     });
 }
 

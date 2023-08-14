@@ -57,10 +57,10 @@ namespace BasketballLeagueTracker.Models
         public int? Height { get; set; }
         public double? Weight { get; set; }
         public string? Country { get; set; }
+        public bool IsInTeam { get; set; } = false;
 
         public int? GamesPlayed { get; set; }
 
-        public bool IsInTeam { get; set; } = false;
 
         // Jeden zawodnik należy do jednej drużyny Player ∞----1 Team
         public int? TeamId { get; set; }

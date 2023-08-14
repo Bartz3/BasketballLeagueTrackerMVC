@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using BasketballLeagueTracker.Utility.DataGenerator;
 
 namespace BasketballLeagueTracker.DataAccess.Extensions
 {
@@ -15,6 +16,9 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddTransient<TeamGenerator>(); // Generation of random Teams
+
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = true;
