@@ -5,6 +5,37 @@
         addPlayerListener();
     }
 )
+function deletePlayersInRange() {
+
+    $('#selectAllCheckbox').on('change', function () {
+        $('.player-checkbox').prop('checked', $(this).prop('checked'));
+    });
+
+    $('#deleteSelectedBtn').on('click', function () {
+        var selectedPlayers = $('.player-checkbox:checked').map(function () {
+            return $(this).val();
+        }).get();
+
+        if (selectedPlayers.length > 0) {
+            // Dodaj potwierdzenie przed usunięciem zawodników
+            if (confirm('Czy na pewno chcesz usunąć wybranych zawodników?')) {
+                $.ajax({
+                    url: '/player/deleteSelectedPlayers',
+                    method: 'POST',
+                    data: { selectedPlayers: selectedPlayers },
+                    success: function (result) {
+                        dataTable.ajax.reload();
+                    },
+                    error: function (error) {
+                        console.error(error);
+                    }
+                });
+            }
+        } else {
+            alert('Nie zaznaczono żadnych zawodników do usunięcia.');
+        }
+    });
+}
 
 function loadTable() {
 
@@ -17,30 +48,37 @@ function loadTable() {
         ajaxURL = '/player/getallPlayers';
     }
     dataTable = $('#playerData').DataTable({
-        responsive: true,
+       /* responsive: true,*/
         ajax: { url: ajaxURL },
+        scrollY: '70vh',
+        scrollCollapse: true, 
         columns: [
-            {
-                data: 'PlayerId',
+            { 
+                data: 'PlayerId', // Add to team/ delete from database
                 width: "2%",
                 render: function (data, type, row) {
                     if (fromAddPlayerToTeam) {
                         return `<a class="addPlayerBtn" data-playerid="${data}" style="cursor: pointer;" >
                         <i class="bi bi-patch-plus-fill"></i>
                         </a>`;
-
-                        //return `<div class="w-75 btn-group" role="group">
-                        // <a href="/player/addplayertoteampost?playerId=${data.PlayerId}">
-                        // <i class="bi bi-patch-plus-fill"> </i>
-                        // </a>
-                        // </div>`;
                     } else {
-                        return '<input type="checkbox" class="player-checkbox" value="' + data.PlayerId + '" />';
+                        return '<input type="checkbox" class="player-checkbox" value="' + data + '" />';
                     }
                 }
             },
-            { data: 'Name', "width": "20%" },
-            { data: 'Surname', "width": "20%" },
+            {
+                data: 'Photo', "width": "7%", // Display photo of player if its not null
+                render: function (data, type, row) {
+                    if (type === 'display' && data) {
+                        return '<img src="data:image/jpeg;base64,' + data + '" alt="' + row.Name + '" style="max-width: 100%;">';
+                    } else {
+                        return '<img src="/images/default-user.jpg" alt=":(" style="max-width: 100%; ">';
+                    }
+                    return data;
+                }
+            },
+            { data: 'Name', "width": "20%"}, // Player Name
+            { data: 'Surname', "width": "20%" }, // Player Surname
             {
                 data: 'Positions',
                 "width": "20%",
@@ -67,7 +105,7 @@ function loadTable() {
 
                 }
             }
-        ],
+        ],// Datatable language set to Polish
         "language": {
             "decimal": "",
             "emptyTable": "Brak danych",
@@ -149,32 +187,3 @@ function mapPositionToText(position) {
     return positions.reverse().join(", ");
 }
 
-function deletePlayersInRange() {
-
-    $('#selectAllCheckbox').on('change', function () {
-        $('.player-checkbox').prop('checked', $(this).prop('checked'));
-    });
-
-    $('#deleteSelectedBtn').on('click', function () {
-        var selectedPlayers = $('.player-checkbox:checked').map(function () {
-            return $(this).val();
-        }).get();
-        if (selectedPlayers.length > 0) {
-            // Main action
-            $.ajax({
-                url: '/player/deleteSelectedPlayers',
-                method: 'POST',
-                data: { selectedPlayers: selectedPlayers },
-                success: function (result) {
-                    // Reload table
-                    dataTable.ajax.reload();
-                },
-                error: function (error) {
-                    console.error(error);
-                }
-            });
-        } else {
-            alert('Nie zaznaczono żadnych zawodników do usunięcia.');
-        }
-    });
-}

@@ -27,7 +27,7 @@
                 </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="Team.TeamLogo" class="ms-2"></label>
-                    <input asp-for="Team.TeamLogo" name="file" type="file" class="form-control border-0 shadow " onchange="handleFileInputChange(this)" />
+                    <input asp-for="Team.TeamLogo" name="file" type="file" class="form-control border-0 shadow " onchange="handleFileInputChange(this,'teamLogoPreview')" />
                 </div>
                 @if (Model.Team.TeamLogo != null)
                 {
@@ -36,7 +36,7 @@
                 }
 
                 <div class="mb-3 row p-1">
-                    <img id="teamLogoPreview" src="#" alt="Podgląd logo drużyny" style="max-width: 200px; max-height: 200px;" />
+                    <img id="teamLogoPreview" src="#" alt="" style="max-width: 200px; max-height: 200px;" />
                 </div>
 
                 <div class="row">
@@ -63,24 +63,15 @@
 
 <script>
     // Show image after chosing one
-    function handleFileInputChange(input) {
-        var file = input.files[0];
-        if (file) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                document.getElementById('teamLogoPreview').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        } else {
-            document.getElementById('teamLogoPreview').src = '#';
-        }
-    }
+
 </script>
 
 
 @section Scripts{
     @{
         <partial name="_ValidationScriptsPartial" />
+        <script src="~/js/site.js"></script>
+
     }
 }
 

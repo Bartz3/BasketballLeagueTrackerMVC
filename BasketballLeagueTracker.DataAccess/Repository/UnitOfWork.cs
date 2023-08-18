@@ -13,6 +13,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
 
         public IPlayerRepository Player {get;private set;}
         public ITeamRepository Team {get;private set;}
+        public ILeagueRepository League {get;private set;}
         private  AppDbContext _db;
 
         public UnitOfWork(AppDbContext db)
@@ -20,6 +21,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             this._db = db;
             Player= new PlayerRepository(_db);
             Team = new TeamRepository(_db);
+            League = new LeagueRepository(_db);
         }
 
         public void Save()

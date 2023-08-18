@@ -10,6 +10,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository.IRepository
     {
         IPlayerRepository Player { get; }
         ITeamRepository Team { get; }
+        ILeagueRepository League { get; }
 
         void Save();
 

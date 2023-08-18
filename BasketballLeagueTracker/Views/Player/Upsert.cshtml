@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="card-body p-4">
-        <form method="post" class="row">
+        <form method="post" asp-controller="Player" asp-action="Upsert" class="row" enctype="multipart/form-data">
             @if(Model != null && Model.Player.PlayerId != 0){
                 <input asp-for="Player.PlayerId" hidden />
             }
@@ -32,14 +32,21 @@
                     <select asp-for="SelectedPositions" asp-items="@(PlayerPositionsHelper.GetPlayerPositions())" class="form-control border-0 shadow w-100" style=" height:revert;" multiple></select>
                     <label asp-for="SelectedPositions" class="ms-2"></label>
                 </div>
+                <div class="mb-3 row p-1">
+                    <label asp-for="Player.Photo" class="ms-2"></label>
+                    <input asp-for="Player.Photo" name="file" type="file" class="form-control border-0 shadow " onchange="handleFileInputChange(this,'playerLogoPreview')" />
+                </div>
+                @if (Model.Player.Photo != null)
+                {
+                    <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(Model.Player.Photo))" alt="Player Photo" />
 
-@*                <div class="mb-3 row p-1">
-                    <label asp-for="Photo" class="ms-2"></label>
-                    <input asp-for="Photo" type="file" class="form-control border-0 shadow" />
-                </div>*@
+                }
+                <div class="mb-3 row p-1">
+                    <img id="playerLogoPreview" src="#" alt="" style="max-width: 200px; max-height: 200px;" />
+                </div>
                 <div class="row">
                     <div class="col-6 col-md-3">
-                        @if (Model != null && Model.Player.TeamId != 0)
+                        @if (Model != null && Model.Player.PlayerId != 0)
                         {
                             <button type="submit" class="btn btn-primary form-control">Edytuj</button>
                         }

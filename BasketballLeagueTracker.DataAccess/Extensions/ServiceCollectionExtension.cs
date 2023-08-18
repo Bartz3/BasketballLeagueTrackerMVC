@@ -18,7 +18,7 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddTransient<TeamGenerator>(); // Generation of random Teams
-
+            // Identity password options
             services.Configure<IdentityOptions>(options =>
             {
                 options.Password.RequireDigit = true;

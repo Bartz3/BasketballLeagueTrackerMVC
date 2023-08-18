@@ -107,11 +107,17 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Upsert(int? id)
         {
-            if (id == null || id == 0)
+            if (id == null || id == 0) // Adding player
             {
-                return View();
+                var playerVM = new PlayerViewModel()
+                {
+                    Player = new Player(),
+                    SelectedPositions = new List<int>() { }
+                };
+
+                return View(playerVM);
             }
-            else
+            else // Editing player
             {
                 Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, null);
                 var playerVM = new PlayerViewModel();
@@ -123,16 +129,26 @@ namespace BasketballLeagueTracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upsert(PlayerViewModel playerVM)
+        public IActionResult Upsert(PlayerViewModel playerVM, IFormFile? file)
         {
 
             if (ModelState.IsValid)
             {
+                // Adding/ editing player poisitions
                 if (playerVM.SelectedPositions != null)
                 {
                     foreach (var pos in playerVM.SelectedPositions)
                     {
                         playerVM.Player.Positions += pos;
+                    }
+                }
+                // Adding/ editing player Photo
+                if (file != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        file.CopyTo(memoryStream);
+                        playerVM.Player.Photo= memoryStream.ToArray();
                     }
                 }
 

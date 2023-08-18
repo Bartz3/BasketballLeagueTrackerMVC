@@ -35,5 +35,7 @@ namespace BasketballLeagueTracker.Models
         public ICollection<Game>? HomeGames { get; set; }
         public ICollection<Game>? AwayGames { get; set; }
 
+        public ICollection<FavouriteTeam>? TeamFollowers { get; set; }
+
     }
 }

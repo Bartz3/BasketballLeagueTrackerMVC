@@ -30,12 +30,9 @@ namespace BasketballLeagueTracker.Models
         Center = 32    
     }
 
-
     public class Player
     {
         public int PlayerId { get; set; }
-
-
         [Display(Name = "Imię")]
         [MinLength(2, ErrorMessage = "Imie jest zbyt krótkie")]
         [MaxLength(40, ErrorMessage = "Imie jest zbyt długie")]
@@ -66,7 +63,7 @@ namespace BasketballLeagueTracker.Models
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
 
-        public ICollection<FavouritePlayer>? FavouritePlayers { get; set; }
+        public ICollection<FavouritePlayer>? PlayerFollowers { get; set; }
 
         public string FullName => $"{Name} {Surname}";
 
@@ -81,14 +78,27 @@ namespace BasketballLeagueTracker.Models
             return string.Join(", ", positionNames);
         }
 
-        public static string GetDisplayAttributeValue(Enum value)
+        public static string GetDisplayAttributeValue(Enum? value)
         {
-            var displayAttribute = value.GetType().GetField(value.ToString())
-                .GetCustomAttributes(typeof(DisplayAttribute), false)
-                .OfType<DisplayAttribute>()
-                .FirstOrDefault();
+            //var displayAttribute = value.GetType().GetField(value.ToString())
+            //    .GetCustomAttributes(typeof(DisplayAttribute), false)
+            //    .OfType<DisplayAttribute>()
+            //    .FirstOrDefault();
 
-            return displayAttribute != null ? displayAttribute.GetName() : value.ToString();
+            //return displayAttribute != null ? displayAttribute.GetName() : value.ToString();
+            var fieldInfo = value.GetType().GetField(value.ToString());
+
+            if (fieldInfo != null)
+            {
+                var displayAttributes = fieldInfo.GetCustomAttributes(typeof(DisplayAttribute), false).OfType<DisplayAttribute>().ToList();
+
+                if (displayAttributes.Any())
+                {
+                    return displayAttributes.First().GetName();
+                }
+            }
+
+            return value.ToString();
         }
     }
 

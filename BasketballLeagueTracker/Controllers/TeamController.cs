@@ -67,7 +67,7 @@ namespace BasketballLeagueTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                Team team;
+                //Team team;
 
                 if (file != null)
                 {
@@ -77,7 +77,7 @@ namespace BasketballLeagueTracker.Controllers
                         teamVM.Team.TeamLogo = memoryStream.ToArray();
                     }
                 }
-                team = teamVM.Team;
+                //team = teamVM.Team;
 
                 if (teamVM.Team.TeamId == 0)
                 {
