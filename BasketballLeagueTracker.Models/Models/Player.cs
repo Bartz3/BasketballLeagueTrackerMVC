@@ -56,16 +56,16 @@ namespace BasketballLeagueTracker.Models
         public string? Country { get; set; }
         public bool IsInTeam { get; set; } = false;
 
-        public int? GamesPlayed { get; set; }
-
-
         // Jeden zawodnik należy do jednej drużyny Player ∞----1 Team
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
 
+        public int? GamesPlayed { get; set; }
+
         public ICollection<FavouritePlayer>? PlayerFollowers { get; set; }
 
         public string FullName => $"{Name} {Surname}";
+        public string? FormattedBirthday => Birthday?.ToString("yyyy-MM-dd");
 
 
         public string GetPositionsString(PlayerPosition positions)

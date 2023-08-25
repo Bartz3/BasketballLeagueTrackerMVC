@@ -99,6 +99,11 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 .HasMany(a => a.Images)
                 .WithOne(i => i.Article)
                 .OnDelete(DeleteBehavior.NoAction);
+            // Jeden artykył przypisany jest do jednej ligi, liga może posiadać wiele artykułów
+            modelBuilder.Entity<Article>()
+                .HasOne(a => a.League)
+                .WithMany(l => l.Articles)
+                .HasForeignKey(a => a.LeagueId);
             // Jedena pozycja ulubionego zawodnika posiada jedno odwołanie do zawodnika, jeden zawodnik może być ulubionym zawodnikiem wielu użytkowników
             //modelBuilder.Entity<FavouritePlayer>()
             //    .HasOne(fp => fp.Player)

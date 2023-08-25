@@ -1,23 +1,20 @@
-﻿@using Azure.Core;
+﻿@*@using Azure.Core;*@
 @model List<Player>
 @{
     ViewData["Title"] = "Dostępni zawodnicy";
-    var teamName = @TempData["TeamName"];
 }
 
-
-@*<partial name="_Notification" />*@
 <div class="container">
     <div class="row pt-3">
         <div class="col-6">
             <h2 class="text-primary">
-                Dodaj zawodnika do @teamName
+                Dodaj zawodnika do @ViewBag.TeamName
             </h2>
         </div>
         <div class="col-6 text-end">
         </div>
     </div>
-    <table id="playerData" class="table table-bordered table-striped" style="width:100%" data-from-addplayertoteam="true" data-from-team-name=@teamName data-team-id="@ViewBag.TeamId">
+    <table id="playerData" class="table table-bordered table-striped" style="width:100%" data-from-addplayertoteam="true" data-from-team-name=@ViewBag.TeamName data-team-id="@ViewBag.TeamId">
         <thead>
             <tr>
                 <th></th>
@@ -26,16 +23,24 @@
                 <th>Nazwisko</th>
                 <th>Pozycja</th>
                 <th>Drużyna</th>
+                <th>Waga(kg)</th>
+                <th>Wzrost(cm)</th>
+                <th>Urodziny</th>
+                <th>Numer</th>
                 <th></th>
             </tr>
         </thead>
     </table>
 </div>
 @section Scripts{
-
+    @Html.Partial("_NotificationJS");
+    @*<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>*@
     <script src="~/js/player.js"></script>
 }
+<link rel="stylesheet" type="text/css" href="~/css/player.css" />
+@*<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />*@
 @*
+
 https://bootswatch.com/cerulean/
 https://bootswatch.com/lumen/
 https://bootswatch.com/morph/

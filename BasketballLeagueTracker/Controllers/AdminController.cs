@@ -17,7 +17,7 @@ namespace BasketballLeagueTracker.Controllers
         public IActionResult Index()
         {
             //GenerateTeam(1);
-            GeneratePlayer(1);
+            //GeneratePlayer(1);
 
             return View();
         }

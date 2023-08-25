@@ -22,11 +22,12 @@ namespace BasketballLeagueTracker.Models
         public Player? LeaugeMVP { get; set; }
         public string? Season { get; set; }
 
-        public ICollection<SeasonStatistics>? SeasonStatistics { get; set; }
         public ICollection<Team>? Teams { get; set; }
 
         public ICollection<Game>? Games { get; set; }
 
+        public ICollection<Article>? Articles { get; set; }
+        public ICollection<SeasonStatistics>? SeasonStatistics { get; set; }
         public ICollection<FavouriteLeague>? LeagueFollowers { get; set; }
         //public ApplicationUser UserId { get; set; }
     }

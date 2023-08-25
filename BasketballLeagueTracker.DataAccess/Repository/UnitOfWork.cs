@@ -1,5 +1,6 @@
 ﻿using BasketballLeagueTracker.DataAccess.Data;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;

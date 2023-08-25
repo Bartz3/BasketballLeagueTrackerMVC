@@ -21,7 +21,7 @@
 
         </div>
     </div>
-    <table id="playerData" class="table table-bordered table-striped" style="width:100%;    color:white;" data-from-addplayertoteam="false">
+    <table id="playerData" class="table hover table-striped table-bordered " style="width:100%;color:white;" data-from-addplayertoteam="false">
         <thead >
             <tr >
                 <th></th>
@@ -30,22 +30,20 @@
                 <th>Nazwisko</th>
                 <th>Pozycja</th>
                 <th>Drużyna</th>
+                <th>Waga(kg)</th>
+                <th>Wzrost(cm)</th>
+                <th>Urodziny</th>
+                <th>Numer</th>
                 <th></th>
             </tr>
         </thead>
     </table>
 </div>
 
-<style>
-    #playerData {
-        color:white;
-        height: 50vh;
-        overflow-y: auto; /* Dodaj przewijanie, jeśli zawartość tabeli przekroczy jej wysokość */
-    }
-</style>
 @section Scripts{
     <script src="~/js/player.js"></script>
 }
+<link rel="stylesheet" type="text/css" href="~/css/player.css" />
 @*
 https://bootswatch.com/cerulean/
 https://bootswatch.com/lumen/

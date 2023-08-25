@@ -19,15 +19,17 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-striped">
+    
+    <table id="teamData" class="table hover table-striped table-bordered " data-from-addteamtoleague="false">
         <thead>
             <tr>
+                <th></th>
+                <th>Logo</th>
                 <th>Nazwa</th>
                 <th>Opis</th>
-                <th>Logo</th>
             </tr>
         </thead>
-        <tbody>
+      @*  <tbody>
             @foreach (var Team in Model)
             {
                 <tr>
@@ -55,10 +57,12 @@
                     </td>
                 </tr>
             }
-        </tbody>
+        </tbody>*@
     </table>
 </div>
-
+@section Scripts{
+    <script src="~/js/team.js"></script>
+}
 @*
 https://bootswatch.com/cerulean/
 https://bootswatch.com/lumen/

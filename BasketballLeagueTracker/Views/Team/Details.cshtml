@@ -1,18 +1,28 @@
 ﻿@model Team
 @{
- TempData["TeamName"] =@Model.Name;
+    if (Model != null)
+    {
+        TempData["TeamName"] = @Model.Name;
+    }
 }
 
 <div class="border p-3 mt-4">
-    <div class="row pb-2">
-        <a asp-controller="Player" asp-action="AddPlayerToTeam" asp-route-teamId="@Model.TeamId" class="btn btn-outline-secondary  form-control" style="width:25%">Dodaj zawodnika do drużyny</a>
+    <div class="row justify-content-end pb-2">
+        <div class="col-auto">
+            <a asp-controller="Team" asp-action="Index" class="btn btn-outline-secondary">Przejdź do listy drużyn</a>
+        </div>
+        <div class="col-auto">
+            <a asp-cont roller="Player" asp-action="AddPlayerToTeam" asp-route-teamId="@Model?.TeamId" class="btn btn-primary">Dodaj zawodnika do drużyny</a>
+        </div>
+        <div class="col-auto">
+            <a asp-controller="Team" asp-action="AddToFavourites" asp-route-teamId="@Model?.TeamId" class="btn btn-sm btn-warning">Dodaj do ulubionych</a>
+        </div>
     </div>
-    <div class="mb-3 row p-1">
-
 </div>
 
+
 <div class="container mt-5">
-    <h2 class="mb-4">Zawodnicy drużyny</h2>
+    <h2 class="mb-4">Zawodnicy drużyny @ViewBag.TeamName</h2>
     <table class="table table-hover table-bordered">
         <thead class="table-primary">
             <tr>
@@ -25,23 +35,28 @@
                 <th>Wzrost (cm)</th>
                 <th>Waga (kg)</th>
                 <th>Kraj</th>
+                <th>Test</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var player in Model.Players) 
+            @foreach (var player in Model.Players)
             {
                 <tr>
                     <td>
-                        @if(player.Photo != null)
+                        @if (player.Photo != null)
                         {
                             <img src="data:image/jpeg;base64,@Convert.ToBase64String(player.Photo)" alt="@player.Name" class="img-fluid" style="max-height: 100px;">
                         }
                         else
                         {
-                                <img src = "~/images/default-user.jpg" alt = "Domyślne zdjęcie" class="img-fluid" style="max-height: 100px;">
+                            <img src="~/images/default-user.jpg" alt="Domyślne zdjęcie" class="img-fluid" style="max-height: 100px;">
                         }
                     </td>
-                    <td>@player.Name</td>
+                    <td>
+                        <a href="@Url.Action("Details", "Player", new { playerId = player.PlayerId })">@player.Name</a>
+
+                        @*<a href="/player/details?@player.PlayerId">@player.Name</a>*@
+                    </td>
                     <td>@player.Surname</td>
                     <td>@player.Birthday?.ToString("dd-MM-yyyy")</td>
                     <td>@player.UniformNumber</td>
@@ -49,6 +64,13 @@
                     <td>@player.Height</td>
                     <td>@player.Weight</td>
                     <td>@player.Country</td>
+                    <td>
+                        <form asp-action="RemovePlayerFromTeam" asp-controller="Team" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tego zawodnika z drużyny?');">
+                            <input type="hidden" name="playerId" value="@player.PlayerId" />
+                            <input type="hidden" name="teamId" value="@Model.TeamId" />
+                            <input type="submit" value="Usuń z drużyny" class="btn btn-danger" />
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>

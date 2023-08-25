@@ -27,7 +27,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             dbSet.Add(entity);            
         }
 
-        public void Delete(T entity)
+        public virtual void Delete(T entity)
         {
             dbSet.Remove(entity);
         }

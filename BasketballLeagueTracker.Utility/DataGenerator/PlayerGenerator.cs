@@ -38,7 +38,7 @@ namespace BasketballLeagueTracker.Utility.DataGenerator
                  })
                  .RuleFor(p => p.Weight, f => Math.Round(f.Random.Double(50, 120), 1))
                  .RuleFor(p => p.Country, f => f.Address.Country())
-                 .RuleFor(p => p.IsInTeam, f => f.Random.Bool())
+                 .RuleFor(p => p.IsInTeam, f => true)
                  .RuleFor(p=>p.TeamId,f=>1);
 
         }

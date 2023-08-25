@@ -3,7 +3,7 @@
 <form method="post">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Usuń zawodnika</h2>
+            <h2 class="text-primary">Usuń drużynę</h2>
             </hr>
         </div>
         @*<div asp-validation-summary="All"></div>*@
@@ -28,10 +28,10 @@
                 </div>
         <div class="row">
             <div class="col-6 col-md-3">
-                <button type="submit" class="btn btn-danger form-control">Usuń </button>
+                <button type="submit" class="btn btn-danger form-control" onclick="return confirm('Czy na pewno chcesz usunąć tę drużynę?');">Usuń </button>
             </div>
             <div class="col-6 col-md-3">
-                <a asp-controller="Team" asp-action="Index" class="btn btn-outline-secondary form-control">Wróć do listy zawodników</a>
+                <a asp-controller="Team" asp-action="Index" class="btn btn-outline-secondary form-control">Wróć do listy drużyn</a>
             </div>
 
         </div>

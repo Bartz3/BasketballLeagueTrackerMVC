@@ -19,84 +19,13 @@ namespace BasketballLeagueTracker.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult AddPlayerToTeam(int? teamId)
+        public IActionResult Details(int? playerId)
         {
-            var team = _unitOfWork.Team.Get(t=>t.TeamId == teamId,"Players");
-            ViewBag.TeamId = teamId;
+            var player = _unitOfWork.Player.Get(t => t.PlayerId == playerId, "Team");
+            //TempData["SelectedTeam"] = team;
 
-            return View();
+            return View(player);
         }
-        [HttpPost]
-        public IActionResult AddPlayerToTeamPOST(int playerId,int teamId)
-        {
-            var player = _unitOfWork.Player.Get(p => p.PlayerId == playerId,null);
-
-            player.TeamId = teamId;
-            player.IsInTeam= true;
-
-            _unitOfWork.Save();
-
-
-            return Json(new { success = true });
-        }
-
-        [HttpGet]
-        public IActionResult GetAllPlayers()
-        {
-            var players = _unitOfWork.Player.GetAll(includeProp: "Team").ToList();
-
-            var ignoreCyclesInJSON = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles 
-            };
-
-            return Json(new { data = players }, ignoreCyclesInJSON);
-        }
-
-        [HttpGet]
-        public IActionResult GetAllAvailablePlayers()
-        {
-            var players = _unitOfWork.Player.GetAll(includeProp: "Team").ToList();
-            List<Player> availablePlayers=new List<Player>();
-            foreach(var player in players)
-            {
-                if(player.IsInTeam==false)
-                    availablePlayers.Add(player);
-            }
-
-            var ignoreCyclesInJSON = new JsonSerializerOptions
-            {
-                ReferenceHandler = ReferenceHandler.IgnoreCycles
-            };
-
-            return Json(new { data = availablePlayers.ToList()}, ignoreCyclesInJSON);
-        }
-
-        [HttpPost]
-        public IActionResult DeleteSelectedPlayers(List<int> selectedPlayers)
-        {
-            List<Player> playersToDelete = new List<Player>();
-            if (selectedPlayers != null && selectedPlayers.Any())
-            {
-                foreach (int playerId in selectedPlayers)
-                {
-                    // Pobierz zawodnika z bazy danych i usuń go
-                    var player = _unitOfWork.Player.Get(p => p.PlayerId == playerId, null);
-                    playersToDelete.Add(player);
-                }
-
-                _unitOfWork.Player.DeleteRange(playersToDelete);
-                _unitOfWork.Save();
-                TempData["success"] = "Zawodnicy zostali usunięci";
-            }
-            else
-            {
-                TempData["error"] = "Nie wybrano żadnych zawodników do usunięcia";
-            }
-
-            return RedirectToAction("Index");
-        }
-
 
         public IActionResult Index()
         {
@@ -109,7 +38,7 @@ namespace BasketballLeagueTracker.Controllers
         {
             if (id == null || id == 0) // Adding player
             {
-                var playerVM = new PlayerViewModel()
+                PlayerViewModel playerVM = new PlayerViewModel()
                 {
                     Player = new Player(),
                     SelectedPositions = new List<int>() { }
@@ -148,7 +77,7 @@ namespace BasketballLeagueTracker.Controllers
                     using (var memoryStream = new MemoryStream())
                     {
                         file.CopyTo(memoryStream);
-                        playerVM.Player.Photo= memoryStream.ToArray();
+                        playerVM.Player.Photo = memoryStream.ToArray();
                     }
                 }
 
@@ -201,6 +130,116 @@ namespace BasketballLeagueTracker.Controllers
             return RedirectToAction("Index");
         }
 
+
+        public IActionResult AddPlayerToTeam(int? teamId)
+        {
+            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players");
+            ViewBag.TeamId = teamId;
+            ViewBag.TeamName=team.Name;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddPlayerToTeamPOST(int playerId, int teamId)
+        {
+            var player = _unitOfWork.Player.Get(p => p.PlayerId == playerId, null);
+            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players");
+            string messageToDisplay = "";
+            if (team == null)
+            {
+                messageToDisplay = "Brak drużyny";
+                return Json(new
+                {
+                    success = false,
+                    message = messageToDisplay
+                });
+            }
+            if (team.Players.Count > 13)
+            {
+                messageToDisplay = "Przekroczono limit zawodników w drużynie." +
+                    "\n Maksmalna liczba wynosi 13";
+
+                return Json(new
+                {
+                    success = false,
+                    message = messageToDisplay
+                });
+            }
+            else if (player.TeamId <= 0 || player.TeamId == null)
+            {
+                player.TeamId = teamId;
+                player.IsInTeam = true;
+                _unitOfWork.Save();
+                messageToDisplay = $"Zawodnik {player.FullName} został dodany do drużyny";
+            }
+
+            return Json(new
+            {
+                success = true,
+                message = messageToDisplay
+            });
+        }
+
+        /// <summary>
+        /// Returns all players in Json format
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetAllPlayers()
+        {
+            var players = _unitOfWork.Player.GetAll(includeProp: "Team").ToList();
+
+            var ignoreCyclesInJSON = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            return Json(new { data = players }, ignoreCyclesInJSON);
+        }
+
+        [HttpGet]
+        public IActionResult GetAllAvailablePlayers()
+        {
+            var players = _unitOfWork.Player.GetAll(includeProp: "Team").ToList();
+            List<Player> availablePlayers = new List<Player>();
+            foreach (var player in players)
+            {
+                if (player.IsInTeam == false)
+                    availablePlayers.Add(player);
+            }
+
+            var ignoreCyclesInJSON = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles
+            };
+
+            return Json(new { data = availablePlayers.ToList() }, ignoreCyclesInJSON);
+        }
+
+        [HttpPost]
+        public IActionResult DeleteSelectedPlayers(List<int> selectedPlayers)
+        {
+            List<Player> playersToDelete = new List<Player>();
+            if (selectedPlayers != null && selectedPlayers.Any())
+            {
+                foreach (int playerId in selectedPlayers)
+                {
+                    // Pobierz zawodnika z bazy danych i usuń go
+                    var player = _unitOfWork.Player.Get(p => p.PlayerId == playerId, null);
+                    playersToDelete.Add(player);
+                }
+
+                _unitOfWork.Player.DeleteRange(playersToDelete);
+                _unitOfWork.Save();
+                TempData["success"] = "Zawodnicy zostali usunięci";
+            }
+            else
+            {
+                TempData["error"] = "Nie wybrano żadnych zawodników do usunięcia";
+            }
+
+            return RedirectToAction("Index");
+        }
 
     }
 }

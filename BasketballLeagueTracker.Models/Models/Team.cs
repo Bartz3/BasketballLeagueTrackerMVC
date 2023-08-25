@@ -19,6 +19,7 @@ namespace BasketballLeagueTracker.Models
         public byte[]? TeamLogo { get; set; }
 
         public bool? IsCurrentlyPlaying { get; set; }
+        public bool? IsInTheLeague { get; set; }
 
         public int? LeagueId { get; set; }
         public League? League { get; set; }

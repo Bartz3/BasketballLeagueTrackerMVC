@@ -50,6 +50,14 @@ namespace BasketballLeagueTracker.Controllers
             }
         }
 
+        public IActionResult Details(int leagueId)
+        {
+            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams"); // Players
+            //TempData["SelectedTeam"] = team;
+
+            return View(league);
+        }
+
         [HttpPost]
         public IActionResult Upsert(LeagueViewModel leagueVM, IFormFile? file)
         {
