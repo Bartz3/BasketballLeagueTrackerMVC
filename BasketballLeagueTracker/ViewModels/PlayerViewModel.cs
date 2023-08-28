@@ -1,5 +1,4 @@
-﻿using BasketballLeagueTracker.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace BasketballLeagueTracker.ViewModels
@@ -10,7 +9,7 @@ namespace BasketballLeagueTracker.ViewModels
 
         [ValidateNever]
         public IFormFile? Image { get; set; }
-        [Display(Name ="Pozycje")]
+        [Display(Name = "Pozycje")]
         public List<int> SelectedPositions { get; set; }
 
     }

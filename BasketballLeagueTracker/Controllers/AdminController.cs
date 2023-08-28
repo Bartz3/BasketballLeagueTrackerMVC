@@ -1,5 +1,4 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
-using BasketballLeagueTracker.Models;
 using BasketballLeagueTracker.Utility.DataGenerator;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +23,7 @@ namespace BasketballLeagueTracker.Controllers
 
         private void GenerateTeam(int length)
         {
-            
+
             TeamGenerator teamGenerator = new TeamGenerator();
             Team team;
             for (int i = 0; i < length; i++)

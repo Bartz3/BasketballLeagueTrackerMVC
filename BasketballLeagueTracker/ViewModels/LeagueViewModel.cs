@@ -1,5 +1,4 @@
-﻿using BasketballLeagueTracker.Models;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace BasketballLeagueTracker.ViewModels
 {

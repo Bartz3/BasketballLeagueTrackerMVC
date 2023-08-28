@@ -1,12 +1,8 @@
-﻿using BasketballLeagueTracker.DataAccess.Data;
-using BasketballLeagueTracker.DataAccess.Repository;
-using BasketballLeagueTracker.DataAccess.Repository.IRepository;
-using BasketballLeagueTracker.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using Newtonsoft.Json;
+﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace BasketballLeagueTracker.Controllers
 {
@@ -135,7 +131,7 @@ namespace BasketballLeagueTracker.Controllers
         {
             var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players");
             ViewBag.TeamId = teamId;
-            ViewBag.TeamName=team.Name;
+            ViewBag.TeamName = team.Name;
             return View();
         }
 

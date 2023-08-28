@@ -1,13 +1,6 @@
-﻿using BasketballLeagueTracker.DataAccess.Data;
-using BasketballLeagueTracker.DataAccess.Repository;
-using BasketballLeagueTracker.DataAccess.Repository.IRepository;
-using BasketballLeagueTracker.Models;
-using Microsoft.AspNetCore.Mvc;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using Newtonsoft.Json;
+﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.ViewModels;
-using BasketballLeagueTracker.DataAccess.Migrations;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BasketballLeagueTracker.Controllers
 {
@@ -33,8 +26,8 @@ namespace BasketballLeagueTracker.Controllers
             {
                 var leagueVM = new LeagueViewModel()
                 {
-                    League=new League(),
-                    Image=null,
+                    League = new League(),
+                    Image = null,
                 };
                 return View(leagueVM);
             }
@@ -45,7 +38,7 @@ namespace BasketballLeagueTracker.Controllers
                 {
                     League = league
                 };
-              
+
                 return View(leagueVM);
             }
         }

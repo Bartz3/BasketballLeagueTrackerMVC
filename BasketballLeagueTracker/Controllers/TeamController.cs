@@ -1,15 +1,7 @@
-﻿using BasketballLeagueTracker.DataAccess.Data;
-using BasketballLeagueTracker.DataAccess.Repository;
-using BasketballLeagueTracker.DataAccess.Repository.IRepository;
-using BasketballLeagueTracker.Models;
+﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.ViewModels;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BasketballLeagueTracker.Controllers
 {
@@ -91,13 +83,13 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Details(int teamId)
         {
-            var team = _unitOfWork.Team.Get(t=>t.TeamId== teamId, "Players"); // Players
-                                                                              //TempData["SelectedTeam"] = team;
+            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players"); // Players
+                                                                                 //TempData["SelectedTeam"] = team;
             if (team == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
-            ViewBag.TeamName=team.Name;
+            ViewBag.TeamName = team.Name;
 
             return View(team);
         }
@@ -116,7 +108,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             else
             {
-                Team? team = _unitOfWork.Team.Get(p => p.TeamId == id,null);
+                Team? team = _unitOfWork.Team.Get(p => p.TeamId == id, null);
 
                 var availablePlayers = _unitOfWork.Player.GetAll(null)
                     .Where(p => p.IsInTeam == false);
@@ -229,7 +221,7 @@ namespace BasketballLeagueTracker.Controllers
             List<Team> availableTeams = new List<Team>();
             foreach (var team in teams)
             {
-                if (team.IsInTheLeague == false || team.IsInTheLeague==null)
+                if (team.IsInTheLeague == false || team.IsInTheLeague == null)
                     availableTeams.Add(team);
             }
 
@@ -262,7 +254,7 @@ namespace BasketballLeagueTracker.Controllers
         {
             var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams");
             ViewBag.LeagueId = leagueId;
-            ViewBag.LeagueName=league.Name;
+            ViewBag.LeagueName = league.Name;
 
             return View();
         }
@@ -271,7 +263,7 @@ namespace BasketballLeagueTracker.Controllers
         public IActionResult AddTeamToLeaguePOST(int teamId, int leagueId)
         {
             var team = _unitOfWork.Team.Get(p => p.TeamId == teamId, null);
-            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId,"Teams");
+            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams");
             string messageToDisplay = "";
 
             if (league == null)
@@ -287,7 +279,7 @@ namespace BasketballLeagueTracker.Controllers
             {
                 messageToDisplay = $"Przekroczono liczbę drużyn w lidze ${league.Name}." +
                     "\n Maksmalna liczba wynosi 16";
-        
+
                 return Json(new
                 {
                     success = false,
