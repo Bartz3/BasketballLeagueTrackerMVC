@@ -15,7 +15,10 @@
             <a asp-cont roller="Player" asp-action="AddPlayerToTeam" asp-route-teamId="@Model?.TeamId" class="btn btn-primary">Dodaj zawodnika do drużyny</a>
         </div>
         <div class="col-auto">
-            <a asp-controller="Team" asp-action="AddToFavourites" asp-route-teamId="@Model?.TeamId" class="btn btn-sm btn-warning">Dodaj do ulubionych</a>
+            <a asp-controller="Team" asp-action="AddToFavourites" asp-route-teamId="@Model?.TeamId" class="btn btn-sm btn-warning">
+                <i class="bi bi-heart"> Dodaj do ulubionych</i>
+            </a>
+
         </div>
     </div>
 </div>

@@ -16,6 +16,7 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IFavouriteTeamRepository, FavouriteTeamRepository>();
 
             services.AddTransient<TeamGenerator>(); // Generation of random Teams
             // Identity password options

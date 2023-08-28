@@ -17,31 +17,67 @@ namespace BasketballLeagueTracker.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly UserManager<ApplicationUser> _userManager;
-        public TeamController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        private readonly IFavouriteTeamRepository _favouriteTeamRepository;
+
+        public TeamController(IUnitOfWork unitOfWork,
+            UserManager<ApplicationUser> userManager,
+            IFavouriteTeamRepository favouriteTeamRepository)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _favouriteTeamRepository = favouriteTeamRepository;
         }
 
-        [Authorize]
         public async Task<IActionResult> AddToFavorites(int teamId)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userManager.GetUserAsync(User); // Znajdź aktualnie zalogowanego użytkownika.
+
             if (user == null)
             {
                 return Unauthorized();
             }
 
-
-            // Sprawdzenie czy drużyna jest już w ulubionych
-            if (!user.FavouriteTeams.Any(t => t.TeamId == teamId))
+            // Sprawdzenie, czy drużyna jest już w ulubionych.
+            if (user.FavouriteTeams == null)
             {
-                user.FavouriteTeams.Add(new FavouriteTeam { TeamId = teamId, UserId = user.Id });
-                await _userManager.UpdateAsync(user);
+                user.FavouriteTeams = new List<FavouriteTeam>();
             }
 
-            return RedirectToAction("Index");
+            if (!user.FavouriteTeams.Any(t => t.TeamId == teamId))
+            {
+                var favouriteTeam = new FavouriteTeam
+                {
+                    UserId = user.Id,
+                    TeamId = teamId,
+                    DateAdded = DateTime.UtcNow
+                };
+
+                _favouriteTeamRepository.Add(favouriteTeam);
+                _favouriteTeamRepository.Save();
+            }
+
+            return RedirectToAction("Index"); // Przekieruj użytkownika do odpowiedniego miejsca po zakończeniu operacji.
         }
+
+        //[Authorize]
+        //public async Task<IActionResult> AddToFavorites(int teamId)
+        //{
+        //    var user = await _userManager.GetUserAsync(User);
+        //    if (user == null)
+        //    {
+        //        return Unauthorized();
+        //    }
+
+
+        //    // Sprawdzenie czy drużyna jest już w ulubionych
+        //    if (!user.FavouriteTeams.Any(t => t.TeamId == teamId))
+        //    {
+        //        user.FavouriteTeams.Add(new FavouriteTeam { TeamId = teamId, UserId = user.Id });
+        //        await _userManager.UpdateAsync(user);
+        //    }
+
+        //    return RedirectToAction("Index");
+        //}
 
 
 

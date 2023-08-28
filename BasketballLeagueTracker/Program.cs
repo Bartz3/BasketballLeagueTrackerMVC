@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.DataAccess.Repository;
 using BasketballLeagueTracker.DataAccess.Extensions;
+using BasketballLeagueTracker.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,12 +13,21 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("BasketCS")));
 
-builder.Services.AddRepositories(); // Repositories register 
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).
-    AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddRazorPages(); // Added for login/reg
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+//        .AddEntityFrameworkStores<AppDbContext>()
+//        .AddDefaultTokenProviders();
+
+builder.Services.AddRepositories(); // Repositories register 
+
+//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).
+//    AddEntityFrameworkStores<AppDbContext>();
+
+
+
 
 var app = builder.Build();
 
