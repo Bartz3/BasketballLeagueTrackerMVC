@@ -2,13 +2,15 @@ using BasketballLeagueTracker.DataAccess.Data;
 using BasketballLeagueTracker.DataAccess.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(o =>
-    o.UseSqlServer(builder.Configuration.GetConnectionString("BasketCS")));
+    o.UseSqlServer(builder.Configuration.GetConnectionString("BasketCS")).ConfigureWarnings(warnings =>
+            warnings.Ignore(CoreEventId.InvalidIncludePathError))); 
 
 //builder.Services.AddDefaultIdentity<IdentityUser>()
 //    .AddEntityFrameworkStores<AppDbContext>();

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using BasketballLeagueTracker.DataAccess.Data;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace BasketballLeagueTracker.DataAccess.Repository
 {
@@ -61,18 +62,59 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             }else return query.ToList();
         }
 
-        private void AddIncludedProperties(string includeProp,ref IQueryable<T> query)
+        //private void AddIncludedProperties(string includeProp, ref IQueryable<T> query)
+        //{
+        //    if (!string.IsNullOrEmpty(includeProp))
+        //    {
+        //        string[] propArray = includeProp.Split(',');
+        //        propArray = propArray.Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
+        //        foreach (var prop in propArray)
+        //        {
+        //            query = query.Include(prop);
+        //        }
+        //    }
+        //}
+        private void AddIncludedProperties(string includeProp, ref IQueryable<T> query)
         {
             if (!string.IsNullOrEmpty(includeProp))
             {
-                string[] propArray = includeProp.Split(',');
-                propArray = propArray.Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-                foreach (var prop in propArray)
+                string[] propPaths = includeProp.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var path in propPaths)
                 {
-                    query = query.Include(prop);
+                    var nestedProperties = path.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    string builtPath = "";
+                    for (int i = 0; i < nestedProperties.Length; i++)
+                    {
+                        if (i > 0) builtPath += ".";
+                        builtPath += nestedProperties[i];
+                        query = query.Include(builtPath);
+                    }
                 }
             }
         }
+
+
+        //private void AddIncludedProperties(string includeProp, ref IQueryable<T> query)
+        //{
+        //    if (!string.IsNullOrEmpty(includeProp))
+        //    {
+        //        string[] propArray = includeProp.Split(',');
+        //        foreach (var prop in propArray)
+        //        {
+        //            var nestedProps = prop.Split("->");
+        //            var mainProperty = nestedProps[0];
+        //            query = query.Include(mainProperty);
+        //            for (int i = 1; i < nestedProps.Length; i++)
+        //            {
+        //                var subProperty = nestedProps[i];
+        //                query = ((IIncludableQueryable<T, object>)query).Include(e => EF.Property<object>(e, subProperty));
+        //            }
+        //        }
+        //    }
+        //}
+
 
     }
 }

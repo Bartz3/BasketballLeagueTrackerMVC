@@ -19,6 +19,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
         public FavouriteTeamRepository(AppDbContext db) : base(db)
         {
             _db = db;
+            
 
         }
 

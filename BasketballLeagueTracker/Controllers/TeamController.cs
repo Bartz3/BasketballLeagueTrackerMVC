@@ -20,7 +20,7 @@ namespace BasketballLeagueTracker.Controllers
             _favouriteTeamRepository = favouriteTeamRepository;
         }
 
-        public async Task<IActionResult> AddToFavorites(int teamId)
+        public async Task<IActionResult> AddToFavourites(int teamId)
         {
             var user = await _userManager.GetUserAsync(User); // Znajdź aktualnie zalogowanego użytkownika.
 
@@ -28,25 +28,30 @@ namespace BasketballLeagueTracker.Controllers
             {
                 return Unauthorized();
             }
-
-            // Sprawdzenie, czy drużyna jest już w ulubionych.
-            if (user.FavouriteTeams == null)
-            {
-                user.FavouriteTeams = new List<FavouriteTeam>();
-            }
-
-            if (!user.FavouriteTeams.Any(t => t.TeamId == teamId))
+  
+            var followedTeam= _favouriteTeamRepository.Get(ft => ft.UserId == user.Id && ft.TeamId == teamId,null);
+            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, null);
+            // If user doesn't follow the team, add team to follow teams, otherwise delete team from following
+            if (followedTeam == null)
             {
                 var favouriteTeam = new FavouriteTeam
                 {
                     UserId = user.Id,
+                    Team =team,
                     TeamId = teamId,
                     DateAdded = DateTime.UtcNow
                 };
-
                 _favouriteTeamRepository.Add(favouriteTeam);
                 _favouriteTeamRepository.Save();
+                TempData["success"] = "Zespół został dodany do ulubionych";
             }
+            else
+            {      
+                _favouriteTeamRepository.Delete(followedTeam);
+                _favouriteTeamRepository.Save();
+                TempData["success"] = "Zespół został usunięty z ulubionych";
+            }
+                
 
             return RedirectToAction("Index"); // Przekieruj użytkownika do odpowiedniego miejsca po zakończeniu operacji.
         }

@@ -18,6 +18,9 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public static string Index => "Index";
 
+        public static string Favourites => "Favourites";
+        public static string FavouritesNavClass(ViewContext viewContext) => PageNavClass(viewContext, Favourites);
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
