@@ -1,4 +1,5 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+using BasketballLeagueTracker.Models;
 using BasketballLeagueTracker.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace BasketballLeagueTracker.Controllers
             _favouriteTeamRepository = favouriteTeamRepository;
         }
 
+
         public async Task<IActionResult> AddToFavourites(int teamId)
         {
             var user = await _userManager.GetUserAsync(User); // Znajdź aktualnie zalogowanego użytkownika.
@@ -37,7 +39,6 @@ namespace BasketballLeagueTracker.Controllers
                 var favouriteTeam = new FavouriteTeam
                 {
                     UserId = user.Id,
-                    Team =team,
                     TeamId = teamId,
                     DateAdded = DateTime.UtcNow
                 };
@@ -51,31 +52,10 @@ namespace BasketballLeagueTracker.Controllers
                 _favouriteTeamRepository.Save();
                 TempData["success"] = "Zespół został usunięty z ulubionych";
             }
-                
 
-            return RedirectToAction("Index"); // Przekieruj użytkownika do odpowiedniego miejsca po zakończeniu operacji.
+
+            return RedirectToAction("Details", new { teamId = teamId }) ; 
         }
-
-        //[Authorize]
-        //public async Task<IActionResult> AddToFavorites(int teamId)
-        //{
-        //    var user = await _userManager.GetUserAsync(User);
-        //    if (user == null)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-
-        //    // Sprawdzenie czy drużyna jest już w ulubionych
-        //    if (!user.FavouriteTeams.Any(t => t.TeamId == teamId))
-        //    {
-        //        user.FavouriteTeams.Add(new FavouriteTeam { TeamId = teamId, UserId = user.Id });
-        //        await _userManager.UpdateAsync(user);
-        //    }
-
-        //    return RedirectToAction("Index");
-        //}
-
 
 
 
@@ -86,10 +66,27 @@ namespace BasketballLeagueTracker.Controllers
             return View(teamsList);
         }
 
+        private bool IsFavourite(int? teamId)
+        {
+            if (teamId == null)
+                return false;
+
+            // User doesnt follow team if it is not in favouriteTeamDb
+            var userId = _userManager.GetUserId(User);
+            var followedTeam = _favouriteTeamRepository.Get(ft => ft.UserId == userId && ft.TeamId == teamId, null);
+
+            if (followedTeam == null)
+                return false;
+            else return true;
+
+        }
+
         public IActionResult Details(int teamId)
         {
-            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players"); // Players
-                                                                                 //TempData["SelectedTeam"] = team;
+            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players");
+
+            ViewBag.IsFavourite= IsFavourite(teamId);
+
             if (team == null)
             {
                 return NotFound();

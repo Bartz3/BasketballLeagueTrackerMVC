@@ -1,44 +1,88 @@
 ﻿@model League
 @{
- //TempData["TeamName"] =@Model.Name;
+    TempData["LeagueId"] = Model.LeagueId;
 }
 
-@*<div class="border p-3 mt-4">
-    <div class="row pb-2">
-        <a asp-controller="Player" asp-action="AddPlayerToTeam" asp-route-teamId="@Model.TeamId" class="btn btn-outline-secondary  form-control" style="width:25%">Dodaj zawodnika do drużyny</a>
-    </div>
-    <div class="mb-3 row p-1">
-
-</div>*@
 <div class="border p-3 mt-4">
     <div class="row pb-2 justify-content-end">
-        <a asp-controller="Team" asp-action="AddTeamToLeague" asp-route-leagueId="@Model.LeagueId" class="btn btn-outline-secondary" style="width:25%">Dodaj drużynę do ligi</a>
+        <a asp-controller="Team" asp-action="AddTeamToLeague" asp-route-leagueId="@Model.LeagueId" class="btn btn-primary me-2" style="width:20%">Dodaj drużynę do ligi</a>
+        <br />
+        <a asp-controller="Article" asp-action="Upsert" asp-route-leagueId="@Model.LeagueId" class="btn btn-secondary me-2" style="width:15%">Dodaj artykuł</a>
     </div>
 </div>
 
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Liga @Model.Name</h2>
-    <div class="row">
-        @foreach (var team in Model.Teams)
-        {
-            <div class="col-md-3 col-12 mb-4">
-                <div class="card">
-                    <div class="card-body text-center" style="max-height: 60%;">
-                        <a asp-controller="Team" asp-action="Details" asp-route-teamId="@team.TeamId">
-                        @if (team.TeamLogo != null)
-                        {
-                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(team.TeamLogo)" alt="@team.Name" class="img-fluid mb-2" style="max-height: 100px;">
-                        }
-                        else
-                        {
-                            <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid mb-2" style="max-height: 100px;">
-                        }
-                        <h5 class="card-title">@team.Name</h5>
-                        <p class="card-text">@team.Description</p>
-                        </a>
+
+    <!-- Zakładki -->
+    <ul class="nav nav-pills nav-justified" id="leagueTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="teams-tab" data-bs-toggle="tab" href="#teams" role="tab" aria-controls="teams" aria-selected="true">Drużyny</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="articles-tab" data-bs-toggle="tab" href="#articles" role="tab" aria-controls="articles" aria-selected="false">Artykuły</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="leagueTabsContent">
+        <!-- Sekcja drużyn -->
+        <div class="tab-pane fade show active" id="teams" role="tabpanel" aria-labelledby="teams-tab">
+            <div class="row mt-3">
+                @foreach (var team in Model.Teams)
+                {
+                    <div class="col-md-3 col-12 mb-4">
+                        <div class="card">
+                            <div class="card-body text-center" style="max-height: 60%;">
+                                <a asp-controller="Team" asp-action="Details" asp-route-teamId="@team.TeamId" class="link">
+                                    @if (team.TeamLogo != null)
+                                    {
+                                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(team.TeamLogo)" alt="@team.Name" class="img-fluid mb-2" style="max-height: 100px;">
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid mb-2" style="max-height: 100px;">
+                                    }
+                                    <h5 class="card-title link">@team.Name</h5>
+                                    <p class="card-text link">@team.Description</p>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
-        }
+        </div>
+
+        <!-- Sekcja artykułów -->
+        <div class="tab-pane fade" id="articles" role="tabpanel" aria-labelledby="articles-tab">
+            <div class="row mt-3">
+                @foreach (var article in Model.Articles)
+                {
+                    <div class="col-md-4 col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">@article.Title</h5>
+                                <div class="justify-content-end">
+                                    <a asp-controller="Article" asp-action="Upsert" asp-route-id="@article.ArticleId" asp-route-leagueId="@Model.LeagueId" class="btn btn-warning btn-sm me-2 ">
+                                        <i class="bi bi-pencil-square"></i>
+                                      </a>
+                                    <a asp-controller="Article" asp-action="DeletePOST" asp-route-articleId="@article.ArticleId" asp-route-leagueId="@Model.LeagueId" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć ten artykuł?');">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId">
+                                    @*<img src="data:image/jpeg;base64,@Convert.ToBase64String(article.)" alt="@article.Title" class="img-fluid mb-2">*@
+                                    <p class="card-text link">@article.Content</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
     </div>
 </div>
+<link rel="stylesheet" type="text/css" href="~/css/default.css" />

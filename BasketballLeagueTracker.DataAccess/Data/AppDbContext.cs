@@ -104,21 +104,7 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 .HasOne(a => a.League)
                 .WithMany(l => l.Articles)
                 .HasForeignKey(a => a.LeagueId);
-            // Jedena pozycja ulubionego zawodnika posiada jedno odwołanie do zawodnika, jeden zawodnik może być ulubionym zawodnikiem wielu użytkowników
-            //modelBuilder.Entity<FavouritePlayer>()
-            //    .HasOne(fp => fp.Player)
-            //    .WithMany(p => p.FavouritePlayers)
-            //    .OnDelete(DeleteBehavior.NoAction);
-            // Jedena pozycja ulubionego zawodnika posiada jedno odwołanie do użytkownika, użytkownik może mieć wiele ulubionych zawodników
-            //modelBuilder.Entity<FavouritePlayer>()
-            //     .HasOne(fp => fp.User)
-            //     .WithMany(u => u.FavouritePlayers)
-            //     .OnDelete(DeleteBehavior.Cascade);
-            // Jedna pozycja ulubionej drużyny posiada jedno odwołanie do drużyny, drużyna może być ulubioną drużyną wielu użytkowników
-            //modelBuilder.Entity<FavouriteTeam>()
-            //    .HasOne(ft => ft.Team)
-            //    .WithMany(t => t.FavouriteTeams)
-            //    .OnDelete(DeleteBehavior.NoAction);
+
             // //////////////////////////////////////////// FavouritePlayers
 
             modelBuilder.Entity<FavouritePlayer>()
@@ -167,10 +153,10 @@ namespace BasketballLeagueTracker.DataAccess.Data
 
 
             // Jedena pozycja ulubionej drużyny posiada jedno odwołanie do drużyny, użytkownik może mieć wiele ulubionych drużyn
-            modelBuilder.Entity<FavouriteTeam>()
-                .HasOne(ft => ft.User)
-                .WithMany(u => u.FavouriteTeams)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<FavouriteTeam>()
+            //    .HasOne(ft => ft.User)
+            //    .WithMany(u => u.FavouriteTeams)
+            //    .OnDelete(DeleteBehavior.Cascade);
             // Jeden komentarz ma jednego użytkownika, który może mieć wiele komentarzy
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.User)

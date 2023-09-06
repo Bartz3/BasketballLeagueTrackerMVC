@@ -29,7 +29,7 @@ namespace BasketballLeagueTracker.Models
         public int? StadiumId { get; set; }
         public Stadium? Stadium { get; set; }
 
-        public ICollection<FavouriteTeam>? FavouriteTeams { get; set; }
+        //public ICollection<FavouriteTeam>? FavouriteTeams { get; set; }
         public ICollection<SeasonStatistics>? SeasonStatistics { get; set; }
 
 

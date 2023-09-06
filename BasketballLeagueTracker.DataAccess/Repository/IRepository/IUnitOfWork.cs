@@ -8,9 +8,10 @@ namespace BasketballLeagueTracker.DataAccess.Repository.IRepository
 {
     public interface IUnitOfWork
     {
-        IPlayerRepository Player { get; }
-        ITeamRepository Team { get; }
+        IArticleRepository Article { get; }
         ILeagueRepository League { get; }
+        ITeamRepository Team { get; }
+        IPlayerRepository Player { get; }
        
         void Save();
 

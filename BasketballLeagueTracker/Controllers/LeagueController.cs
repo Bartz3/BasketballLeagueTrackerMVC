@@ -45,7 +45,7 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Details(int leagueId)
         {
-            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams"); // Players
+            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles"); // Players
             //TempData["SelectedTeam"] = team;
 
             return View(league);

@@ -10,11 +10,13 @@ namespace BasketballLeagueTracker.Models
     {
         public int ArticleId { get; set; }
         [MaxLength(255)]
+        [Display(Name ="Tytuł")]
         public string Title { get; set; }
+        [Display(Name ="Treść")]
         public string Content { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
-        public int LeagueId { get; set; }
+        public int? LeagueId { get; set; }
         public League? League { get; set; }
 
         public string? UserId { get; set; }
