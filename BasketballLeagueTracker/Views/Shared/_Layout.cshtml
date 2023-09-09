@@ -12,6 +12,11 @@
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/> @*Notifications css*@
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/> @*Datatables css*@
 
+    <link href="~/summernote/summernote-lite.css" rel="stylesheet" />
+ 
+
+
+
 
 </head>
 <body>
@@ -58,6 +63,9 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> @*Bootstrap.js*@
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> @*Datatables.js*@
+
+    @*<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>*@
+    <script src="~/summernote/summernote-lite.js"></script>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)

@@ -14,6 +14,8 @@ namespace BasketballLeagueTracker.Models
         [Display(Name = "Powiadomienia")]
         public bool? NotificationBool { get; set; }
 
+        public string? Nickname { get; set; }
+
         public ICollection<Article>? Articles { get; set; }
         public ICollection<Comment>? Comments { get; set; }
         public ICollection<UserCommentRating>? UserCommentRaitings { get; set; }
@@ -24,12 +26,22 @@ namespace BasketballLeagueTracker.Models
         public ICollection<FavouriteTeam>? FavouriteTeams { get; set; }
         [Display(Name = "Ulubione ligi ")]
         public ICollection<FavouriteLeague>? FavouriteLeagues { get; set; }
+
+
+        public string GetDisplayName()
+        {
+            if (!string.IsNullOrWhiteSpace(Nickname))return Nickname;
+
+            int index = UserName.IndexOf('@');
+            if (index > 0)
+            {
+                return UserName.Substring(0, index);
+            }
+
+            return UserName.ToString();
+        }
+
+
     }
-
-    //[Key]
-    //public Guid ApplicationUserId { get; set; }
-
-    //public string Username { get; set; } 
-    //public string Password { get; set; }
 
 }

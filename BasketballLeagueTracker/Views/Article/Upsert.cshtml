@@ -3,14 +3,13 @@
 @{
     TempData["LeagueId"] = Model.LeagueId;
 }
-<h2>@Model.LeagueId</h2>
 
 <div class="card shadow border-0 mt-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
 
-               <h2 class="text-white py-2"> @(Model.Article != null && Model.Article.ArticleId != 0 ? "Edytuj " : "Dodaj ") artykuł </h2>
+                <h2 class="text-white py-2"> @(Model.Article != null && Model.Article.ArticleId != 0 ? "Edytuj " : "Dodaj ") artykuł </h2>
             </div>
         </div>
     </div>
@@ -25,8 +24,9 @@
                     <span asp-validation-for="Article.Title" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="Article.Content" class="form-control border-0 shadow" />
-                    <label asp-for="Article.Content" class="ms-2"></label>
+                    <textarea id="summernote" asp-for="Article.Content"
+                              class="form-control border-0 shadow">
+                    </textarea>
                     <span asp-validation-for="Article.Content" class="text-danger"></span>
                 </div>
                 <div class="row">
@@ -55,5 +55,15 @@
     @{
         <partial name="_ValidationScriptsPartial" />
     }
-}
+    <script>
+        $(document).ready(function () {
+            $('#summernote').summernote({
+                placeholder:'Treść artykułu',
+                tabsize: 2,
+                height: 300
 
+            });
+        });
+    </script>
+
+}

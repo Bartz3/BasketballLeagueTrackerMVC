@@ -90,6 +90,9 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
 
+                    b.Property<int?>("ArticleId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,10 +101,11 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CommentId");
+
+                    b.HasIndex("ArticleId");
 
                     b.HasIndex("UserId");
 
@@ -773,11 +777,17 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.Comment", b =>
                 {
+                    b.HasOne("BasketballLeagueTracker.Models.Article", "Article")
+                        .WithMany("Comments")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("BasketballLeagueTracker.Models.ApplicationUser", "User")
                         .WithMany("Comments")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("Article");
 
                     b.Navigation("User");
                 });
@@ -1012,6 +1022,8 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.Article", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Images");
                 });
 

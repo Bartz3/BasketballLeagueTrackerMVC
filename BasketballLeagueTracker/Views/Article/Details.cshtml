@@ -1,9 +1,25 @@
 ﻿@model Article
 
-
-
-<div class="container mt-5">
-    <h2 class="mb-4 text-center">@Model.Title</h2>
-    <h3 class="mb-4 text-center">@Model.Content</h3>
-    <h3 class="mb-4 text-center">@Model.User</h3>
+<h2>@Model.Title</h2>
+<div>
+    @Html.Raw(Model.Content)
 </div>
+
+<h3>Komentarze:</h3>
+@foreach (var comment in Model.Comments)
+{
+    <div>
+        <strong>@comment.User</strong> napisał(a) @comment.DateAdded.ToString("dd-MM-yyyy HH:mm"):
+        <p>@comment.Content</p>
+    </div>
+}
+
+<h3>Dodaj komentarz:</h3>
+<form method="post" asp-action="AddComment">
+    <input type="hidden" asp-for="ArticleId" />
+    <div class="form-group">
+        <label for="Content">Treść komentarza:</label>
+        <textarea class="form-control" id="Content" name="Content" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Dodaj komentarz</button>
+</form>

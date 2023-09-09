@@ -1,7 +1,10 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.ViewModels;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BasketballLeagueTracker.Controllers
 {
@@ -25,7 +28,7 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Details(int articleId)
         {
-            var article = _unitOfWork.Article.Get(t => t.ArticleId == articleId, "League"); // Players
+            var article = _unitOfWork.Article.Get(t => t.ArticleId == articleId, "League,Comments"); // Players
             //TempData["SelectedTeam"] = team;
 
             return View(article);
@@ -75,9 +78,14 @@ namespace BasketballLeagueTracker.Controllers
                 }
                 if (articleVM.Article.ArticleId == 0)
                 {
-
                     var user =  _userManager.GetUserId(User);
                     articleVM.Article.UserId = user;
+                    //Ataki XSS polegają na wstrzykiwaniu złośliwych skryptów do zawartości,
+                    //które następnie są wykonywane w przeglądarce innych użytkowników.
+                    //Aby zapobiec takim atakom, należy filtrować i
+                    //sanatoryzować dane wejściowe przed ich zapisaniem lub wyświetleniem.
+                    var sanitizer = new HtmlSanitizer();
+                    articleVM.Article.Content = sanitizer.Sanitize(articleVM.Article.Content);
 
                     _unitOfWork.Article.Add(articleVM.Article);
                     TempData["success"] = "Artykuł został dodany";
@@ -96,6 +104,7 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Delete(int? id)
         {
+
             if (id == null || id == 0)
             {
                 return NotFound();

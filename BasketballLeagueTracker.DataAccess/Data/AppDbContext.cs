@@ -105,6 +105,12 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 .WithMany(l => l.Articles)
                 .HasForeignKey(a => a.LeagueId);
 
+            modelBuilder.Entity<Article>()
+    .HasMany(a => a.Comments)
+    .WithOne(c => c.Article)
+    .HasForeignKey(c => c.ArticleId)
+    .OnDelete(DeleteBehavior.Cascade);
+
             // //////////////////////////////////////////// FavouritePlayers
 
             modelBuilder.Entity<FavouritePlayer>()
@@ -192,7 +198,7 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 );
 
             modelBuilder.Entity<League>().HasData(
-                new League { LeagueId=1,Name="Testowa liga",Description="Liga 1 "}
+                new League { LeagueId = 1, Name = "Testowa liga", Description = "Liga 1 " }
               );
         }
     }
