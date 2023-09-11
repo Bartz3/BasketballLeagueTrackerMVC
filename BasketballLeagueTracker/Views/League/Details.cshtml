@@ -1,6 +1,10 @@
 ﻿@model League
 @{
-    TempData["LeagueId"] = Model.LeagueId;
+    if(Model!=null && Model.LeagueId != 0)
+    {
+        TempData["LeagueId"] = Model.LeagueId;
+        
+    }
 }
 
 <div class="border p-3 mt-4">

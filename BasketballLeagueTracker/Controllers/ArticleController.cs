@@ -28,7 +28,8 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Details(int articleId)
         {
-            var article = _unitOfWork.Article.Get(t => t.ArticleId == articleId, "League,Comments"); // Players
+            var article = _unitOfWork.Article.Get(t => t.ArticleId == articleId, "League,Comments.User"); // Players
+            
             //TempData["SelectedTeam"] = team;
 
             return View(article);

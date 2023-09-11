@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using BasketballLeagueTracker.Utility.DataGenerator;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
 
 namespace BasketballLeagueTracker.DataAccess.Extensions
 {
@@ -34,6 +37,20 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
                 options.SignIn.RequireConfirmedAccount = false;
 
             });
+
+            //TimeZoneInfo localZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            //DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, localZone);
+
+            //services.Configure<RequestLocalizationOptions>(options =>
+            //{
+            //    var supportedCultures = new[] { new CultureInfo("pl-PL") };
+            //    options.DefaultRequestCulture = new RequestCulture("pl-PL", "pl-PL");
+            //    options.SupportedCultures = supportedCultures;
+            //    options.SupportedUICultures = supportedCultures;
+
+            //    //var localZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+            //    //options.DefaultTimeZone = localZone;
+            //});
         }
     }
 }

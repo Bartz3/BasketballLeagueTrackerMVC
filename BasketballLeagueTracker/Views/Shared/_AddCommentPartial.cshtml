@@ -1,0 +1,14 @@
+﻿@using BasketballLeagueTracker.ViewModels;
+@model CommentViewModel
+
+<h3>Dodaj komentarz:</h3>
+<form method="post" asp-controller="Comment" asp-action="Upsert">
+    <input type="hidden" asp-for="ArticleId" />
+    <div class="form-group">
+        <label for="Content">Treść komentarza:</label>
+        <textarea class="form-control" asp-for="Comment.Content" required style="resize:none;"></textarea>
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Dodaj komentarz</button>
+</form>
+

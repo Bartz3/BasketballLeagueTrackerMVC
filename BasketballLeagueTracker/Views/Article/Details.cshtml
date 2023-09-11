@@ -1,25 +1,134 @@
-﻿@model Article
+﻿@using BasketballLeagueTracker.ViewModels;
+@model Article
 
-<h2>@Model.Title</h2>
-<div>
+<style>
+    .article-content {
+        border: 1px solid #e2e2e2;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 5px;
+        background-color: #fcfcfc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .comment-section {
+        padding: 10px 0;
+    }
+
+    .comment {
+        position: relative;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .comment-actions {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+
+        .comment-actions .btn {
+            margin-left: 5px;
+        }
+
+    .comment-info {
+        font-weight: bold;
+    }
+
+    .comment-content {
+        margin-top: 5px;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .comment-header {
+        font-style: revert;
+    }
+</style>
+
+
+<div class="article-content">
+    <h2 class="title">@Model.Title</h2>
     @Html.Raw(Model.Content)
 </div>
 
-<h3>Komentarze:</h3>
-@foreach (var comment in Model.Comments)
-{
-    <div>
-        <strong>@comment.User</strong> napisał(a) @comment.DateAdded.ToString("dd-MM-yyyy HH:mm"):
-        <p>@comment.Content</p>
-    </div>
+@{
+    var localZone = TimeZoneConverter.TZConvert.GetTimeZoneInfo("Europe/Warsaw");
 }
+<div class="comment-section">
+    <h3 class="comment-header">Komentarze</h3>
+    @foreach (var comment in Model.Comments)
+    {
+        var localDate = TimeZoneInfo.ConvertTimeFromUtc(comment.DateAdded, localZone);
+        <div class="comment">
+            <div class="comment-actions">
+                <a href="@Url.Action("Upsert", "Comment", new { id = comment.CommentId })" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i></a>
+                <a href="@Url.Action("DeletePOST", "Comment", new { commentId = comment.CommentId,articleId=Model.ArticleId })" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i></a>
+            </div>
+            <div class="comment-info">
+                @comment.User.GetDisplayName() napisał(a) @localDate.ToString("dd-MM-yyyy HH:mm"):
+            </div>
+            <div class="comment-content">
+                <p>@comment.Content</p>
+            </div>
+              <button class="btn btn-secondary edit-comment">Edytuj</button>
+    <button class="btn btn-primary save-comment" data-comment-id="@comment.CommentId" style="display: none;">Zapisz</button>
+        </div>
+    }
+</div>
 
-<h3>Dodaj komentarz:</h3>
-<form method="post" asp-action="AddComment">
-    <input type="hidden" asp-for="ArticleId" />
-    <div class="form-group">
-        <label for="Content">Treść komentarza:</label>
-        <textarea class="form-control" id="Content" name="Content" required></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Dodaj komentarz</button>
-</form>
+
+
+
+@{
+    var commentVM = new CommentViewModel
+            {
+                ArticleId = Model.ArticleId
+            };
+}
+<partial name="_AddCommentPartial" model="commentVM" />
+
+ <script>
+    $(document).ready(function () {
+        $('.edit-comment').click(function () {
+            var commentDiv = $(this).closest('.comment').find('.comment-content');
+            var currentContent = commentDiv.text().trim();
+
+            var textarea = $('<textarea></textarea>').text(currentContent);
+            commentDiv.html(textarea);
+
+            $(this).hide();  // Ukryj przycisk edycji
+            $(this).next('.save-comment').show();  // Pokaż przycisk zapisu
+        });
+
+        $('.save-comment').click(function () {
+            var commentDiv = $(this).closest('.comment').find('.comment-content');
+            var updatedContent = commentDiv.find('textarea').val();
+
+            // AJAX do zaktualizowania komentarza w bazie danych
+            $.ajax({
+                url: '/Comment/Update', // Adres do Twojego kontrolera i metody aktualizującej komentarz
+                type: 'POST',
+                data: {
+                    CommentId: $(this).data('comment-id'), // Identyfikator komentarza do aktualizacji
+                    Content: updatedContent // Zaktualizowana treść komentarza
+                },
+                success: function (response) {
+                    if (response.success) {
+                        commentDiv.html('<p>' + updatedContent + '</p>');
+                    } else {
+                        // Obsługuje błąd aktualizacji
+                    }
+                }
+            });
+
+            $(this).hide();  // Ukryj przycisk zapisu
+            $(this).prev('.edit-comment').show();  // Pokaż przycisk edycji
+        });
+    });
+
+
+ </script>

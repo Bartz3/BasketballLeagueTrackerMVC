@@ -42,20 +42,22 @@ namespace BasketballLeagueTracker.Models
         [Display(Name = "Nazwisko")]
         public string? Surname { get; set; }
 
+        [Display(Name = "Zdjęcie")]
         public byte[]? Photo { get; set; }
 
         public DateTime? Birthday { get; set; }
 
         public int? UniformNumber { get; set; }
 
-        [Display(Name = "Pozycje")]
-        public PlayerPosition Positions { get; set; }
 
         public int? Height { get; set; }
         public double? Weight { get; set; }
         public string? Country { get; set; }
+
         public bool IsInTeam { get; set; } = false;
 
+        [Display(Name = "Pozycje")]
+        public PlayerPosition Positions { get; set; }
         // Jeden zawodnik należy do jednej drużyny Player ∞----1 Team
         public int? TeamId { get; set; }
         public Team? Team { get; set; }
