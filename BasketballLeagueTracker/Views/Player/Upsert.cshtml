@@ -1,72 +1,94 @@
 ﻿@using BasketballLeagueTracker.Helpers;
 @using BasketballLeagueTracker.ViewModels;
 @model PlayerViewModel
-
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white py-2">@(Model.Player != null && Model.Player.PlayerId != 0 ? "Edytuj " : "Dodaj ")zawodnika</h2>
-
-            </div>
-        </div>
-    </div>
-    <div class="card-body p-4">
-        <form method="post" asp-controller="Player" asp-action="Upsert" class="row" enctype="multipart/form-data">
-            <input asp-for="Player.PlayerId" hidden />
-@*            @if(Model != null && Model.Player.PlayerId != 0){
+@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>*@
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>*@
+<script src="~/js/site.js" asp-append-version="true"></script>
+<div class="container mt-5">
+    <div class="d-flex justify-content-center align-items-center">
+        <div class="p-5 bg-light shadow rounded-lg">
+            <h3 class="mb-4 text-center">
+                @(Model.Player != null && Model.Player.PlayerId != 0 ? "Edytuj " : "Dodaj ")zawodnika
+            </h3>
+            <form method="post" asp-controller="Player" asp-action="Upsert" enctype="multipart/form-data">
                 <input asp-for="Player.PlayerId" hidden />
-            }*@
-            <div class="border p-3">
-                @*<div asp-validation-summary="All"></div>*@
-                <div class="form-floating py-2 col-12">
-                    <input asp-for="Player.Name" class="form-control border-0 shadow" />
-                    <label asp-for="Player.Name" class="ms-2"></label>
-                    <span asp-validation-for="Player.Name" class="text-danger"></span>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Left side -->
+                        <div class="mb-3">
+                            <label asp-for="Player.Name" class="form-label"></label>
+                            <input asp-for="Player.Name" class="form-control" placeholder="Wprowadź imię zawodnika" />
+                            <span asp-validation-for="Player.Name" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Player.Surname" class="form-label"></label>
+                            <input asp-for="Player.Surname" class="form-control" placeholder="Wprowadź nazwisko zawodnika" />
+                            <span asp-validation-for="Player.Surname" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="SelectedPositions" class="form-label"></label>
+                            <select asp-for="SelectedPositions" asp-items="@(PlayerPositionsHelper.GetPlayerPositions())" class="form-control" multiple style="height: 135px; overflow-y: hidden;"></select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Right side -->
+                        <div class="mb-3">
+                            <label asp-for="Player.Birthday" class="form-label"></label>
+                            <input asp-for="Player.Birthday" type="date" class="form-control" min="1900-01-01" max="2015-12-31"  />
+                            <span asp-validation-for="Player.Birthday" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Player.UniformNumber" class="form-label"></label>
+                            <input asp-for="Player.UniformNumber" class="form-control" placeholder="Numer na koszulce"/>
+                            <span asp-validation-for="Player.UniformNumber" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Player.Height" class="form-label"></label>
+                            <input asp-for="Player.Height" class="form-control" placeholder="Wzrost w cm" />
+                            <span asp-validation-for="Player.Height" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Player.Weight" class="form-label"></label>
+                            <input asp-for="Player.Weight" class="form-control" placeholder="Waga w kg" />
+                            <span asp-validation-for="Player.Weight" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Player.Country" class="form-label"></label>
+                            <select asp-for="Player.Country" asp-items="Model.Countries" class="form-control">
+                                <option value="">Wybierz kraj</option>
+                            </select>
+                            @*<input asp-for="Player.Country" class="form-control" placeholder="Kraj pochodzenia" value="Polska" />*@
+                            <span asp-validation-for="Player.Country" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-floating py-2 col-12">
-                    <input asp-for="Player.Surname" class="form-control border-0 shadow" />
-                    <label asp-for="Player.Surname" class="ms-2"></label>
-                    <span asp-validation-for="Player.Surname" class="text-danger"></span>
-                </div>
-                <div class="form-floating py-2 col-12">
-                    <select asp-for="SelectedPositions" asp-items="@(PlayerPositionsHelper.GetPlayerPositions())" class="form-control border-0 shadow w-100" style=" height:revert;" multiple></select>
-                    <label asp-for="SelectedPositions" class="ms-2"></label>
-                </div>
-                <div class="mb-3 row p-1">
-                    <label asp-for="Player.Photo" class="ms-2"></label>
-                    <input asp-for="Player.Photo" name="file" type="file" class="form-control border-0 shadow " onchange="handleFileInputChange(this,'playerLogoPreview')" />
+                <div class="mb-3">
+                    <label asp-for="Player.Photo" class="form-label"></label>
+                    <input asp-for="Player.Photo" name="file" type="file" class="form-control" onchange="handleFileInputChange(this,'playerLogoPreview')" />
                 </div>
                 @if (Model.Player.Photo != null)
                 {
-                    <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(Model.Player.Photo))" alt="Team Logo" />
-
+                    <div class="mb-3 text-center">
+                        <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(Model.Player.Photo))" alt="Player Image" class="rounded-circle" />
+                    </div>
                 }
-                <div class="mb-3 row p-1">
-                    <img id="playerLogoPreview" src="#" alt="" style="max-width: 200px; max-height: 200px;" />
+                <div class="mb-3 text-center">
+                    <img id="playerLogoPreview" src="#" alt="" class="img-fluid rounded-circle" style="max-width: 200px; max-height: 200px;" />
                 </div>
-                <div class="row">
-                    <div class="col-6 col-md-3">
-                        @if (Model != null && Model.Player.PlayerId != 0)
-                        {
-                            <button type="submit" class="btn btn-primary form-control">Edytuj</button>
-                        }
-                        else
-                        {
-                            <button type="submit" class="btn btn-primary form-control">Stwórz</button>
-
-                        }
-                        
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a asp-controller="Player" asp-action="Index" class="btn btn-outline-secondary form-control">Wróć do listy zawodników</a>
-                    </div>
-
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">
+                        @(Model.Player != null && Model.Player.PlayerId != 0 ? "Edytuj" : "Stwórz")
+                    </button>
+                    <a asp-controller="Player" asp-action="Index" class="btn btn-outline-dark">Wróć do listy zawodników</a>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
+
+
 
 
 @section Scripts{

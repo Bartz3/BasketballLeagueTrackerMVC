@@ -8,15 +8,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/flatly.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/BasketballLeagueTracker.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/> @*Bootstrap icons css*@
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/> @*Notifications css*@
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"/> @*Datatables css*@
-
-    <link href="~/summernote/summernote-lite.css" rel="stylesheet" />
- 
-
-
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" /> @*Bootstrap icons css*@
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" /> @*Notifications css*@
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" /> @*Datatables css*@
+    <link href="~/summernote/summernote-lite.css" rel="stylesheet" /> @*Summernote for adding articles*@
+    <link href="~/lib/bootstrap/dist/css/selectize.bootstrap5.css" rel="stylesheet" />@*Selectize script to search players/teams/leagues*@
 
 </head>
 <body>
@@ -42,7 +38,43 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="League" asp-action="Index">Ligi</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="User" asp-action="Index">Użytkownicy</a>
+                        </li>
                     </ul>
+                    <form class="form-inline mx-4 my-lg-0 col-md-3 search-wrapper">
+                        <input class="form-control mr-sm-2" id="search-input" type="search" placeholder="Wyszukaj">
+                        <ul id="search-results" style="display:none;">
+                            <!-- results -->
+                        </ul>
+                        <select id="search-type" class="form-control mr-sm-2">
+                            <option value="player">Zawodnik</option>
+                            <option value="team">Drużyna</option>
+                            <option value="league">Liga</option>
+                        </select>
+
+                    </form>
+
+                    <style>
+                        .search-wrapper {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.3rem; 
+                        }
+
+                        #search-input {
+                            width:100%;
+                            flex: 6; 
+
+                        }
+
+                        #search-type {
+                            flex: 1.2; 
+                        }
+                    </style>
+
+
+                    <br />
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -57,17 +89,76 @@
 
     <footer class="border-top footer bg-primary ">
         <div class="container">
-            &copy; 2023 - BasketballLeagueTracker by Bartosz Późniewski</a>
+            &copy; 2023 - BasketballLeagueTracker by Bartosz Późniewski
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#search-input').selectize({
+                valueField: 'id',
+                labelField: 'name',
+                searchField: ['Name', 'Surname'],
+                options: [],
+                create: false,
+                load: function (query, callback) {
+                    if (!query.length) return callback();
+                    $.ajax({
+                        url: '/api/search?q=' + encodeURIComponent(query) + '&type=' + $('#search-type').val(),
+                        type: 'GET',
+                        error: function () {
+                            callback();
+                        },
+                        success: function (res) {
+                            callback(res.slice(0, 10));
+                        }
+                    });
+                },
+                onChange: function (value) {
+
+                }
+            });
+        });
+
+        $('#search-type').on('change', function () {
+            $('#search-input')[0].selectize.clearOptions();
+        });
+
+
+    </script>
+       <style>
+        .selectize-control.single .selectize-input {
+            border: 1px solid #ced4da;
+            border-radius: 0.25rem;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+        }
+
+   </style>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> @*Bootstrap.js*@
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> @*Datatables.js*@
-
-    @*<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>*@
-    <script src="~/summernote/summernote-lite.js"></script>
+    <script src="~/summernote/summernote-lite.js"></script> @*Summernote for adding articles*@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
+     <script src="~/lib/bootstrap/dist/js/selectize.min.js"></script> @*Selectize script to search players/teams/leagues*@
+
+     <style>
+        .selectize-control.single .selectize-input .search-input{
+            border: 1px solid #ced4da !important; /* Dodaj !important, aby nadpisać style */
+            border-radius: 0.25rem !important;
+            padding: 0.375rem 0.75rem !important;
+            font-size: 1rem !important;
+        }
+
+
+        .selectize-dropdown {
+            /* Twoje style dla dropdownu */
+        }
+
+     </style>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,6 +1,7 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -37,7 +38,13 @@ namespace BasketballLeagueTracker.Controllers
                 PlayerViewModel playerVM = new PlayerViewModel()
                 {
                     Player = new Player(),
-                    SelectedPositions = new List<int>() { }
+                    SelectedPositions = new List<int>() { },
+                    Countries = Utility.StaticDetails.countries.Select(c => new SelectListItem
+                    {
+                        Text = c,
+                        Value = c,
+                        Selected =c=="Polska"
+                    }).ToList()
                 };
 
                 return View(playerVM);

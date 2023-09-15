@@ -9,7 +9,6 @@ namespace BasketballLeagueTracker.DataAccess.Repository.IRepository
 {
     public interface IUserRepository : IRepository<ApplicationUser>
     {
-     
-      
+        void Save();
     }
 }

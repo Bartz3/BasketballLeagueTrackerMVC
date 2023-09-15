@@ -43,7 +43,11 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
 
-            AddIncludedProperties(includeProp,ref query);
+            if (includeProp != null)
+            {
+                AddIncludedProperties(includeProp,ref query);
+
+            }
 
             return query.FirstOrDefault();
         }
@@ -54,7 +58,11 @@ namespace BasketballLeagueTracker.DataAccess.Repository
         {
             IQueryable<T> query = dbSet;
 
-            AddIncludedProperties(includeProp,ref query);
+            if (includeProp != null)
+            {
+                AddIncludedProperties(includeProp, ref query);
+
+            }
 
             if (query == null)
             {

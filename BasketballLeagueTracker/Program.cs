@@ -3,6 +3,7 @@ using BasketballLeagueTracker.DataAccess.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,10 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("BasketCS")).ConfigureWarnings(warnings =>
-            warnings.Ignore(CoreEventId.InvalidIncludePathError))); 
+            warnings.Ignore(CoreEventId.InvalidIncludePathError)));
 
-//builder.Services.AddDefaultIdentity<IdentityUser>()
-//    .AddEntityFrameworkStores<AppDbContext>();
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = false;
@@ -23,17 +22,15 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         .AddDefaultTokenProviders();
 
 builder.Services.AddRazorPages(); // Added for login/reg
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-//        .AddEntityFrameworkStores<AppDbContext>()
-//        .AddDefaultTokenProviders();
+
+//var roleManager = .GetRequiredService<RoleManager<IdentityRole>>();
+
+//if (!await roleManager.RoleExistsAsync("Admin"))
+//{
+//    await roleManager.CreateAsync(new IdentityRole("Admin"));
+//}
 
 builder.Services.AddRepositories(); // Repositories register 
-
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false).
-//    AddEntityFrameworkStores<AppDbContext>();
-
-
-
 
 var app = builder.Build();
 

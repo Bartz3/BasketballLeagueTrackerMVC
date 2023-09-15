@@ -38,6 +38,9 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
 
             });
 
+
+
+
             //TimeZoneInfo localZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
             //DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, localZone);
 

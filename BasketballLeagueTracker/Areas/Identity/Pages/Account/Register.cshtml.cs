@@ -22,13 +22,15 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -36,6 +38,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
         /// <summary>
@@ -92,9 +95,22 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
+        private void RoleInitialization()
+        {
+             if (_roleManager.RoleExistsAsync(Utility.RoleNames.Role_Admin) != null) { }
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
+            if (!_roleManager.RoleExistsAsync(Utility.RoleNames.Role_Admin).GetAwaiter().GetResult() != null) {
+
+                _roleManager.CreateAsync(new IdentityRole(Utility.RoleNames.Role_Admin)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(Utility.RoleNames.Role_Moderator)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole(Utility.RoleNames.Role_User)).GetAwaiter().GetResult();           
+            }
+
+
+
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
@@ -106,9 +122,12 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                // Default role on registration - user
+                await _userManager.AddToRoleAsync(user, Utility.RoleNames.Role_User);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                    
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

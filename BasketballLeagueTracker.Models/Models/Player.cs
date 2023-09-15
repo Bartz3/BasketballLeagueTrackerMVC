@@ -36,23 +36,36 @@ namespace BasketballLeagueTracker.Models
         [Display(Name = "Imię")]
         [MinLength(2, ErrorMessage = "Imie jest zbyt krótkie")]
         [MaxLength(40, ErrorMessage = "Imie jest zbyt długie")]
+        [RegularExpression(@"^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s-]+$", ErrorMessage = "Imię może zawierać tylko litery.")]
         public string Name { get; set; }
         [MinLength(2, ErrorMessage = "Nazwisko jest zbyt krótkie")]
         [MaxLength(50, ErrorMessage = "Nazwisko jest zbyt długie")]
+        [RegularExpression(@"^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\s-]+$", ErrorMessage = "Nazwisko może zawierać tylko litery.")]
         [Display(Name = "Nazwisko")]
         public string? Surname { get; set; }
 
         [Display(Name = "Zdjęcie")]
         public byte[]? Photo { get; set; }
 
+        
+        [Display(Name = "Data urodzenia")]
+        //[Range(typeof(DateTime), "01/01/1900", "31/12/2015", ErrorMessage = "Data urodzenia musi być między 01/01/1900 a 31/12/2015")]
         public DateTime? Birthday { get; set; }
 
+        [Display(Name = "Numer koszulki")]
+        [Range(0,99, ErrorMessage = "Podany numer jest nieprawidłowy. (0-99)")]
         public int? UniformNumber { get; set; }
 
 
+        [Display(Name = "Wzrost")]
+        [Range(100,240, ErrorMessage = "Podany wzrost jest nieprawidłowy. (100-240cm)")]
         public int? Height { get; set; }
+
+        [Display(Name = "Waga")]
+        [Range(40,180,ErrorMessage ="Podana waga jest nieprawidłowa. (40-180kg)")]
         public double? Weight { get; set; }
-        public string? Country { get; set; }
+        [Display(Name = "Kraj")]
+        public string? Country { get; set; } = "Polska";
 
         public bool IsInTeam { get; set; } = false;
 
@@ -82,12 +95,6 @@ namespace BasketballLeagueTracker.Models
 
         public static string GetDisplayAttributeValue(Enum? value)
         {
-            //var displayAttribute = value.GetType().GetField(value.ToString())
-            //    .GetCustomAttributes(typeof(DisplayAttribute), false)
-            //    .OfType<DisplayAttribute>()
-            //    .FirstOrDefault();
-
-            //return displayAttribute != null ? displayAttribute.GetName() : value.ToString();
             var fieldInfo = value.GetType().GetField(value.ToString());
 
             if (fieldInfo != null)

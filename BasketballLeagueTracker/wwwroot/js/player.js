@@ -73,6 +73,7 @@ function loadTable() {
             { data: 'Height'},
             { data: 'FormattedBirthday'},
             { data: 'UniformNumber' },          
+            { data: 'Country' },          
             {
                 data: 'PlayerId',
                 render: function (data) {
