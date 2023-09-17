@@ -138,27 +138,21 @@
         }
 
    </style>
+
+
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> @*Bootstrap.js*@
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script> @*Datatables.js*@
     <script src="~/summernote/summernote-lite.js"></script> @*Summernote for adding articles*@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
+
      <script src="~/lib/bootstrap/dist/js/selectize.min.js"></script> @*Selectize script to search players/teams/leagues*@
-
-     <style>
-        .selectize-control.single .selectize-input .search-input{
-            border: 1px solid #ced4da !important; /* Dodaj !important, aby nadpisać style */
-            border-radius: 0.25rem !important;
-            padding: 0.375rem 0.75rem !important;
-            font-size: 1rem !important;
-        }
-
-
-        .selectize-dropdown {
-            /* Twoje style dla dropdownu */
-        }
-
-     </style>
-    @await RenderSectionAsync("Scripts", required: false)
+   
+     
+     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

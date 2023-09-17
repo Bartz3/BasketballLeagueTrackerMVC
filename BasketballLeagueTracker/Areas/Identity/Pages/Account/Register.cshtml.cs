@@ -93,6 +93,8 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             [Display(Name = "Potwiedź hasło")]
             [Compare("Password", ErrorMessage = "Hasła nie są takie same.")]
             public string ConfirmPassword { get; set; }
+
+            public string? Nickname { get; set; } 
         }
 
         private void RoleInitialization()
@@ -109,7 +111,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(Utility.RoleNames.Role_User)).GetAwaiter().GetResult();           
             }
 
-
+          
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -128,6 +130,8 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                     
+                user.Nickname= Input.Nickname;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

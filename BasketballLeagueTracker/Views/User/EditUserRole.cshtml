@@ -1,0 +1,42 @@
+﻿@using BasketballLeagueTracker.ViewModels;
+@model RoleViewModel
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary-subtle text-white">
+            Edytuj Rolę Użytkownika
+        </div>
+        <div class="card-body">
+            <form method="post" asp-controller="User" asp-action="EditUserRole" enctype="multipart/form-data">
+                <input asp-for="User.Id" hidden />
+
+                <div class="form-group">
+                    <label for="Nickname">Nick:</label>
+                    <input asp-for="User.Nickname" readonly class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="Email">Email:</label>
+                    <input asp-for="User.Email" readonly class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="PhoneNumber">Numer telefonu:</label>
+                    <input asp-for="User.PhoneNumber" readonly class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label for="Role">Rola:</label>
+                    <select asp-for="User.Role" asp-items="@Model.Roles" class="form-control">
+                        <option value="">Wybierz rolę</option>
+                    </select>
+                </div>
+
+                <div class="form-group py-3">
+                    <button type="submit" class="btn btn-primary">Aktualizuj rolę</button>
+                    <a asp-controller="User" asp-action="Index" class="btn btn-outline-secondary">Wróć do listy użytkowników</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

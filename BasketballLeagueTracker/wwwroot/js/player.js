@@ -20,9 +20,6 @@ function loadTable() {
     dataTable = $('#playerData',).DataTable({
         ajax: { url: ajaxURL },
         autoWidth:false,
-/*        responsive: true,*/
-        //deferRender: true,
-/*        scrollY: '70vh',*/
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pl.json',
         },

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,8 @@ namespace BasketballLeagueTracker.Models
         public ICollection<FavouriteTeam>? FavouriteTeams { get; set; }
         [Display(Name = "Ulubione ligi ")]
         public ICollection<FavouriteLeague>? FavouriteLeagues { get; set; }
-
+        [NotMapped]
+        public string Role { get; set; }
 
         public string GetDisplayName()
         {
