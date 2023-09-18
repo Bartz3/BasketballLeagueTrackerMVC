@@ -79,6 +79,8 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+
+            public string? Nickname { get; set; }
         }
 
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -147,6 +149,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+                user.Nickname = Input.Nickname;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -157,6 +160,8 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
+                        //Ading new account to user role
+                        await _userManager.AddToRoleAsync(user, Utility.RoleNames.Role_User);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
                         var userId = await _userManager.GetUserIdAsync(user);

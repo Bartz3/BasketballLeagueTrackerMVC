@@ -4,10 +4,14 @@
     ViewData["Title"] = "Rejestracja";
 }
 
+
+<!-- Reszta widoku lub strony -->
+
 <style>
 
     .container {
-        margin-top: 50px;
+        margin-top: 20px;
+        max-width: 65%;
     }
 
     .card {
@@ -35,17 +39,34 @@
         margin-bottom: 30px;
     }
 
-    .header{
-        text-align:center;
+    .header {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 10px;
+        letter-spacing: 1px;
     }
 
+    .logo {
+        width: 40px; /* Dostosuj szerokość logo do swoich potrzeb */
+        height: auto; /* Auto, aby zachować proporcje logo */
+        margin-right: 10px;
+    }
 
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 </style>
+
+
 
 <div class="container">
     <div class="card">
-        <h1 class="header">@ViewData["Title"]</h1>
-
+        <div class="header-container text-center">
+            <img src="/images/logo2.png" alt="Logo" class="logo" />
+            <h1 class="header">@ViewData["Title"]</h1>
+        </div>
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <h2 class="header">Stwórz nowe konto</h2>
             <hr />
@@ -78,8 +99,56 @@
 
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Zarejestruj</button>
         </form>
+        <div class="text-center py-1" >
+
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
+                        <div>
+                            <p>
+                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
+                                    article
+                                    about setting up this ASP.NET application to support logging in via external services
+                                </a>.
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins!)
+                                    {
+                                        <button type="submit" class="btn @GetButtonStyle(provider.Name)" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
+                                    }
+
+
+                                </p>
+                            </div>
+                        </form>
+                    }
+                }
+        </div>
     </div>
+    
 </div>
+@functions {
+    string GetButtonStyle(string providerName)
+    {
+        switch (providerName.ToLower())
+        {
+            case "facebook":
+                return "btn-facebook";
+            case "google":
+                return "btn-google";
+            default:
+                return "btn-primary";
+        }
+    }
+}
+
 @section Scripts {
+   <link rel="stylesheet" href="/css/externalProvidersButtons.css" />
     <partial name="_ValidationScriptsPartial" />
 }

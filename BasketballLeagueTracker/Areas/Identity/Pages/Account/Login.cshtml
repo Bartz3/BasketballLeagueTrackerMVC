@@ -7,8 +7,9 @@
 <style>
 
     .container {
-        margin-top: 50px;
+        margin-top: 20px;
         max-width:700px;
+
     }
 
     .card {
@@ -38,18 +39,44 @@
 
     .header{
         text-align:center;
+        font-weight:bold;
+        margin-top:10px;
+        letter-spacing:1px;
+  
     }
 
     .link {
         text-align: center;
         margin-top: 10px;
     }
+    .help-link{
+        color:white;
+        text-decoration:none;
+    }
 
+    .logo {
+        width: 40px; /* Dostosuj szerokość logo do swoich potrzeb */
+        height: auto; /* Auto, aby zachować proporcje logo */
+        margin-right: 10px; 
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center; 
+        justify-content:center;
+
+    }
+    .login-form{
+        width:100px;
+    }
 </style>
 
-<div class="container">
+<div class="container ">
     <div class="card">
-        <h1 class="header">@ViewData["Title"]</h1>
+        <div class="header-container text-center">
+         <img src="/images/logo2.png" alt="Logo" class="logo" />
+            <h1 class="header">@ViewData["Title"]</h1>
+        </div>
 
         <form id="loginForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
 
@@ -70,23 +97,16 @@
             <button id="loginSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Zaloguj</button>
         </form>
 
-        <div class="link">
-            <p><a href="/Account/Register">Załóż konto</a></p>
-            <p><a href="/Account/ForgotPassword">Zapomniałeś hasła?</a></p>
-        </div>
-        <div class="col-md-6 col-md-offset-2">
-            <section>
-                <h3>Use another service to log in.</h3>
-                <hr />
+        <div class=" text-center my-3">
+          
+          
+
                 @{
                     if ((Model.ExternalLogins?.Count ?? 0) == 0)
                     {
                         <div>
                             <p>
-                                There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                    article
-                                    about setting up this ASP.NET application to support logging in via external services
-                                </a>.
+                               Brak dostawców logowania.
                             </p>
                         </div>
                     }
@@ -97,17 +117,40 @@
                                 <p>
                                     @foreach (var provider in Model.ExternalLogins!)
                                     {
-                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    <button type="submit" class="btn @GetButtonStyle(provider.Name)" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
                                     }
                                 </p>
                             </div>
                         </form>
                     }
                 }
-            </section>
+
+        </div>
+        <div class="link">
+     @*       <p><a href="/Account/Register">Załóż konto</a></p>
+            <p><a href="/Account/ForgotPassword">Zapomniałeś hasła?</a></p>*@
+            <button type="button" class="btn btn-secondary "><a class="help-link" href="/Account/Register">Załóż konto</a></button>
+            <button type="button" class="btn btn-info "><a class="help-link" href="/Account/ForgotPassword">Zapomniałeś hasła?</a></button>
+
         </div>
     </div>
 </div>
+
+@functions {
+    string GetButtonStyle(string providerName)
+    {
+        switch (providerName.ToLower())
+        {
+            case "facebook":
+                return "btn-facebook";
+            case "google":
+                return "btn-google";
+            default:
+                return "btn-primary";
+        }
+    }
+}
 @section Scripts {
+    <link rel="stylesheet" href="/css/externalProvidersButtons.css" />
     <partial name="_ValidationScriptsPartial" />
 }

@@ -1,19 +1,22 @@
 using BasketballLeagueTracker.DataAccess.Data;
 using BasketballLeagueTracker.DataAccess.Extensions;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<AppDbContext>(o =>
+services.AddControllersWithViews();
+services.AddDbContext<AppDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("BasketCS")).ConfigureWarnings(warnings =>
             warnings.Ignore(CoreEventId.InvalidIncludePathError)));
-
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+// Application user and users roles
+services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.User.RequireUniqueEmail = false;
 })
@@ -21,7 +24,40 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         .AddDefaultUI()
         .AddDefaultTokenProviders();
 
-builder.Services.AddRazorPages(); // Added for login/reg
+var configuration = builder.Configuration;
+
+// Facebook Auth
+services.AddAuthentication().AddFacebook(facebookOptions =>
+{
+    facebookOptions.AppId = configuration["Authentication:Facebook:AppId"];
+    facebookOptions.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+    facebookOptions.Events = new OAuthEvents
+    {
+        OnRemoteFailure = (context) =>
+        {
+            
+            context.HandleResponse(); 
+            context.Response.Redirect("/"); 
+            return Task.CompletedTask;
+        }
+    };
+}).AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+    googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+    googleOptions.Events = new OAuthEvents
+    {
+        OnRemoteFailure = (context) =>
+        {
+
+            context.HandleResponse();
+            context.Response.Redirect("/");
+            return Task.CompletedTask;
+        }
+    };
+});
+
+services.AddRazorPages(); // Added for login/reg
 
 //var roleManager = .GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -30,7 +66,7 @@ builder.Services.AddRazorPages(); // Added for login/reg
 //    await roleManager.CreateAsync(new IdentityRole("Admin"));
 //}
 
-builder.Services.AddRepositories(); // Repositories register 
+services.AddRepositories(); // Repositories register 
 
 var app = builder.Build();
 

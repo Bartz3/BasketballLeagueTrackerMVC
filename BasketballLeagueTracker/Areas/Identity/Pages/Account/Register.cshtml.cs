@@ -70,7 +70,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage ="Email jest wymagany.")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
@@ -79,8 +79,9 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+
+            [Required(ErrorMessage ="Hasło jest wymagane.")]
+            [StringLength(100, ErrorMessage = "{0} musi mieć co najmniej {2} znaków.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Hasło")]
             public string Password { get; set; }
@@ -94,6 +95,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "Hasła nie są takie same.")]
             public string ConfirmPassword { get; set; }
 
+            [Display(Name = "Nazwa użytkownika")]
             public string? Nickname { get; set; } 
         }
 
@@ -115,6 +117,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

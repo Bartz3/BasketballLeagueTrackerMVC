@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasketballLeagueTracker.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasketballLeagueTracker.Utility", "BasketballLeagueTracker.Utility\BasketballLeagueTracker.Utility.csproj", "{C4C8EC2C-B921-439E-837A-F28C1E7EA358}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "temp", "temp\temp.csproj", "{3154C921-77ED-4405-936D-A131301B182B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "temp", "temp\temp.csproj", "{3154C921-77ED-4405-936D-A131301B182B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
