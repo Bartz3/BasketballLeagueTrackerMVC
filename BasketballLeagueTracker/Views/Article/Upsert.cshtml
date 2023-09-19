@@ -3,51 +3,65 @@
 @{
     TempData["LeagueId"] = Model.LeagueId;
 }
+<style>
+    .label {
+        font-weight: bold;
+        font-size:18px;
+    }
+</style>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
 
-<div class="card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
+                    @if (Model.Article.Title != null)
+                    {
+                        <h2 class="text-center">
+                            @Model.Article.Title
+                        </h2>
+                    }
+                    else
+                    {
+                        <h2 class="text-center">
+                            Dodaj nowy artukuł
+                        </h2>
 
-                <h2 class="text-white py-2"> @(Model.Article != null && Model.Article.ArticleId != 0 ? "Edytuj " : "Dodaj ") artykuł </h2>
+                    }
+
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-controller="Article" asp-action="Upsert" enctype="multipart/form-data">
+                        <input asp-for="Article.ArticleId" type="hidden" />
+
+                        <div class="mb-3">
+                            <label asp-for="Article.Title" class="form-label label "></label>
+                            @*<label for="title" class="form-label">Tytuł artykułu</label>*@
+                            <input asp-for="Article.Title" class="form-control" id="title" />
+                            <span asp-validation-for="Article.Title" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Article.MainPhoto" class="form-label label"></label>
+                            @*onchange="handleFileInputChange(this,'playerLogoPreview')"*@
+                            <input asp-for="Article.MainPhoto" name="file" type="file" class="form-control" />
+                            <span asp-validation-for="Article.MainPhoto" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Article.Content" class="form-label label"></label>
+                            <textarea id="summernote" asp-for="Article.Content" class="form-control"></textarea>
+                            <span asp-validation-for="Article.Content" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary" style="margin-right:10px;">@(Model.Article.ArticleId != 0 ? "Edytuj" : "Stwórz")</button>
+                            <a asp-controller="League" asp-action="Details" asp-route-leagueId="@Model.LeagueId" class="btn btn-outline-secondary">Wróć do ligi</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="card-body p-4">
-        <form method="post" asp-controller="Article" asp-action="Upsert" class="row" enctype="multipart/form-data">
-            <input asp-for="Article.ArticleId" hidden />
-            <div class="border p-3">
-                @*<div asp-validation-summary="All"></div>*@
-                <div class="form-floating py-2 col-12">
-                    <input asp-for="Article.Title" class="form-control border-0 shadow" />
-                    <label asp-for="Article.Title" class="ms-2"></label>
-                    <span asp-validation-for="Article.Title" class="text-danger"></span>
-                </div>
-                <div class="form-floating py-2 col-12">
-                    <textarea id="summernote" asp-for="Article.Content"
-                              class="form-control border-0 shadow">
-                    </textarea>
-                    <span asp-validation-for="Article.Content" class="text-danger"></span>
-                </div>
-                <div class="row">
-                    <div class="col-6 col-md-3">
-                        @if (Model.Article.ArticleId != 0)
-                        {
-                            <button type="submit" class="btn btn-primary form-control">Edytuj</button>
-                        }
-                        else
-                        {
-                            <button type="submit" class="btn btn-primary form-control">Stwórz</button>
-
-                        }
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <a asp-controller="League" asp-action="Details" class="btn btn-outline-secondary form-control">Wróć do ligi </a>
-                    </div>
-
-                </div>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -58,7 +72,7 @@
     <script>
         $(document).ready(function () {
             $('#summernote').summernote({
-                placeholder:'Treść artykułu',
+                placeholder: 'Treść artykułu',
                 tabsize: 2,
                 height: 300
             });

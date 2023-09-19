@@ -6,5 +6,7 @@ namespace BasketballLeagueTracker.ViewModels
     {
         public Article Article { get; set; }
         public int LeagueId { get; set; }
+        [ValidateNever]
+        public IFormFile? Image { get; set; }
     }
 }

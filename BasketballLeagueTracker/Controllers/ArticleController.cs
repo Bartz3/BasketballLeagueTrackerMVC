@@ -62,7 +62,7 @@ namespace BasketballLeagueTracker.Controllers
 
 
         [HttpPost]
-        public IActionResult Upsert(ArticleViewModel articleVM/*, IFormFile? file*/)
+        public IActionResult Upsert(ArticleViewModel articleVM, IFormFile? file)
         {
 
             if (ModelState.IsValid)
@@ -76,6 +76,15 @@ namespace BasketballLeagueTracker.Controllers
                     //articleVM.Article.League = league;
 
                     articleVM.Article.LeagueId = _leagueId;
+                }
+
+                if (file != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        file.CopyTo(memoryStream);
+                        articleVM.Article.MainPhoto = memoryStream.ToArray();
+                    }
                 }
                 if (articleVM.Article.ArticleId == 0)
                 {

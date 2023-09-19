@@ -1,13 +1,11 @@
 ﻿@using BasketballLeagueTracker.Helpers;
 @using BasketballLeagueTracker.ViewModels;
 @model PlayerViewModel
-@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
-@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>*@
-@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>*@
+
 <script src="~/js/site.js" asp-append-version="true"></script>
-<div class="container mt-5">
-    <div class="d-flex justify-content-center align-items-center">
-        <div class="p-5 bg-light shadow rounded-lg">
+<div class="container mt-5" >
+    <div class="d-flex justify-content-center align-items-center" >
+        <div class="p-5 bg-light shadow rounded-lg" style="width:60%;">
             <h3 class="mb-4 text-center">
                 @(Model.Player != null && Model.Player.PlayerId != 0 ? "Edytuj " : "Dodaj ")zawodnika
             </h3>
@@ -29,7 +27,22 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="SelectedPositions" class="form-label"></label>
-                            <select asp-for="SelectedPositions" asp-items="@(PlayerPositionsHelper.GetPlayerPositions())" class="form-control" multiple style="height: 135px; overflow-y: hidden;"></select>
+                            @if (Model.Player != null && Model.Player.PlayerId != 0)
+                            {
+                            <select asp-for="SelectedPositions" asp-items="@(PlayerPositionsHelper.GetPlayerPositions(Model.Player))" class="form-control" multiple style="height: 135px; overflow-y: hidden;"></select>
+                                
+                            }else{
+                            <select asp-for="SelectedPositions" asp-items="@(PlayerPositionsHelper.GetPlayerPositions(null))" class="form-control" multiple style="height: 135px; overflow-y: hidden;"></select>
+
+                            }
+          @*                  <select multiple="multiple" name="Positions" id="Positions">
+                                @foreach (var position in Model.SelectedPositions)
+                                {
+                                    <option value="@position" @(Model.SelectedPositions.Contains(position) ? "selected" : "")>
+                                        @position
+                                    </option>
+                                }
+                            </select>*@
                         </div>
                     </div>
                     <div class="col-md-6">

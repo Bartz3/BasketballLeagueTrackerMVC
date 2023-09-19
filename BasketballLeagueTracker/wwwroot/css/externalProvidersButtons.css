@@ -6,7 +6,7 @@
     display: inline-block;
     cursor: pointer;
     margin-right: 10px;
-    background-image: url('/images/facebook-logo96.png');
+    background-image: url('/images/facebook-logo.png');
     background-size: cover;
     transition: background-color 0.2s; 
 }

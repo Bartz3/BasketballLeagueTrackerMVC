@@ -12,6 +12,7 @@ function loadTable() {
  
 
     var fromAddTeamToLeague = $('#teamData').data('from-addteamtoleague');
+    console.log(fromAddTeamToLeague);
     var ajaxURL='';
     if (fromAddTeamToLeague) {
         ajaxURL = '/team/GetAllAvailableTeams';
@@ -62,25 +63,25 @@ function loadTable() {
             },
             {
                 data: 'description'
-            }
-            //{
-            //    data: 'teamId',
-            //    render: function (data) {
-            //        if (fromAddPlayerToTeam) {
-            //            return ''
-            //        } else {
-            //            return `<div class="w-75 btn-group" role="group">
-            //             <a href="/player/upsert?id=${data}">
-            //             <i class="bi bi-pencil-square"> Edytuj</i>
-            //             </a>
-            //             <a href="/player/delete?id=${data}">
-            //             <i class="bi bi-trash3 p-2"> Usuń</i>
-            //             </a>
-            //             </div>`
-            //        }
+            },
+            {
+                data: 'teamId',
+                render: function (data) {
+                    if (fromAddTeamToLeague) {
+                        return ''
+                    } else {
+                        return `<div class="w-75 btn-group" role="group">
+                         <a href="/team/upsert?id=${data}">
+                         <i class="bi bi-pencil-square"> Edytuj</i>
+                         </a>
+                         <a href="/team/delete?id=${data}">
+                         <i class="bi bi-trash3 p-2"> Usuń</i>
+                         </a>
+                         </div>`
+                    }
 
-            //    }
-            //}
+                }
+            }
         ],// Datatable language set to Polish
  
     });

@@ -52,8 +52,18 @@ namespace BasketballLeagueTracker.Controllers
             else // Editing player
             {
                 Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, null);
-                var playerVM = new PlayerViewModel();
-                playerVM.Player = player;
+                var pos = player.Positions;
+                PlayerViewModel playerVM = new PlayerViewModel()
+                {
+                    Player = player,
+                    //SelectedPositions = new List<int>() { },
+                    Countries = Utility.StaticDetails.countries.Select(c => new SelectListItem
+                    {
+                        Text = c,
+                        Value = c,
+                        Selected = c == "Polska"
+                    }).ToList()
+                };
                 //playerVM.SelectedPositions = player.Positions;
 
                 return View(playerVM);

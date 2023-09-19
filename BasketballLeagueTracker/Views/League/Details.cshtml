@@ -1,9 +1,9 @@
 ﻿@model League
 @{
-    if(Model!=null && Model.LeagueId != 0)
+    if (Model != null && Model.LeagueId != 0)
     {
         TempData["LeagueId"] = Model.LeagueId;
-        
+
     }
 }
 
@@ -64,8 +64,8 @@
                     <div class="col-md-4 col-12 mb-4">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                 <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">
-                                <h5 class="mb-0">@article.Title</h5>
+                                <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">
+                                    <h5 class="mb-0">@article.Title</h5>
                                 </a>
                                 <div class="justify-content-end">
                                     <a asp-controller="Article" asp-action="Upsert" asp-route-id="@article.ArticleId" asp-route-leagueId="@Model.LeagueId" class="btn btn-warning btn-sm me-2 ">
@@ -80,14 +80,19 @@
                             <div class="card-body text-center">
                                 <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">
                                     @*<img src="data:image/jpeg;base64,@Convert.ToBase64String(article.)" alt="@article.Title" class="img-fluid mb-2">*@
-                                      @{
+                                    @{
 
 
-                                      }
-                                    
+                                    }
+
                                     <p class="card-text link">
-                                            @Html.Raw(article.Content)
-                                        </p>
+                                        @if (article.MainPhoto != null)
+                                        {
+                                           
+                                                <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(article.MainPhoto))" class="rounded-circle" />
+                                           
+                                        }
+                                    </p>
                                 </a>
                             </div>
                         </div>

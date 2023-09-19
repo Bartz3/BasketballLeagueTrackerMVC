@@ -15,6 +15,9 @@ namespace BasketballLeagueTracker.Models
         [Display(Name ="Treść")]
         public string Content { get; set; }
         public DateTime DateCreated { get; set; } = DateTime.UtcNow;
+        
+        [Display(Name ="Główne zdjęcie")]
+        public byte[]? MainPhoto { get; set; }
 
         public int? LeagueId { get; set; }
         public League? League { get; set; }

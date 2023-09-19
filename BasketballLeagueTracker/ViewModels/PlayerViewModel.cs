@@ -12,7 +12,7 @@ namespace BasketballLeagueTracker.ViewModels
         public IFormFile? Image { get; set; }
         [Display(Name = "Pozycje")]
         public List<int>? SelectedPositions { get; set; }
-        public List<SelectListItem>? Countries { get; set; }
+        public List<SelectListItem>? Countries { get; set; }     
 
     }
 }

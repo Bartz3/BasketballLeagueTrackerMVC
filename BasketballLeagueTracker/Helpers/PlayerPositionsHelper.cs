@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using BasketballLeagueTracker.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BasketballLeagueTracker.Helpers
 {
@@ -10,8 +11,15 @@ namespace BasketballLeagueTracker.Helpers
         /// <returns>
         /// SelectListItem with DisplayAttributes
         /// </returns>
-        public static List<SelectListItem> GetPlayerPositions()
+        public static List<SelectListItem> GetPlayerPositions(Player player)
         {
+
+            string[] elements =new string[6];
+            if (player != null)
+            {
+                elements= player.Positions.ToString().Split(new char[] { '|' });
+
+            }
             var playerPositions = Enum.GetValues(typeof(PlayerPosition)).Cast<PlayerPosition>();
             var selectListItems = playerPositions.Select(position =>
             {
@@ -21,7 +29,15 @@ namespace BasketballLeagueTracker.Helpers
                     .FirstOrDefault();
 
                 var name = displayAttribute?.GetName() ?? position.ToString();
-                return new SelectListItem { Value = ((int)position).ToString(), Text = name };
+                bool isSelected = false;
+                if (player != null)
+                {
+                    if (elements.Contains(position.ToString()))
+                    {
+                        isSelected = true;
+                    }
+                }
+                return new SelectListItem { Value = ((int)position).ToString(), Text = name, Selected = isSelected };
             }).ToList();
 
             return selectListItems;
