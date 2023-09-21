@@ -1,9 +1,11 @@
 ﻿using BasketballLeagueTracker.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 
 namespace BasketballLeagueTracker.DataAccess.Data
 {
+
     public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
@@ -202,4 +204,16 @@ namespace BasketballLeagueTracker.DataAccess.Data
               );
         }
     }
+
+    // Class for scaffolding
+    public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+    {
+        public AppDbContext CreateDbContext(string[] args)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            optionsBuilder.UseSqlServer("Server=.;Database=BLTDb;Trusted_Connection=True;TrustServerCertificate = True");
+            return new AppDbContext(optionsBuilder.Options);
+        }
+    }
+
 }

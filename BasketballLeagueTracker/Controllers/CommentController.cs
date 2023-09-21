@@ -22,19 +22,19 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Details(int commentId)
         {
-            var comment = _unitOfWork.Comment.Get(t => t.CommentId == commentId,"User"); // Players
+            var comment = _unitOfWork.Comment.Get(t => t.CommentId == commentId, "User"); // Players
             //TempData["SelectedTeam"] = team;
 
             return View(comment);
         }
 
-        public IActionResult Upsert(int? id,int? articleId)
+        public IActionResult Upsert(int? id, int? articleId)
         {
             var commentVM = new CommentViewModel();
 
             if (articleId.HasValue)
             {
-                commentVM.ArticleId= articleId.Value;
+                commentVM.ArticleId = articleId.Value;
             }
 
             if (id == null || id == 0)
@@ -45,16 +45,36 @@ namespace BasketballLeagueTracker.Controllers
             else
             {
                 Comment? comment = _unitOfWork.Comment.Get(p => p.CommentId == id, null);
-                commentVM.Comment= comment;
+                commentVM.Comment = comment;
 
                 return View(commentVM);
             }
+        }
+        [HttpPost]
+        public IActionResult EditComment(int commentId, string editedContent)
+        {
+            if (ModelState.IsValid)
+            {
+                var comment = _unitOfWork.Comment.Get(x => x.CommentId == commentId, null);
+
+                comment.Content = editedContent;
+                comment.DateAdded = DateTime.Now;
+                comment.isEdited = true;
+
+                _unitOfWork.Comment.Update(comment);
+                _unitOfWork.Save();
+                return Json(new { success = true, message = "Komentarz został zaktualizowany pomyślnie." });
+
+            }
+            return Json(new { success = false, message = "Komentarz nie został zaktualizowany." });
+
+
         }
 
 
 
         [HttpPost]
-        public IActionResult Upsert(CommentViewModel commentVM)
+        public IActionResult Upsert(CommentViewModel? commentVM)
         {
 
             if (ModelState.IsValid)
@@ -64,29 +84,22 @@ namespace BasketballLeagueTracker.Controllers
                 {
                     _articleId = Convert.ToInt32(TempData["ArticleId"]);
 
-                    //var league=_unitOfWork.League.Get(l => l.LeagueId == leagueId,null);
-                    //commentVM.Article.League = league;
 
                     commentVM.Comment.ArticleId = _articleId;
                 }
                 if (commentVM.Comment.CommentId == 0)
                 {
-                    var userId =  _userManager.GetUserId(User);
+                    var userId = _userManager.GetUserId(User);
                     commentVM.Comment.UserId = userId;
-                    commentVM.Comment.ArticleId= commentVM.ArticleId;
+                    commentVM.Comment.ArticleId = commentVM.ArticleId;
 
                     _unitOfWork.Comment.Add(commentVM.Comment);
                     TempData["success"] = "Komentarz został dodany";
                 }
-                else
-                {
-                    _unitOfWork.Comment.Update(commentVM.Comment);
-                    TempData["success"] = "Komentarz został zmodyfikowany";
-                }
                 _unitOfWork.Save();
 
-                return RedirectToAction("Details", "Article", new {articleId=commentVM.ArticleId });
-                
+                return RedirectToAction("Details", "Article", new { articleId = commentVM.ArticleId });
+
             }
             return View();
         }

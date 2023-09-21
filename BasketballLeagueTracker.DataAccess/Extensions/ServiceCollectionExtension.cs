@@ -19,9 +19,12 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IFavouriteTeamRepository, FavouriteTeamRepository>();
-            services.AddScoped<IUserRepository,UserRepository>();
 
+            services.AddScoped<IFavouritePlayerRepository, FavouritePlayerRepository>();
+            services.AddScoped<IFavouriteTeamRepository, FavouriteTeamRepository>();
+            services.AddScoped<IFavouriteLeagueRepository, FavouriteLeagueRepository>();
+
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<TeamGenerator>(); // Generation of random Teams
             // Identity password options
             services.Configure<IdentityOptions>(options =>
@@ -37,23 +40,6 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
                 options.SignIn.RequireConfirmedAccount = false;
 
             });
-
-
-
-
-            //TimeZoneInfo localZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-            //DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(utcDateTime, localZone);
-
-            //services.Configure<RequestLocalizationOptions>(options =>
-            //{
-            //    var supportedCultures = new[] { new CultureInfo("pl-PL") };
-            //    options.DefaultRequestCulture = new RequestCulture("pl-PL", "pl-PL");
-            //    options.SupportedCultures = supportedCultures;
-            //    options.SupportedUICultures = supportedCultures;
-
-            //    //var localZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-            //    //options.DefaultTimeZone = localZone;
-            //});
         }
     }
 }

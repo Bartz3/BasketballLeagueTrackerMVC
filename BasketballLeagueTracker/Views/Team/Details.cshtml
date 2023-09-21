@@ -15,14 +15,14 @@
             <a asp-cont roller="Player" asp-action="AddPlayerToTeam" asp-route-teamId="@Model?.TeamId" class="btn btn-primary">Dodaj zawodnika do drużyny</a>
         </div>
         <div class="col-auto">
-            <a asp-controller="Team" asp-action="AddToFavourites" asp-route-teamId="@Model?.TeamId" class="btn btn-warning">
+            <a asp-controller="Team" asp-action="AddTeamToFavourites" asp-route-teamId="@Model?.TeamId" class="btn btn-outline-primary">
                 @if (ViewBag.IsFavourite)
                 {
-                    <i class="bi bi-heart-fill"> Usuń</i>
+                    <i class="bi bi-heart-fill"></i>
                 }
                 else
                 {
-                    <i class="bi bi-heart"> Dodaj </i>
+                    <i class="bi bi-heart"> </i>
                 }
             </a>
         </div>

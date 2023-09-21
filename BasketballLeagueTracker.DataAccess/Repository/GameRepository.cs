@@ -1,7 +1,6 @@
 ﻿using BasketballLeagueTracker.DataAccess.Data;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.Models;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +10,19 @@ using System.Threading.Tasks;
 
 namespace BasketballLeagueTracker.DataAccess.Repository
 {
-    public class FavouriteTeamRepository : Repository<FavouriteTeam>, IFavouriteTeamRepository
+    public class GameRepository : Repository<Game>, IGameRepository
     {
         private AppDbContext _db;
 
-        public FavouriteTeamRepository(AppDbContext db) : base(db)
-        {
-            _db = db;
-            
-
+        public GameRepository(AppDbContext db) : base(db) 
+        { 
+            _db=db;
         }
 
-        public void Update(FavouriteTeam favTeam)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void Save()
+        public void Update(Game game)
         {
-            _db.SaveChanges();
+            _db.Games.Update(game);
         }
     }
 

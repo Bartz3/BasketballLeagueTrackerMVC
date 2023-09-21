@@ -18,7 +18,18 @@
         </div>
     </div>
 </div>
-
+<div class="col-auto">
+    <a asp-controller="Player" asp-action="AddPlayerToFavourites" asp-route-teamId="@Model?.TeamId" class="btn btn-outline-primary">
+        @if (ViewBag.IsFavourite)
+        {
+            <i class="bi bi-heart-fill"></i>
+        }
+        else
+        {
+            <i class="bi bi-heart"> </i>
+        }
+    </a>
+</div>
 <style>
     .player-details {
         display: flex;
@@ -35,7 +46,7 @@
 
     .player-info h2 {
         margin: 0;
-        font-size:60px;
+        font-size: 60px;
     }
 
     .player-stats {
@@ -46,45 +57,4 @@
 
 </style>
 
-
-@*<h2>Szczegóły zawodnika</h2>
-
-<div>
-    <h4>Player</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-
-        <!-- Dodaj pozostałe pola w podobny sposób -->
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Birthday)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Birthday)
-        </dd>
-
-        <!-- ... -->
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Team)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Team.Name) <!-- Zakładając, że drużyna ma pole 'Name' -->
-        </dd>
-    </dl>
-</div>
-@*<a asp-action="Edit" asp-route-id="@Model.PlayerId">Edytuj</a> |*@
 <a asp-action="Index">Powrót do listy</a>

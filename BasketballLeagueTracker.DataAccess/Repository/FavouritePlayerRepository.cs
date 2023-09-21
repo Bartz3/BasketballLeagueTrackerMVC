@@ -11,18 +11,17 @@ using System.Threading.Tasks;
 
 namespace BasketballLeagueTracker.DataAccess.Repository
 {
-    public class FavouriteTeamRepository : Repository<FavouriteTeam>, IFavouriteTeamRepository
+    public class FavouritePlayerRepository : Repository<FavouritePlayer>, IFavouritePlayerRepository
     {
         private AppDbContext _db;
 
-        public FavouriteTeamRepository(AppDbContext db) : base(db)
+        public FavouritePlayerRepository(AppDbContext db) : base(db)
         {
             _db = db;
             
-
         }
 
-        public void Update(FavouriteTeam favTeam)
+        public void Update(FavouritePlayer favPlayer)
         {
             throw new NotImplementedException();
         }

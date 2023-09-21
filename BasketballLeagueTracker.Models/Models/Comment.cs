@@ -12,7 +12,7 @@ namespace BasketballLeagueTracker.Models
         [Display(Name = "Treść komentarza")]
         public string Content { get; set; }
         public DateTime DateAdded { get; set; } = DateTime.UtcNow;
-
+        public bool? isEdited { get; set; } = false;
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+using BasketballLeagueTracker.Models;
 using BasketballLeagueTracker.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,68 +16,62 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Index()
         {
-            var leagueList = _unitOfWork.League.GetAll(null);
+            var gameList = _unitOfWork.Game.GetAll(null);
 
-            return View(leagueList);
+            return View(gameList);
         }
 
         public IActionResult Upsert(int? id)
         {
             if (id == null || id == 0)
             {
-                var leagueVM = new LeagueViewModel()
+                var gameVM = new GameViewModel()
                 {
-                    League = new League(),
-                    Image = null,
+                    Game = new Game(),
+
                 };
-                return View(leagueVM);
+                Game game= new Game();
+                return View(game);
             }
             else
             {
-                League? league = _unitOfWork.League.Get(p => p.LeagueId == id, null);
-                var leagueVM = new LeagueViewModel()
+                Game? game = _unitOfWork.Game.Get(p => p.GameId == id, null);
+                var gameVM = new GameViewModel()
                 {
-                    League = league
+                   Game=game
                 };
 
-                return View(leagueVM);
+                return View(gameVM);
             }
         }
 
-        public IActionResult Details(int leagueId)
+        public IActionResult Details(int gameId)
         {
-            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles"); // Players
+            var game = _unitOfWork.Game.Get(t => t.GameId == gameId,null); 
+
             //TempData["SelectedTeam"] = team;
 
-            return View(league);
+            return View(game);
         }
 
         [HttpPost]
-        public IActionResult Upsert(LeagueViewModel leagueVM, IFormFile? file)
+        public IActionResult Upsert(GameViewModel gameVM)
         {
 
             if (ModelState.IsValid)
             {
-                if (file != null)
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        file.CopyTo(memoryStream);
-                        leagueVM.League.Logo = memoryStream.ToArray();
-                    }
-                }
 
 
-                if (leagueVM.League.LeagueId == 0)
+                if (gameVM.Game.GameId == 0)
                 {
 
-                    _unitOfWork.League.Add(leagueVM.League);
-                    TempData["success"] = "Liga została dodana";
+                    _unitOfWork.Game.Add(gameVM.Game);
+                    //TempData["success"] = "Liga została dodana";
                 }
                 else
                 {
-                    _unitOfWork.League.Update(leagueVM.League);
-                    TempData["success"] = "Liga została zmodyfikowana";
+                    _unitOfWork.Game.Update(gameVM.Game);
+                    //TempData["success"] = "Liga została zmodyfikowana";
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
@@ -90,28 +85,28 @@ namespace BasketballLeagueTracker.Controllers
             {
                 return NotFound();
             }
-            League? league = _unitOfWork.League.Get(p => p.LeagueId == id, null);
+            var game = _unitOfWork.Game.Get(t => t.GameId == id, null);
 
-            if (league == null)
+            if (game == null)
             {
                 return NotFound();
             }
-            return View(league);
+            return View(game);
         }
 
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            League? league = _unitOfWork.League.Get(p => p.LeagueId == id, null);
-            if (league == null)
+            Game? game = _unitOfWork.Game.Get(p => p.GameId == id, null);
+            if (game == null)
             {
                 return NotFound();
             }
 
-            _unitOfWork.League.Delete(league);
+            _unitOfWork.Game.Delete(game);
             _unitOfWork.Save();
 
-            TempData["success"] = "Liga została usunięta";
+            TempData["success"] = "Spotkanie zostało usunięte";
 
             return RedirectToAction("Index");
         }

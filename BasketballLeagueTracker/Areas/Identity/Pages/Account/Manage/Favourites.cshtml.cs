@@ -20,7 +20,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account.Manage
         public FavouritesModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IUserRepository userRepo )
+            IUserRepository userRepo)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -50,13 +50,20 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userManager.GetUserNameAsync(user);
 
-            var userTeams= _userRepo.Get(u=>u.Id==user.Id, "FavouriteTeams.Team");
-            List<Team> favouriteTeams= new List<Team>();
+            var userTeams = _userRepo.Get(u => u.Id == user.Id, "FavouriteTeams.Team");
+            List<Team> favouriteTeams = new List<Team>();
 
-           foreach (var favTeam in userTeams.FavouriteTeams)
-             {
+            foreach (var favTeam in userTeams.FavouriteTeams)
+            {
                 favouriteTeams.Add(favTeam.Team);
-             }
+            }
+
+            var userPlayers = _userRepo.Get(u => u.Id == user.Id, "FavouritePlayers.Player");
+            List<Player> favouritePlayers = new List<Player>();
+            foreach (var favPlayer in userPlayers.FavouritePlayers)
+            {
+                favouritePlayers.Add(favPlayer.Player);
+            }
 
             //List<League> favouriteTeams= new List<Team>();
             //List<Team> favouriteTeams= new List<Team>();
@@ -64,9 +71,9 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account.Manage
 
             Fav = new FavModel
             {
-                FavouriteTeams=favouriteTeams,
-                FavouriteLeagues=new List<League>(),
-                FavouritePlayers=new List<Player>()
+                FavouritePlayers = favouritePlayers,
+                FavouriteTeams = favouriteTeams,
+                FavouriteLeagues = new List<League>()
             };
 
         }

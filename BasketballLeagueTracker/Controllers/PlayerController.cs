@@ -1,5 +1,8 @@
-﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+﻿using BasketballLeagueTracker.DataAccess.Repository;
+using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
@@ -10,10 +13,13 @@ namespace BasketballLeagueTracker.Controllers
     public class PlayerController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFavouritePlayerRepository _favouritePlayerRepository;
 
-        public PlayerController(IUnitOfWork unitOfWork)
+        public PlayerController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public IActionResult Details(int? playerId)
@@ -252,6 +258,42 @@ namespace BasketballLeagueTracker.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AddPlayerToFavourites(int playerId)
+        {
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            var followedPlayer = _favouritePlayerRepository.Get(ft => ft.UserId == user.Id && ft.PlayerId == playerId, null);
+            var player = _unitOfWork.Player.Get(t => t.PlayerId == playerId, null);
+
+            if (followedPlayer == null)
+            {
+                var favouritePlayer = new FavouritePlayer
+                {
+                    UserId = user.Id,
+                    PlayerId = playerId,
+                    DateAdded = DateTime.UtcNow
+                };
+                _favouritePlayerRepository.Add(favouritePlayer);
+                _favouritePlayerRepository.Save();
+                TempData["success"] = "Zawodnik został dodany do ulubionych";
+            }
+            else
+            {
+                _favouritePlayerRepository.Delete(followedPlayer);
+                _favouritePlayerRepository.Save();
+                TempData["success"] = "Zawodnik został usunięty z ulubionych";
+            }
+
+
+            return RedirectToAction("Details", new { playerId = playerId });
         }
 
     }

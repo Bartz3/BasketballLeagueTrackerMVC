@@ -1,6 +1,7 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.Models;
 using BasketballLeagueTracker.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,17 +22,17 @@ namespace BasketballLeagueTracker.Controllers
             _favouriteTeamRepository = favouriteTeamRepository;
         }
 
-
-        public async Task<IActionResult> AddToFavourites(int teamId)
+        [Authorize]
+        public async Task<IActionResult> AddTeamToFavourites(int teamId)
         {
-            var user = await _userManager.GetUserAsync(User); // Znajdź aktualnie zalogowanego użytkownika.
 
-            if (user == null)
+            if (!User.Identity.IsAuthenticated)
             {
-                return Unauthorized();
+                return RedirectToAction("Login", "Account");
             }
-  
-            var followedTeam= _favouriteTeamRepository.Get(ft => ft.UserId == user.Id && ft.TeamId == teamId,null);
+
+            var user = await _userManager.GetUserAsync(User);
+            var followedTeam = _favouriteTeamRepository.Get(ft => ft.UserId == user.Id && ft.TeamId == teamId, null);
             var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, null);
             // If user doesn't follow the team, add team to follow teams, otherwise delete team from following
             if (followedTeam == null)
@@ -47,14 +48,14 @@ namespace BasketballLeagueTracker.Controllers
                 TempData["success"] = "Zespół został dodany do ulubionych";
             }
             else
-            {      
+            {
                 _favouriteTeamRepository.Delete(followedTeam);
                 _favouriteTeamRepository.Save();
                 TempData["success"] = "Zespół został usunięty z ulubionych";
             }
 
 
-            return RedirectToAction("Details", new { teamId = teamId }) ; 
+            return RedirectToAction("Details", new { teamId = teamId });
         }
 
 
@@ -85,7 +86,7 @@ namespace BasketballLeagueTracker.Controllers
         {
             var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players");
 
-            ViewBag.IsFavourite= IsFavourite(teamId);
+            ViewBag.IsFavourite = IsFavourite(teamId);
 
             if (team == null)
             {
