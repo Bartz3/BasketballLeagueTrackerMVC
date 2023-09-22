@@ -65,15 +65,19 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account.Manage
                 favouritePlayers.Add(favPlayer.Player);
             }
 
-            //List<League> favouriteTeams= new List<Team>();
-            //List<Team> favouriteTeams= new List<Team>();
+            var userLeagues= _userRepo.Get(u => u.Id == user.Id, "FavouriteLeagues.League");
+            List<League> favouriteLeagues = new List<League>();
+            foreach (var favLeague in userPlayers.FavouriteLeagues)
+            {
+                favouriteLeagues.Add(favLeague.League);
+            }
 
 
             Fav = new FavModel
             {
                 FavouritePlayers = favouritePlayers,
                 FavouriteTeams = favouriteTeams,
-                FavouriteLeagues = new List<League>()
+                FavouriteLeagues = favouriteLeagues
             };
 
         }

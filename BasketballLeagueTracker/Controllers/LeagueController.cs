@@ -1,5 +1,9 @@
-﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+﻿using BasketballLeagueTracker.DataAccess.Repository;
+using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+using BasketballLeagueTracker.Models;
 using BasketballLeagueTracker.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BasketballLeagueTracker.Controllers
@@ -7,10 +11,15 @@ namespace BasketballLeagueTracker.Controllers
     public class LeagueController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public LeagueController(IUnitOfWork unitOfWork)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IFavouriteLeagueRepository _favouriteLeagueRepository;
+        public LeagueController(IUnitOfWork unitOfWork,
+            UserManager<ApplicationUser> userManager,
+            IFavouriteLeagueRepository favouriteLeagueRepository)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _favouriteLeagueRepository = favouriteLeagueRepository;
         }
 
         public IActionResult Index()
@@ -42,10 +51,60 @@ namespace BasketballLeagueTracker.Controllers
                 return View(leagueVM);
             }
         }
+        private bool IsFavourite(int? leagueId)
+        {
+            if (leagueId == null)
+                return false;
 
+            var userId = _userManager.GetUserId(User);
+            var followedLeague = _favouriteLeagueRepository.Get(ft => ft.UserId == userId && ft.LeagueId ==leagueId ,null);
+
+            if (followedLeague == null)
+                return false;
+            else return true;
+
+        }
+        [Authorize]
+        public async Task<IActionResult> AddLeagueToFavourites(int leagueId)
+        {
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            var followedLeague = _favouriteLeagueRepository.Get(ft => ft.UserId == user.Id && ft.LeagueId == leagueId, null);
+            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, null);
+
+            if (followedLeague == null)
+            {
+                var favouriteLeague = new FavouriteLeague
+                {
+                    UserId = user.Id,
+                    LeagueId = leagueId,
+                    DateAdded = DateTime.UtcNow
+                };
+                _favouriteLeagueRepository.Add(favouriteLeague);
+                _favouriteLeagueRepository.Save();
+          
+                TempData["success"] = "Liga została dodana do ulubionych";
+            }
+            else
+            {
+                _favouriteLeagueRepository.Delete(followedLeague);
+                _favouriteLeagueRepository.Save();
+                TempData["success"] = "Liga została usunięta z ulubionych";
+            }
+
+
+            return RedirectToAction("Details", new { leagueId = leagueId});
+        }
         public IActionResult Details(int leagueId)
         {
-            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles"); // Players
+            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles"); 
+
+            ViewBag.IsFavourite = IsFavourite(leagueId);
             //TempData["SelectedTeam"] = team;
 
             return View(league);
@@ -83,7 +142,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             return View();
         }
-
+        
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)

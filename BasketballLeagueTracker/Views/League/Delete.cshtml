@@ -3,7 +3,7 @@
 <form method="post">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
-            <h2 class="text-primary">Usuń zawodnika</h2>
+            <h2 class="text-primary">Usuń ligę</h2>
             </hr>
         </div>
         @*<div asp-validation-summary="All"></div>*@
@@ -11,11 +11,15 @@
             <label asp-for="Name" class="p-0"></label>
             <input asp-for="Name" disabled class="form-control" />
         </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Description" class="p-0"></label>
+            <input asp-for="Description" disabled class="form-control" />
+        </div>
                 <div class="mb-3 row p-1">
                     <label asp-for="Logo" class="ms-2"></label>
             @if (Model.Logo != null)
             {
-                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Logo)" alt="@Model.Logo" class="img-fluid" style="max-height: 100px;">
+                <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Logo)" alt="@Model.Logo" class="img-fluid" style="max-height: 300px;max-width:500px;">
             }
             else
             {

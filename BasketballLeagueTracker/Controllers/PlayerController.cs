@@ -1,5 +1,6 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+using BasketballLeagueTracker.Models;
 using BasketballLeagueTracker.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,15 +17,18 @@ namespace BasketballLeagueTracker.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IFavouritePlayerRepository _favouritePlayerRepository;
 
-        public PlayerController(IUnitOfWork unitOfWork, UserManager<ApplicationUser> userManager)
+        public PlayerController(IUnitOfWork unitOfWork,
+            UserManager<ApplicationUser> userManager,IFavouritePlayerRepository favouritePlayerRepository)
         {
             _unitOfWork = unitOfWork;
             _userManager = userManager;
+            _favouritePlayerRepository = favouritePlayerRepository;
         }
 
         public IActionResult Details(int? playerId)
         {
             var player = _unitOfWork.Player.Get(t => t.PlayerId == playerId, "Team");
+            ViewBag.IsFavourite = IsFavourite(playerId);
             //TempData["SelectedTeam"] = team;
 
             return View(player);
@@ -260,6 +264,19 @@ namespace BasketballLeagueTracker.Controllers
             return RedirectToAction("Index");
         }
 
+        private bool IsFavourite(int? playerId)
+        {
+            if (playerId == null)
+                return false;
+
+            var userId = _userManager.GetUserId(User);
+            var followedPlayer = _favouritePlayerRepository.Get(fp => fp.UserId == userId && fp.PlayerId == playerId, null);
+
+            if (followedPlayer == null)
+                return false;
+            else return true;
+
+        }
         [Authorize]
         public async Task<IActionResult> AddPlayerToFavourites(int playerId)
         {
@@ -268,6 +285,8 @@ namespace BasketballLeagueTracker.Controllers
             {
                 return RedirectToAction("Login", "Account");
             }
+
+            
 
             var user = await _userManager.GetUserAsync(User);
             var followedPlayer = _favouritePlayerRepository.Get(ft => ft.UserId == user.Id && ft.PlayerId == playerId, null);

@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="col-auto">
-    <a asp-controller="Player" asp-action="AddPlayerToFavourites" asp-route-teamId="@Model?.TeamId" class="btn btn-outline-primary">
+    <a asp-controller="Player" asp-action="AddPlayerToFavourites" asp-route-playerId="@Model?.PlayerId" class="btn btn-outline-primary">
         @if (ViewBag.IsFavourite)
         {
             <i class="bi bi-heart-fill"></i>

@@ -69,7 +69,7 @@ namespace BasketballLeagueTracker.Controllers
 
         private bool IsFavourite(int? teamId)
         {
-            if (teamId == null)
+            if (teamId == null )
                 return false;
 
             // User doesnt follow team if it is not in favouriteTeamDb

@@ -6,8 +6,11 @@
 
     }
 )
-
-
+    //< link rel = "stylesheet" type = "text/css" href = "~/css/default.css" >
+function myCSS() {
+    var element = document.getElementById("link"); 
+    element.classList.add("~/css/default.css"); 
+}
 function loadTable() {
  
 
@@ -58,7 +61,7 @@ function loadTable() {
                 //data:'name'
                 data: 'name',
                 render: function (data, type, row) {
-                    return '<a href="/team/details?teamid=' + row.teamId + '" class="player-link">' + data + '</a>';
+                    return '<a href="/team/details?teamid=' + row.teamId + '" id="link">' + data + '</a>';
                 }
             },
             {

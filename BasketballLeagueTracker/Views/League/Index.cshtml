@@ -1,10 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Ligi";
-}
-
-@model List<League>
-
-<div class="container mt-5">
+﻿<div class="container mt-5">
     <div class="row">
         <div class="col-12 text-center">
             <h1 class="display-4 mb-4 text-primary">Ligi</h1>
@@ -19,46 +13,34 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead class="bg-primary text-white">
-                        <tr>
-                            <th scope="col">Nazwa</th>
-                            <th scope="col">Opis</th>
-                            <th scope="col">Logo</th>
-                            <th scope="col">Akcje</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var league in Model)
-                        {
-                            <tr>
-                                <td>
-                                    <a asp-action="Details" asp-route-leagueId="@league.LeagueId" style="text-decoration:none;color:black">@league.Name</a>
-                                </td>
-                                <td>@league.Description</td>
-                                <td>
-                                    @if (league.Logo != null)
-                                    {
-                                        <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(league.Logo))" alt="Team Logo" />
-                                    }
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a asp-controller="League" asp-action="Upsert" asp-route-id="@league.LeagueId" class="btn btn-outline-primary">
-                                            <i class="bi bi-pencil-square"></i> Edytuj
-                                        </a>
-                                        <a asp-controller="League" asp-action="Delete" asp-route-id="@league.LeagueId" class="btn btn-outline-danger">
-                                            <i class="bi bi-trash3"></i> Usuń
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+        @foreach (var league in Model)
+        {
+            <div class="col-md-3 mb-4">
+                <!-- Zmieniono col-md-4 na col-md-3 -->
+                <div class="card h-100">
+                    @if (league.Logo != null)
+                    {
+                        <img src="data:image/png;base64,@(Convert.ToBase64String(league.Logo))" alt="League Logo" class="card-img-top">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@league.Name</h5>
+                        <p class="card-text">@league.Description</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group" role="group">
+                            <a asp-controller="League" asp-action="Details" asp-route-leagueId="@league.LeagueId" class="btn btn-primary">
+                                <i class="bi bi-eye"></i> Szczegóły
+                            </a>
+                            <a asp-controller="League" asp-action="Upsert" asp-route-id="@league.LeagueId" class="btn btn-warning">
+                                <i class="bi bi-pencil-square"></i> Edytuj
+                            </a>
+                            <a asp-controller="League" asp-action="Delete" asp-route-id="@league.LeagueId" class="btn btn-danger">
+                                <i class="bi bi-trash3"></i> Usuń
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        }
     </div>
 </div>

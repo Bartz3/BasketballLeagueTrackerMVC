@@ -13,6 +13,18 @@
         <br />
         <a asp-controller="Article" asp-action="Upsert" asp-route-leagueId="@Model.LeagueId" class="btn btn-secondary me-2" style="width:15%">Dodaj artykuł</a>
     </div>
+    <div class="col-auto">
+        <a asp-controller="League" asp-action="AddLeagueToFavourites" asp-route-leagueId="@Model?.LeagueId" class="btn btn-outline-primary">
+            @if (ViewBag.IsFavourite)
+            {
+                <i class="bi bi-heart-fill"></i>
+            }
+            else
+            {
+                <i class="bi bi-heart"> </i>
+            }
+        </a>
+    </div>
 </div>
 
 <div class="container mt-5">
