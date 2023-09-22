@@ -15,6 +15,7 @@ namespace BasketballLeagueTracker.Models
         [Display(Name = "Powiadomienia")]
         public bool? NotificationBool { get; set; }
 
+        [Display(Name = "Nazwa użytkownika")]
         public string? Nickname { get; set; }
 
         public ICollection<Article>? Articles { get; set; }

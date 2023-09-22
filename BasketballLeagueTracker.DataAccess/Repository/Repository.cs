@@ -70,18 +70,6 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             }else return query.ToList();
         }
 
-        //private void AddIncludedProperties(string includeProp, ref IQueryable<T> query)
-        //{
-        //    if (!string.IsNullOrEmpty(includeProp))
-        //    {
-        //        string[] propArray = includeProp.Split(',');
-        //        propArray = propArray.Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
-        //        foreach (var prop in propArray)
-        //        {
-        //            query = query.Include(prop);
-        //        }
-        //    }
-        //}
         private void AddIncludedProperties(string includeProp, ref IQueryable<T> query)
         {
             if (!string.IsNullOrEmpty(includeProp))
@@ -102,27 +90,5 @@ namespace BasketballLeagueTracker.DataAccess.Repository
                 }
             }
         }
-
-
-        //private void AddIncludedProperties(string includeProp, ref IQueryable<T> query)
-        //{
-        //    if (!string.IsNullOrEmpty(includeProp))
-        //    {
-        //        string[] propArray = includeProp.Split(',');
-        //        foreach (var prop in propArray)
-        //        {
-        //            var nestedProps = prop.Split("->");
-        //            var mainProperty = nestedProps[0];
-        //            query = query.Include(mainProperty);
-        //            for (int i = 1; i < nestedProps.Length; i++)
-        //            {
-        //                var subProperty = nestedProps[i];
-        //                query = ((IIncludableQueryable<T, object>)query).Include(e => EF.Property<object>(e, subProperty));
-        //            }
-        //        }
-        //    }
-        //}
-
-
     }
 }

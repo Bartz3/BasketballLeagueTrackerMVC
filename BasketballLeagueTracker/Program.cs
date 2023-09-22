@@ -18,7 +18,7 @@ services.AddDbContext<AppDbContext>(o =>
 // Application user and users roles
 services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
-    options.User.RequireUniqueEmail = false;
+    options.User.RequireUniqueEmail = true;
 })
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultUI()

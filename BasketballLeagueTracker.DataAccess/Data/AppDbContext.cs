@@ -108,10 +108,10 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 .HasForeignKey(a => a.LeagueId);
 
             modelBuilder.Entity<Article>()
-    .HasMany(a => a.Comments)
-    .WithOne(c => c.Article)
-    .HasForeignKey(c => c.ArticleId)
-    .OnDelete(DeleteBehavior.Cascade);
+                .HasMany(a => a.Comments)
+                .WithOne(c => c.Article)
+                .HasForeignKey(c => c.ArticleId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // //////////////////////////////////////////// FavouritePlayers
 
@@ -210,8 +210,11 @@ namespace BasketballLeagueTracker.DataAccess.Data
     {
         public AppDbContext CreateDbContext(string[] args)
         {
+            string serverCS = "Server=.;Database=BLTDb;Trusted_Connection=True;TrustServerCertificate = True";
+            string localCS = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\BasketballLeagueTracker\\BasketballLeagueTracker.DataAccess\\Database\\BLTdatabase.mdf;Integrated Security=True";
+
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Server=.;Database=BLTDb;Trusted_Connection=True;TrustServerCertificate = True");
+            optionsBuilder.UseSqlServer(serverCS);
             return new AppDbContext(optionsBuilder.Options);
         }
     }
