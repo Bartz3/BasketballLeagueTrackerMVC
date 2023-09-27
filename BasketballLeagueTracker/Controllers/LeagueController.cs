@@ -102,7 +102,7 @@ namespace BasketballLeagueTracker.Controllers
         }
         public IActionResult Details(int leagueId)
         {
-            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles"); 
+            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles,Games"); 
 
             ViewBag.IsFavourite = IsFavourite(leagueId);
             //TempData["SelectedTeam"] = team;

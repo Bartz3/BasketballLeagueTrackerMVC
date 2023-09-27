@@ -1,60 +1,78 @@
-﻿@model BasketballLeagueTracker.Models.Game
-
+﻿@using BasketballLeagueTracker.ViewModels;
+@model GameViewModel
 @{
-    ViewData["Title"] = "Upsert";
+    TempData["LeagueId"] = Model.LeagueId;
 }
+<form method="post" asp-controller="Game" asp-action="Upsert" enctype="multipart/form-data" class="container mt-5">
+    <input asp-for="Game.GameId" type="hidden" />
 
-<h1>Upsert</h1>
+    <div class="card">
+        <div class="card-header text-center">
+            <h2 class="card-title">
+                @(Model.Game != null && Model.Game.GameId != 0 ? "Edytuj " : "Dodaj ") mecz
+            </h2>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label asp-for="Game.GameDate" class="control-label">Data meczu</label>
+                <input asp-for="Game.GameDate" class="form-control" />
+                <span asp-validation-for="Game.GameDate" class="text-danger"></span>
+            </div>
 
-<h4>Game</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Upsert">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="GameDate" class="control-label"></label>
-                <input asp-for="GameDate" class="form-control" />
-                <span asp-validation-for="GameDate" class="text-danger"></span>
+                <label asp-for="Game.Status" class="control-label">Status</label>
+                <select asp-for="Game.Status" asp-items="Html.GetEnumSelectList<GameStatus>()" class="form-control"></select>
+                <span asp-validation-for="Game.Status" class="text-danger"></span>
             </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Game.AwayTeamScore" class="control-label">Wynik gości</label>
+                        <input asp-for="Game.AwayTeamScore" class="form-control" />
+                        <span asp-validation-for="Game.AwayTeamScore" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Game.HomeTeamScore" class="control-label">Wynik gospodarzy</label>
+                        <input asp-for="Game.HomeTeamScore" class="form-control" />
+                        <span asp-validation-for="Game.HomeTeamScore" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="Game.AwayTeamId" class="control-label">Drużyna gości</label>
+                <select asp-for="Game.AwayTeamId" class="form-control" asp-items="Model.AwayTeamSL"></select>
+                <span asp-validation-for="Game.AwayTeamId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="HomeTeamScore" class="control-label"></label>
-                <input asp-for="HomeTeamScore" class="form-control" />
-                <span asp-validation-for="HomeTeamScore" class="text-danger"></span>
+                <label asp-for="Game.HomeTeamId" class="control-label">Drużyna gospodarzy</label>
+                <select asp-for="Game.HomeTeamId" class="form-control" asp-items="Model.HomeTeamSL"></select>
+                <span asp-validation-for="Game.HomeTeamId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AwayTeamScore" class="control-label"></label>
-                <input asp-for="AwayTeamScore" class="form-control" />
-                <span asp-validation-for="AwayTeamScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="HomeTeamId" class="control-label"></label>
-                <select asp-for="HomeTeamId" class ="form-control" asp-items="ViewBag.HomeTeamId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="AwayTeamId" class="control-label"></label>
-                <select asp-for="AwayTeamId" class ="form-control" asp-items="ViewBag.AwayTeamId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="LeagueId" class="control-label"></label>
-                <select asp-for="LeagueId" class ="form-control" asp-items="ViewBag.LeagueId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+        <div class="card-footer text-center">
+            <button type="submit" class="btn btn-primary">
+                @(Model.Game != null && Model.Game.GameId != 0 ? "Edytuj " : "Dodaj ")
+            </button>
+            <a asp-controller="League" asp-action="Details" class="btn btn-outline-dark">Wróć do widoku ligi</a>
+        </div>
     </div>
-</div>
+    <span asp-validation-summary="All" class="text-danger"></span>
+</form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
+
+
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

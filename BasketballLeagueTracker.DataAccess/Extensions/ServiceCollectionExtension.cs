@@ -1,16 +1,11 @@
-﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
-using BasketballLeagueTracker.DataAccess.Repository;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using BasketballLeagueTracker.DataAccess.Repository;
+using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+using BasketballLeagueTracker.Models.ModelsValidation;
 using BasketballLeagueTracker.Utility.DataGenerator;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Localization;
-using System.Globalization;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BasketballLeagueTracker.DataAccess.Extensions
 {
@@ -18,11 +13,13 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
     {
         public static void AddRepositories(this IServiceCollection services)
         {
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IFavouritePlayerRepository, FavouritePlayerRepository>();
             services.AddScoped<IFavouriteTeamRepository, FavouriteTeamRepository>();
             services.AddScoped<IFavouriteLeagueRepository, FavouriteLeagueRepository>();
+ 
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddTransient<TeamGenerator>(); // Generation of random Teams
@@ -36,9 +33,8 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 6;
                 options.SignIn.RequireConfirmedEmail = false;
-                options.SignIn.RequireConfirmedPhoneNumber=false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.SignIn.RequireConfirmedAccount = false;
-
             });
         }
     }

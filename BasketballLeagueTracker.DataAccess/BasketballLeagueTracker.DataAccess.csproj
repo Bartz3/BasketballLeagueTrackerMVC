@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ModelsValidation\**" />
+    <EmbeddedResource Remove="ModelsValidation\**" />
+    <None Remove="ModelsValidation\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Migrations\20230727193449_bytePositionscs" />
   </ItemGroup>
 
@@ -15,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.9" />

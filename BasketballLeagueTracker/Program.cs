@@ -1,5 +1,8 @@
 using BasketballLeagueTracker.DataAccess.Data;
 using BasketballLeagueTracker.DataAccess.Extensions;
+using BasketballLeagueTracker.ViewModels;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +28,7 @@ services.AddIdentity<ApplicationUser, IdentityRole>(options =>
         .AddDefaultTokenProviders();
 
 var configuration = builder.Configuration;
+
 
 // Facebook Auth
 services.AddAuthentication().AddFacebook(facebookOptions =>
@@ -59,12 +63,10 @@ services.AddAuthentication().AddFacebook(facebookOptions =>
 
 services.AddRazorPages(); // Added for login/reg
 
-//var roleManager = .GetRequiredService<RoleManager<IdentityRole>>();
+services.AddValidatorsFromAssemblyContaining<GameViewModel>()
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters();
 
-//if (!await roleManager.RoleExistsAsync("Admin"))
-//{
-//    await roleManager.CreateAsync(new IdentityRole("Admin"));
-//}
 
 services.AddRepositories(); // Repositories register 
 
