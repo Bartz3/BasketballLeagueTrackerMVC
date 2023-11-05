@@ -33,11 +33,26 @@ namespace BasketballLeagueTracker.DataAccess.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserCommentRating> UserCommentRatings { get; set; }
 
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder); // Needed for IdentityDbContext
+
+            ConfigureEntityRelationships(modelBuilder);
+          
+
+            modelBuilder.Entity<Player>().HasData(
+                new Player { PlayerId = 1, Name = "Bartosz", Surname = "Późniewski", UniformNumber = 10, Positions = PlayerPosition.PointGuard | PlayerPosition.ShootingGuard, TeamId = 1, IsInTeam = true },
+                new Player { PlayerId = 2, Name = "Tom", Surname = "Noname", UniformNumber = 20, Positions = PlayerPosition.ShootingGuard },
+                new Player { PlayerId = 3, Name = "Test", Surname = "Example", UniformNumber = 30, Positions = PlayerPosition.Center }
+                );
+
+            modelBuilder.Entity<League>().HasData(
+                new League { LeagueId = 1, Name = "Testowa liga", Description = "Liga 1 " }
+              );
+        }
+
+        private void ConfigureEntityRelationships(ModelBuilder modelBuilder)
+        {
             // Jedna liga ma wiele zespołów
             modelBuilder.Entity<League>()
                 .HasMany(l => l.Teams)
@@ -159,13 +174,6 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 .WithMany(p => p.LeagueFollowers)
                 .HasForeignKey(up => up.LeagueId);
 
-
-            // Jedena pozycja ulubionej drużyny posiada jedno odwołanie do drużyny, użytkownik może mieć wiele ulubionych drużyn
-            //modelBuilder.Entity<FavouriteTeam>()
-            //    .HasOne(ft => ft.User)
-            //    .WithMany(u => u.FavouriteTeams)
-            //    .OnDelete(DeleteBehavior.Cascade);
-            // Jeden komentarz ma jednego użytkownika, który może mieć wiele komentarzy
             modelBuilder.Entity<Comment>()
                 .HasOne(c => c.User)
                 .WithMany(u => u.Comments)
@@ -184,7 +192,20 @@ namespace BasketballLeagueTracker.DataAccess.Data
             modelBuilder.Entity<Game>()
                 .HasMany(g => g.GamePlayerStats)
                 .WithOne(gps => gps.Game)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Player>()
+                 .HasMany(p => p.PlayerStats)
+                 .WithOne(ps => ps.Player)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<GamePlayerStats>()
+                .HasKey(g => new { g.PlayerId, g.GameId });
+
+            modelBuilder.Entity<Player>()
+                .HasMany(p => p.PlayerStats)
+                .WithOne(gps => gps.Player)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Player>()
                 .Property(p => p.Positions)
@@ -192,17 +213,8 @@ namespace BasketballLeagueTracker.DataAccess.Data
                         v => (byte)v,
                         v => (PlayerPosition)v
             );
-
-            modelBuilder.Entity<Player>().HasData(
-                new Player { PlayerId = 1, Name = "Bartosz", Surname = "Późniewski", UniformNumber = 10, Positions = PlayerPosition.PointGuard | PlayerPosition.ShootingGuard, TeamId = 1, IsInTeam = true },
-                new Player { PlayerId = 2, Name = "Tom", Surname = "Noname", UniformNumber = 20, Positions = PlayerPosition.ShootingGuard },
-                new Player { PlayerId = 3, Name = "Test", Surname = "Example", UniformNumber = 30, Positions = PlayerPosition.Center }
-                );
-
-            modelBuilder.Entity<League>().HasData(
-                new League { LeagueId = 1, Name = "Testowa liga", Description = "Liga 1 " }
-              );
         }
+
     }
 
     // Class for scaffolding

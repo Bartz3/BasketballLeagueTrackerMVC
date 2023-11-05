@@ -4,6 +4,7 @@ using BasketballLeagueTracker.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasketballLeagueTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231002132214_gpsDefaults")]
+    partial class gpsDefaults
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -247,8 +250,8 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.Property<int?>("Steals")
                         .HasColumnType("int");
 
-                    b.Property<long?>("TimeSpend")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("TimeSpend")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Turnovers")
                         .HasColumnType("int");
@@ -880,7 +883,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.HasOne("BasketballLeagueTracker.Models.Game", "Game")
                         .WithMany("GamePlayerStats")
                         .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("BasketballLeagueTracker.Models.Player", "Player")

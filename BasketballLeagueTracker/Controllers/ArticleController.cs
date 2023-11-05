@@ -19,12 +19,12 @@ namespace BasketballLeagueTracker.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index()
-        {
-            var articleList = _unitOfWork.Article.GetAll(null);
+        //public IActionResult Index()
+        //{
+        //    var articleList = _unitOfWork.Article.GetAll(null);
 
-            return View(articleList);
-        }
+        //    return View(articleList);
+        //}
 
         public IActionResult Details(int articleId)
         {

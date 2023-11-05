@@ -8,7 +8,7 @@ namespace BasketballLeagueTracker.ViewModels
 {
     public class GameViewModel
     {
-        public Game Game { get; set; }
+        public Game? Game { get; set; }
         [Display(Name = "Goście")]
         [ValidateNever]
         public List<SelectListItemWithImage> HomeTeamSL{ get; set; }
@@ -16,6 +16,10 @@ namespace BasketballLeagueTracker.ViewModels
         [ValidateNever]
         public List<SelectListItemWithImage> AwayTeamSL{ get; set; }
         public int LeagueId { get; set; }
+
+        public List<GamePlayerStats>? HomeTeamGPS { get; set; }
+        public List<GamePlayerStats>? AwayTeamGPS { get; set; }
+
     }
     public class SelectListItemWithImage : SelectListItem
     {
@@ -35,12 +39,12 @@ namespace BasketballLeagueTracker.ViewModels
             //RuleFor(x => x.Game.HomeTeamScore)
             //    .GreaterThan(-1).WithMessage("Wynik nie może być mniejszy niż 0")
             //    .LessThan(256).WithMessage("Wynik jest zbyt duży");
-            RuleFor(x => x.Game.AwayTeamId)
-                .NotEqual(x => x.Game.HomeTeamId)
-                .WithMessage("Dodaj dwie różne drużyny.");
-            RuleFor(x => x.Game.AwayTeamId)
-                .NotEqual(x => x.Game.HomeTeamId)
-                .WithMessage("Dodaj dwie różne drużyny.");
+            //RuleFor(x => x.Game.AwayTeamId)
+            //    .NotEqual(x => x.Game.HomeTeamId)
+            //    .WithMessage("Dodaj dwie różne drużyny.");
+            //RuleFor(x => x.Game.AwayTeamId)
+            //    .NotEqual(x => x.Game.HomeTeamId)
+            //    .WithMessage("Dodaj dwie różne drużyny.");
 
         }
     }

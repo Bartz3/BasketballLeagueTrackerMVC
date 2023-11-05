@@ -1,4 +1,5 @@
 ﻿@using BasketballLeagueTracker.ViewModels;
+@using System.Security.Claims;
 @model Article
 
 <style>
@@ -63,11 +64,15 @@
     @foreach (var comment in Model.Comments) //.OrderBy(x=>x.DateAdded)
     {
         var localDate = TimeZoneInfo.ConvertTimeFromUtc(comment.DateAdded, localZone);
+        var isAuthorOrAdmin = User.Identity.IsAuthenticated && comment.User.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin);
         <div class="comment">
             <div class="comment-actions">
-                <a class="btn btn-sm btn-primary edit-comment" data-comment-id="@comment.CommentId"><i class="bi bi-pencil-square"></i></a>
-                <a href="@Url.Action("DeletePOST", "Comment", new { commentId = comment.CommentId,articleId=Model.ArticleId })"
-                class="btn btn-sm btn-danger delete-comment"><i class="bi bi-trash-fill"></i></a>
+                @if (isAuthorOrAdmin)
+                {
+                    <a class="btn btn-sm btn-primary edit-comment" data-comment-id="@comment.CommentId"><i class="bi bi-pencil-square"></i></a>
+                    <a href="@Url.Action("DeletePOST", "Comment", new { commentId = comment.CommentId,articleId=Model.ArticleId })"
+               class="btn btn-sm btn-danger delete-comment"><i class="bi bi-trash-fill"></i></a>
+                }
             </div>
             <div class="comment-info">
                 @comment.User.GetDisplayName() napisał(a) @localDate.ToString("dd-MM-yyyy HH:mm")@if (comment.isEdited == true)
@@ -81,7 +86,10 @@
             <div class="edit-comment-content" contenteditable="true" style="display: none;">
                 <p>@comment.Content</p>
             </div>
-    <button class="btn btn-primary save-comment" data-comment-id="@comment.CommentId" style="display: none;">Zapisz</button>
+            @if (isAuthorOrAdmin)
+            {
+                <button class="btn btn-primary save-comment" data-comment-id="@comment.CommentId" style="display: none;">Zapisz</button>
+            }
         </div>
     }
 </div>
@@ -89,12 +97,12 @@
 
 
 
-    @{
-        var commentVM = new CommentViewModel
-                {
-                    ArticleId = Model.ArticleId,
-                };
-    }
+@{
+    var commentVM = new CommentViewModel
+            {
+                ArticleId = Model.ArticleId,
+            };
+}
 <partial name="_AddCommentPartial" model="commentVM" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
@@ -107,7 +115,7 @@
             var editButton = commentContainer.find(".edit-comment");
             var deleteButton = commentContainer.find(".delete-comment");
 
-            // Orginal content 
+            // Orginal content
             var originalContent = commentContent.text();
             // New text area with old content inside
             var editTextArea = $("<textarea>").addClass("form-control").val(originalContent);
@@ -119,38 +127,38 @@
         });
     });
 
-        $(".save-comment").click(function () {
-            var commentContainer = $(this).closest(".comment");
-            var commentContent = commentContainer.find(".comment-content p");
-            var saveButton = commentContainer.find(".save-comment");
-            var editButton = commentContainer.find(".edit-comment");
-            var deleteButton = commentContainer.find(".delete-comment");
-            var commentId = $(this).data("comment-id");
+    $(".save-comment").click(function () {
+        var commentContainer = $(this).closest(".comment");
+        var commentContent = commentContainer.find(".comment-content p");
+        var saveButton = commentContainer.find(".save-comment");
+        var editButton = commentContainer.find(".edit-comment");
+        var deleteButton = commentContainer.find(".delete-comment");
+        var commentId = $(this).data("comment-id");
 
-       
+
         var editedContent = commentContent.find("textarea").val();
 
-            $.ajax({
-            url: "/Comment/EditComment", 
-                type: "POST",
-                data: {
-                    commentId: commentId,
-                    editedContent: editedContent
-                },
-                success: function (response) {
-                    if (response.success) {
-                        commentContent.html("<p>" + editedContent + "</p>");
-                        saveButton.hide();
-                        editButton.show();
-                        deleteButton.show();
-                    } else {
-                        alert("Wystąpił błąd podczas aktualizacji komentarza.");
-                    }
-                },
-                error: function () {
-                    alert("Wystąpił błąd podczas komunikacji z serwerem.");
+        $.ajax({
+            url: "/Comment/EditComment",
+            type: "POST",
+            data: {
+                commentId: commentId,
+                editedContent: editedContent
+            },
+            success: function (response) {
+                if (response.success) {
+                    commentContent.html("<p>" + editedContent + "</p>");
+                    saveButton.hide();
+                    editButton.show();
+                    deleteButton.show();
+                } else {
+                    alert("Wystąpił błąd podczas aktualizacji komentarza.");
                 }
-            
+            },
+            error: function () {
+                alert("Wystąpił błąd podczas komunikacji z serwerem.");
+            }
+
         });
     });
 </script>

@@ -4,6 +4,7 @@ using BasketballLeagueTracker.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BasketballLeagueTracker.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230928235951_playerStats")]
+    partial class playerStats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,11 +217,11 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.GamePlayerStats", b =>
                 {
-                    b.Property<int?>("PlayerId")
+                    b.Property<int>("GamePlayerStatsId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("GameId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GamePlayerStatsId"));
 
                     b.Property<int?>("Assists")
                         .HasColumnType("int");
@@ -232,10 +235,16 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.Property<int?>("Fouls")
                         .HasColumnType("int");
 
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("IsOnBench")
                         .HasColumnType("bit");
 
                     b.Property<int?>("OffensiveRebounds")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PlayerId")
                         .HasColumnType("int");
 
                     b.Property<int?>("Points")
@@ -247,15 +256,17 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.Property<int?>("Steals")
                         .HasColumnType("int");
 
-                    b.Property<long?>("TimeSpend")
-                        .HasColumnType("bigint");
+                    b.Property<int?>("TimeSpend")
+                        .HasColumnType("int");
 
                     b.Property<int?>("Turnovers")
                         .HasColumnType("int");
 
-                    b.HasKey("PlayerId", "GameId");
+                    b.HasKey("GamePlayerStatsId");
 
                     b.HasIndex("GameId");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("GamePlayerStats");
                 });
@@ -880,14 +891,12 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.HasOne("BasketballLeagueTracker.Models.Game", "Game")
                         .WithMany("GamePlayerStats")
                         .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("BasketballLeagueTracker.Models.Player", "Player")
                         .WithMany("PlayerStats")
                         .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Game");
 

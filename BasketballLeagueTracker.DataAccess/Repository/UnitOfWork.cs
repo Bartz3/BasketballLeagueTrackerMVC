@@ -1,5 +1,6 @@
 ﻿using BasketballLeagueTracker.DataAccess.Data;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
+using BasketballLeagueTracker.Models;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
         public IArticleRepository Article {get;private set;}
         public ICommentRepository Comment {get;private set;}
         public IGameRepository Game {get;private set;}
+        public IGamePlayerStatsRepository GamePlayerStats { get;private set;}
         private  AppDbContext _db;
 
         public UnitOfWork(AppDbContext db)
@@ -29,6 +31,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             Article = new ArticleRepository(_db);
             Comment= new CommentRepository(_db);
             Game= new GameRepository(_db);
+            GamePlayerStats= new GamePlayerStatsRepository(_db);
         }
 
         public void Save()

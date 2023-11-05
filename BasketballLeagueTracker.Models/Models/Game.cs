@@ -20,6 +20,7 @@ namespace BasketballLeagueTracker.Models
     {
         public int GameId { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy HH:mm}", ApplyFormatInEditMode = true)]
         public DateTime GameDate { get; set; }
         public GameStatus Status { get; set; } = GameStatus.NotStarted;
 

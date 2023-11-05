@@ -78,6 +78,7 @@ namespace BasketballLeagueTracker.Models
         public int? GamesPlayed { get; set; }
 
         public ICollection<FavouritePlayer>? PlayerFollowers { get; set; }
+        public ICollection<GamePlayerStats>? PlayerStats { get; set; }
 
         public string FullName => $"{Name} {Surname}";
         public string? FormattedBirthday => Birthday?.ToString("yyyy-MM-dd");

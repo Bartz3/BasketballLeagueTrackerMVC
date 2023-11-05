@@ -14,6 +14,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository.IRepository
         ITeamRepository Team { get; }
         IPlayerRepository Player { get; }
         IGameRepository Game { get; }
+        IGamePlayerStatsRepository GamePlayerStats { get; }
        
         void Save();
 

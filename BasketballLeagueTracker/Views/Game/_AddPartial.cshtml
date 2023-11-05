@@ -3,9 +3,8 @@
 @{
     TempData["LeagueId"] = Model.LeagueId;
 }
-<form method="post" asp-controller="Game" asp-action="Upsert" enctype="multipart/form-data" class="container mt-5">
+<form method="post" asp-controller="Game" asp-action="Create" enctype="multipart/form-data" class="container mt-5">
     <input asp-for="Game.GameId" type="hidden" />
-
     <div class="card">
         <div class="card-header text-center">
             <h2 class="card-title">
@@ -15,7 +14,7 @@
         <div class="card-body">
             <div class="form-group">
                 <label asp-for="Game.GameDate" class="control-label">Data meczu</label>
-                <input asp-for="Game.GameDate" class="form-control" />
+                <input asp-for="Game.GameDate" class="form-control" type="datetime-local" />
                 <span asp-validation-for="Game.GameDate" class="text-danger"></span>
             </div>
 
@@ -24,16 +23,35 @@
                 <select asp-for="Game.Status" asp-items="Html.GetEnumSelectList<GameStatus>()" class="form-control"></select>
                 <span asp-validation-for="Game.Status" class="text-danger"></span>
             </div>
-
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label asp-for="Game.HomeTeamId" class="control-label">Drużyna gospodarzy</label>
+                        <select asp-for="Game.HomeTeamId" class="form-control" asp-items="Model.HomeTeamSL"></select>
+                        <span asp-validation-for="Game.HomeTeamId" class="text-danger"></span>
+
+                    </div>
+            
+
+                </div>
+                <div class="col-md-6">
+
+        <div class="form-group">
+                        <label asp-for="Game.AwayTeamId" class="control-label">Drużyna gości</label>
+                        <select asp-for="Game.AwayTeamId" class="form-control" asp-items="Model.AwayTeamSL"></select>
+                        <span asp-validation-for="Game.AwayTeamId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group ">
                         <label asp-for="Game.AwayTeamScore" class="control-label">Wynik gości</label>
                         <input asp-for="Game.AwayTeamScore" class="form-control" />
                         <span asp-validation-for="Game.AwayTeamScore" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2 offset-md-4">
                     <div class="form-group">
                         <label asp-for="Game.HomeTeamScore" class="control-label">Wynik gospodarzy</label>
                         <input asp-for="Game.HomeTeamScore" class="form-control" />
@@ -42,23 +60,13 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Game.AwayTeamId" class="control-label">Drużyna gości</label>
-                <select asp-for="Game.AwayTeamId" class="form-control" asp-items="Model.AwayTeamSL"></select>
-                <span asp-validation-for="Game.AwayTeamId" class="text-danger"></span>
-            </div>
 
-            <div class="form-group">
-                <label asp-for="Game.HomeTeamId" class="control-label">Drużyna gospodarzy</label>
-                <select asp-for="Game.HomeTeamId" class="form-control" asp-items="Model.HomeTeamSL"></select>
-                <span asp-validation-for="Game.HomeTeamId" class="text-danger"></span>
-            </div>
         </div>
         <div class="card-footer text-center">
             <button type="submit" class="btn btn-primary">
                 @(Model.Game != null && Model.Game.GameId != 0 ? "Edytuj " : "Dodaj ")
             </button>
-            <a asp-controller="League" asp-action="Details" class="btn btn-outline-dark">Wróć do widoku ligi</a>
+            <a asp-controller="League" asp-action="Details" asp-route-leagueId="@Model.LeagueId" class="btn btn-outline-dark">Wróć do widoku ligi</a>
         </div>
     </div>
     <span asp-validation-summary="All" class="text-danger"></span>

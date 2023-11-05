@@ -24,7 +24,7 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Index()
         {
-            var leagueList = _unitOfWork.League.GetAll(null);
+            List<League> leagueList = _unitOfWork.League.GetAll(null).ToList();
 
             return View(leagueList);
         }
@@ -102,7 +102,7 @@ namespace BasketballLeagueTracker.Controllers
         }
         public IActionResult Details(int leagueId)
         {
-            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles,Games"); 
+            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles,Games.HomeTeam,Games.AwayTeam"); 
 
             ViewBag.IsFavourite = IsFavourite(leagueId);
             //TempData["SelectedTeam"] = team;
