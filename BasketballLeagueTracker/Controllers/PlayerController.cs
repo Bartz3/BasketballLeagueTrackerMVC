@@ -29,7 +29,6 @@ namespace BasketballLeagueTracker.Controllers
         {
             var player = _unitOfWork.Player.Get(t => t.PlayerId == playerId, "Team");
             ViewBag.IsFavourite = IsFavourite(playerId);
-            //TempData["SelectedTeam"] = team;
 
             return View(player);
         }
@@ -111,18 +110,9 @@ namespace BasketballLeagueTracker.Controllers
                 }
                 else
                 {
-                    //Player existingPlayer = _unitOfWork.Player.Get(p => p.PlayerId == playerVM.Player.PlayerId, "Team");
-                    //_unitOfWork.Player.Update(playerVM.Player);
-
-                    //existingPlayer.Name = playerVM.Player.Name;
-                    //_unitOfWork.Player.Update(existingPlayer);
-
-
                     int playerId = playerVM.Player.PlayerId;
                     _unitOfWork.Player.Update(playerId ,playerVM.Player);
                     TempData["success"] = "Zawodnik został zmodyfikowany";
-
-
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
