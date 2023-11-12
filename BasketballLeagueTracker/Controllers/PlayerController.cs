@@ -61,7 +61,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             else // Editing player
             {
-                Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, null);
+                Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, "Team");
                 var pos = player.Positions;
                 PlayerViewModel playerVM = new PlayerViewModel()
                 {
@@ -106,19 +106,35 @@ namespace BasketballLeagueTracker.Controllers
 
                 if (playerVM.Player.PlayerId == 0)
                 {
-
                     _unitOfWork.Player.Add(playerVM.Player);
                     TempData["success"] = "Zawodnik został dodany";
                 }
                 else
                 {
-                    _unitOfWork.Player.Update(playerVM.Player);
+                    //Player existingPlayer = _unitOfWork.Player.Get(p => p.PlayerId == playerVM.Player.PlayerId, "Team");
+                    //_unitOfWork.Player.Update(playerVM.Player);
+
+                    //existingPlayer.Name = playerVM.Player.Name;
+                    //_unitOfWork.Player.Update(existingPlayer);
+
+
+                    int playerId = playerVM.Player.PlayerId;
+                    _unitOfWork.Player.Update(playerId ,playerVM.Player);
                     TempData["success"] = "Zawodnik został zmodyfikowany";
+
+
                 }
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            return View();
+            playerVM.Countries = Utility.StaticDetails.countries.Select(c => new SelectListItem
+            {
+                Text = c,
+                Value = c,
+                Selected = c == "Polska"
+            }).ToList();
+
+            return View(playerVM);
         }
 
         public IActionResult Delete(int? id)

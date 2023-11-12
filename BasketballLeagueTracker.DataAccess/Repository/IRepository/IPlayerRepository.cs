@@ -9,7 +9,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository.IRepository
 {
     public interface IPlayerRepository : IRepository<Player>
     {
-        void Update(Player player);
+        void Update(int playerId,Player player);
       
     }
 }

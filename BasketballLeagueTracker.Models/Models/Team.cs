@@ -10,7 +10,7 @@ namespace BasketballLeagueTracker.Models
     {
         public int TeamId { get; set; }
         [Display(Name = "Nazwa")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [Display(Name = "Opis")]
         public string? Description { get; set; }
 

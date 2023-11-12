@@ -5,9 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using BasketballLeagueTracker.Models;
 using Bogus;
+using Bogus.DataSets;
 
 namespace BasketballLeagueTracker.Utility.DataGenerator
 {
+    public enum Gender
+    {
+        Male,
+        Female
+    }
     public class PlayerGenerator
     {
         private Faker<Player> fakePlayerModel;
@@ -37,9 +43,9 @@ namespace BasketballLeagueTracker.Utility.DataGenerator
                          return PlayerPosition.Center;
                  })
                  .RuleFor(p => p.Weight, f => Math.Round(f.Random.Double(50, 120), 1))
-                 .RuleFor(p => p.Country, f => f.Address.Country())
+                 .RuleFor(p => p.Country, f => "Polska")
                  .RuleFor(p => p.IsInTeam, f => true)
-                 .RuleFor(p=>p.TeamId,f=>1);
+                 .RuleFor(p=>p.TeamId,f=>9);
 
         }
 

@@ -74,12 +74,16 @@ namespace BasketballLeagueTracker.Controllers
 
             List<Player> xd = new List<Player>();
 
-            foreach (var homePlayerStats in gameVM.Game.HomeTeam.Players.SelectMany(p => p.PlayerStats).Where(x=>x.GameId==game.GameId))
+            foreach (var homePlayerStats in gameVM.Game.HomeTeam.Players.
+                SelectMany(p => p.PlayerStats).
+                Where(x=>x.GameId==game.GameId))
             {
                 gameVM.HomeTeamGPS.Add(homePlayerStats);
             }
 
-            foreach (var awayPlayerStats in gameVM.Game.AwayTeam.Players.SelectMany(p => p.PlayerStats).Where(x => x.GameId == game.GameId))
+            foreach (var awayPlayerStats in gameVM.Game.AwayTeam.Players
+                .SelectMany(p => p.PlayerStats).
+                Where(x => x.GameId == game.GameId))
             {
                 gameVM.AwayTeamGPS.Add(awayPlayerStats);
             }

@@ -226,7 +226,8 @@ namespace BasketballLeagueTracker.DataAccess.Data
             string localCS = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=D:\\BasketballLeagueTracker\\BasketballLeagueTracker.DataAccess\\Database\\BLTdatabase.mdf;Integrated Security=True";
 
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer(serverCS);
+            optionsBuilder.UseSqlServer(localCS);
+
             return new AppDbContext(optionsBuilder.Options);
         }
     }

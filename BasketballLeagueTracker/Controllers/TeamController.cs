@@ -278,7 +278,7 @@ namespace BasketballLeagueTracker.Controllers
                     message = messageToDisplay
                 });
             }
-            if (league.Teams.Count > 13)
+            if (league.Teams.Count > 16)
             {
                 messageToDisplay = $"Przekroczono liczbę drużyn w lidze ${league.Name}." +
                     "\n Maksmalna liczba wynosi 16";

@@ -1,4 +1,5 @@
 ﻿using BasketballLeagueTracker.DataAccess.Data;
+using BasketballLeagueTracker.DataAccess.Migrations;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.Models;
 using System;
@@ -20,9 +21,25 @@ namespace BasketballLeagueTracker.DataAccess.Repository
         }
 
 
-        public void Update(Player player)
+        //public void Update(Player player)
+        //{
+
+        //    _db.Players.Update(player);
+        //}
+        public void Update(int playerId,Player player)
         {
-            _db.Players.Update(player);
+            var existingPlayer=_db.Players.First(p=>p.PlayerId==playerId);
+
+            existingPlayer.Name = player.Name;
+            existingPlayer.Surname = player.Surname;
+            existingPlayer.UniformNumber = player.UniformNumber;
+            existingPlayer.Birthday = player.Birthday;
+            existingPlayer.Country = player.Country;
+            existingPlayer.Weight = player.Weight;
+            existingPlayer.Height = player.Height;
+            existingPlayer.Positions = player.Positions;
+
+            _db.Players.Update(existingPlayer);
         }
     }
 

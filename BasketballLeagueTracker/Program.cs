@@ -16,7 +16,7 @@ var services = builder.Services;
 // Add services to the container.
 services.AddControllersWithViews();
 services.AddDbContext<AppDbContext>(o =>
-    o.UseSqlServer(builder.Configuration.GetConnectionString("BasketCS")).ConfigureWarnings(warnings =>
+    o.UseSqlServer(builder.Configuration.GetConnectionString("BasketCSLocal")).ConfigureWarnings(warnings =>
             warnings.Ignore(CoreEventId.InvalidIncludePathError)));
 // Application user and users roles
 services.AddIdentity<ApplicationUser, IdentityRole>(options =>

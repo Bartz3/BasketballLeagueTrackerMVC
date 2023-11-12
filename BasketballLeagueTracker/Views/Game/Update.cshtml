@@ -88,63 +88,36 @@
                 @foreach (var player in Model.Game.HomeTeam.Players)
                 {
                     <tr>
-                        @{
-                            var playerStats = player.PlayerStats.Where(x => x.GameId == Model.Game.GameId);
-                        }
                         <td>@player.FullName (#@player.UniformNumber)</td>
+                        @{
+                            var playerStats = Model.HomeTeamGPS.FirstOrDefault(stats => stats.PlayerId == player.PlayerId);
+                        }
                         <td>
-                            @foreach (var stat in Model.HomeTeamGPS)
-                            {
-                                <input asp-for="@stat.TimeSpend" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.TimeSpend" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Points" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.Points" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Rebounds" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.Rebounds" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.DefensiveRebounds" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.DefensiveRebounds" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.OffensiveRebounds" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.OffensiveRebounds" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Assists" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.Assists" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Steals" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.Steals" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Blocks" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.Blocks" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Turnovers" class="form-control" />
-                            }
+                            <input asp-for="@playerStats.Turnovers" class="form-control" />
                         </td>
                     </tr>
                 }
