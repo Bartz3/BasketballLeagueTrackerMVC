@@ -1,0 +1,83 @@
+﻿@*@model List<Player>
+@{
+    ViewData["Title"] = "Zawodnicy";
+}*@
+
+<div class="container">
+    <div class="row pt-3">
+        <div class="col-12 text-center">
+            <h2 class="text-primary">
+                Poznaj nasz skład
+            </h2>
+            <p class="lead">Odkryj fascynujący świat zawodników, drużyn i lig!</p>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs  justify-content-center" id="myTabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="players-tab" data-bs-toggle="tab" href="#players" role="tab" aria-controls="players" aria-selected="true">Zawodnicy</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="teams-tab" data-bs-toggle="tab" href="#teams" role="tab" aria-controls="teams" aria-selected="false">Drużyny</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="leagues-tab" data-bs-toggle="tab" href="#leagues" role="tab" aria-controls="leagues" aria-selected="false">Ligi</a>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-3">
+        <!-- Search Players -->
+        <div class="tab-pane fade show active" id="players" role="tabpanel" aria-labelledby="players-tab">
+            <table id="searchPlayerData" class="table hover table-striped " style="width:100%;color:white;">
+                <thead>
+                    <tr>
+                        <th>Zdjęcie</th>
+                        <th>Imie</th>
+                        <th>Nazwisko</th>
+                        <th>Numer</th>
+                        <th>Pozycja</th>
+                        <th>Drużyna</th>
+                        <th>Waga(kg)</th>
+                        <th>Wzrost(cm)</th>
+                        <th>Urodziny</th>
+                        <th>Kraj</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <!-- Search Teams -->
+        <div class="tab-pane fade" id="teams" role="tabpanel" aria-labelledby="teams-tab">
+            <table id="searchTeamData" class="table hover table-striped" style="width:100%; color:white;">
+                <thead>
+                    <tr>
+                        <th>Logo</th>
+                        <th>Nazwa</th>
+                        <th>Opis</th>
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+
+        <!-- Search Leagues -->
+        <div class="tab-pane fade" id="leagues" role="tabpanel" aria-labelledby="leagues-tab">
+            <table id="searchLeagueData" class="table hover table-striped" style="width:100%; color:white;">
+                <thead>
+                    <tr>
+                        <th>Logo</th>
+                        <th>Nazwa</th>
+                        <th>Opis</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js//searchPlayer.js"></script>
+}
+
+
+<link rel="stylesheet" type="text/css" href="~/css/search.css" />

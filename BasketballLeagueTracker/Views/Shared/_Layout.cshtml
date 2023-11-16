@@ -45,37 +45,11 @@
                             <a class="nav-link" asp-controller="Game" asp-action="Index">Mecze</a>
                         </li>
                     </ul>
-                    <form class="form-inline mx-4 my-lg-0 col-md-3 search-wrapper">
-                        <input class="form-control mr-sm-2" id="search-input" type="search" placeholder="Wyszukaj">
-                        <ul id="search-results" style="display:none;">
-                            <!-- results -->
-                        </ul>
-                        <select id="search-type" class="form-control mr-sm-2">
-                            <option value="player">Zawodnik</option>
-                            <option value="team">Drużyna</option>
-                            <option value="league">Liga</option>
-                        </select>
-
-                    </form>
-
-                    <style>
-                        .search-wrapper {
-                            display: flex;
-                            align-items: center;
-                            gap: 0.3rem; 
-                        }
-
-                        #search-input {
-                            width:100%;
-                            flex: 6; 
-
-                        }
-
-                        #search-type {
-                            flex: 1.2; 
-                        }
-                    </style>
-
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Search" asp-action="Index">Wyszukiwarka&nbsp;&nbsp;<i class="bi bi-search"></i></a>
+                        </li>
+                    </ul>
 
                     <br />
                     <partial name="_LoginPartial" />
@@ -98,7 +72,7 @@
 
     
     <script src="~/lib/jquery/dist/jquery.js"></script>
-
+@*
     <script type="text/javascript">
         $(document).ready(function () {
             $('#search-input').selectize({
@@ -141,7 +115,7 @@
         }
 
    </style>
-
+*@
 
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> @*Bootstrap.js*@
