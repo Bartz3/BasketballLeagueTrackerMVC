@@ -1,15 +1,10 @@
-﻿@*@model List<Player>
-@{
-    ViewData["Title"] = "Zawodnicy";
-}*@
-
-<div class="container">
-    <div class="row pt-3">
+﻿<div class="container">
+    <div class="row pt-3 custom-header">
         <div class="col-12 text-center">
-            <h2 class="text-primary">
+            <h2 class="text-primary custom-title">
                 Poznaj nasz skład
             </h2>
-            <p class="lead">Odkryj fascynujący świat zawodników, drużyn i lig!</p>
+            <p class="lead custom-subtitle">Odkryj fascynujący świat zawodników, drużyn i lig!</p>
         </div>
     </div>
 
@@ -25,7 +20,7 @@
         </li>
     </ul>
 
-    <div class="tab-content mt-3">
+    <div class="tab-content mt-3 text-center" >
         <!-- Search Players -->
         <div class="tab-pane fade show active" id="players" role="tabpanel" aria-labelledby="players-tab">
             <table id="searchPlayerData" class="table hover table-striped " style="width:100%;color:white;">
@@ -73,11 +68,15 @@
         </div>
 
     </div>
-</div>
 
+</div>
 @section Scripts{
-    <script src="~/js//searchPlayer.js"></script>
+    <script src="~/js//search.js"></script>
 }
 
 
 <link rel="stylesheet" type="text/css" href="~/css/search.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" integrity="sha512-..." crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/dataTables.jqueryui.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
+
