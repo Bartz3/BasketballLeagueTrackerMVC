@@ -35,14 +35,6 @@
                             <select asp-for="SelectedPositions" asp-items="@(PlayerPositionsHelper.GetPlayerPositions(null))" class="form-control" multiple style="height: 135px; overflow-y: hidden;"></select>
 
                             }
-          @*                  <select multiple="multiple" name="Positions" id="Positions">
-                                @foreach (var position in Model.SelectedPositions)
-                                {
-                                    <option value="@position" @(Model.SelectedPositions.Contains(position) ? "selected" : "")>
-                                        @position
-                                    </option>
-                                }
-                            </select>*@
                         </div>
                     </div>
                     <div class="col-md-6">

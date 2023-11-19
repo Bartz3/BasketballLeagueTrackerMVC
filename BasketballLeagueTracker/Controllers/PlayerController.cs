@@ -85,6 +85,7 @@ namespace BasketballLeagueTracker.Controllers
 
             if (ModelState.IsValid)
             {
+                playerVM.Player.Team = null;playerVM.Player.TeamId = null;
                 // Adding/ editing player poisitions
                 if (playerVM.SelectedPositions != null)
                 {
@@ -133,7 +134,7 @@ namespace BasketballLeagueTracker.Controllers
             {
                 return NotFound();
             }
-            Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, null);
+            Player? player = _unitOfWork.Player.Get(p => p.PlayerId == id, "Team");
 
             if (player == null)
             {
@@ -198,6 +199,7 @@ namespace BasketballLeagueTracker.Controllers
             {
                 player.TeamId = teamId;
                 player.IsInTeam = true;
+                team.Players.Add(player);
                 _unitOfWork.Save();
                 messageToDisplay = $"Zawodnik {player.FullName} został dodany do drużyny";
             }

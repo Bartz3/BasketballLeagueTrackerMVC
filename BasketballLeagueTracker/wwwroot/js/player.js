@@ -183,30 +183,3 @@ function mapPositionToText(position) {
     }
     return positions.reverse().join(", ");
 }
-
-
-
-        //"language": {
-        //    "decimal": "",
-        //    "emptyTable": "Brak danych",
-        //    "info": " _START_ - _END_ z _TOTAL_ wyników",
-        //    "infoEmpty": "0 - 0 z 0 wyników",
-        //    "infoFiltered": "(filtrowano z _MAX_ wyników)",
-        //    "infoPostFix": "",
-        //    "thousands": ",",
-        //    "lengthMenu": "Pokaż _MENU_ wyników",
-        //    "loadingRecords": "Ładowanie...",
-        //    "processing": "",
-        //    "search": "Wyszukaj:",
-        //    "zeroRecords": "Nie znaleziono wyników",
-        //    "paginate": {
-        //        "first": "Pierwsza",
-        //        "last": "Ostatnia",
-        //        "next": "Następna",
-        //        "previous": "Poprzednia"
-        //    },
-        //    "aria": {
-        //        "sortAscending": ": activate to sort column ascending",
-        //        "sortDescending": ": activate to sort column descending"
-        //    }
-        //}

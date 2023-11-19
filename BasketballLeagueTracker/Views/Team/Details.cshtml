@@ -1,38 +1,46 @@
-﻿@model Team
-@{
-    if (Model != null)
-    {
-        TempData["TeamName"] = @Model.Name;
-    }
-}
-
-<div class="border p-3 mt-4">
-    <div class="row justify-content-end pb-2">
-        <div class="col-auto">
-            <a asp-controller="Team" asp-action="Index" class="btn btn-outline-secondary">Przejdź do listy drużyn</a>
+﻿<div class="container mt-4">
+    <div class="card team-details-card">
+        <div class="card-header">
+            <h2 class="card-title">@ViewBag.TeamName</h2>
         </div>
-        <div class="col-auto">
-            <a asp-cont roller="Player" asp-action="AddPlayerToTeam" asp-route-teamId="@Model?.TeamId" class="btn btn-primary">Dodaj zawodnika do drużyny</a>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 team-logo-section">
+                    @if (Model.TeamLogo != null)
+                    {
+                        <img id="team-logo" src="data:image/png;base64,@(Convert.ToBase64String(Model.TeamLogo))" class="img-fluid" />
+                    }
+                    else
+                    {
+                        <img id="team-logo" src="~/images/default-team2.png" alt="Domyślne zdjęcie" class="img-fluid" />
+                    }
+                </div>
+                <div class="col-md-9">
+                    <p class="team-description">@Model.Description</p>
+                    <div class="coach-info">
+                        <span class="coach-label">Trener:</span>
+                        <span class="coach-name">@(ViewBag.Coach != null ? ViewBag.Coach : "-")</span>
+                        @if (ViewBag.CoachPhoto != null)
+                        {
+                            <img id="coach-photo" src="data:image/png;base64,@(Convert.ToBase64String(ViewBag.CoachPhoto))" class="img-fluid coach-photo" />
+                        }
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-auto">
+        <div class="card-footer text-right">
             <a asp-controller="Team" asp-action="AddTeamToFavourites" asp-route-teamId="@Model?.TeamId" class="btn btn-outline-primary">
-                @if (ViewBag.IsFavourite)
-                {
-                    <i class="bi bi-heart-fill"></i>
-                }
-                else
-                {
-                    <i class="bi bi-heart"> </i>
-                }
+                <i class="bi @(ViewBag.IsFavourite ? "bi-heart-fill" : "bi-heart")"></i> Dodaj do ulubionych
             </a>
+            <a asp-controller="Player" asp-action="AddPlayerToTeam" asp-route-teamId="@Model?.TeamId" class="btn btn-success">Dodaj zawodnika</a>
         </div>
     </div>
-</div>
+
+    <h4 class="mt-5 mb-3">Zawodnicy drużyny</h4>
+    <!-- Tabela zawodników -->
 
 
-<div class="container mt-5">
-    <h2 class="mb-4">Zawodnicy drużyny @ViewBag.TeamName</h2>
-    <table class="table table-hover table-bordered">
+    <table class="table table-striped">
         <thead class="table-primary">
             <tr>
                 <th>Foto</th>
@@ -61,12 +69,8 @@
                             <img src="~/images/default-user.jpg" alt="Domyślne zdjęcie" class="img-fluid" style="max-height: 100px;">
                         }
                     </td>
-                    <td>
-                        <a href="@Url.Action("Details", "Player", new { playerId = player.PlayerId })">@player.Name</a>
-
-                        @*<a href="/player/details?@player.PlayerId">@player.Name</a>*@
-                    </td>
-                    <td>@player.Surname</td>
+                    <td><a href="@Url.Action("Details", "Player", new { playerId = player.PlayerId })" class="link">@player.Name</a>   </td>
+                    <td><a href="@Url.Action("Details", "Player", new { playerId = player.PlayerId })" class="link">@player.Surname</a></td>
                     <td>@player.Birthday?.ToString("dd-MM-yyyy")</td>
                     <td>@player.UniformNumber</td>
                     <td>@player.GetPositionsString(player.Positions)</td>
@@ -84,5 +88,44 @@
             }
         </tbody>
     </table>
-</div>
 
+    </div>
+    <style>
+        .team-details-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.team-logo-section img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.team-description {
+    color: #343344;
+    margin-bottom: 1rem;
+}
+
+.coach-info {
+    display: flex;
+    align-items: center;
+}
+
+.coach-label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.coach-photo {
+    max-width: 50px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+/* Stylizacja tabeli zawodników */
+
+    </style>
+
+<link rel="stylesheet" type="text/css" href="~/css/default.css" />
+<link rel="stylesheet" type="text/css" href="~/css/teamDetails.css" />

@@ -7,32 +7,66 @@
             <h2 class="text-primary">Usuń zawodnika</h2>
             </hr>
         </div>
-        @*<div asp-validation-summary="All"></div>*@
-        <div class="mb-3 row p-1">
-            <label asp-for="Name" class="p-0"></label>
-            <input asp-for="Name" disabled class="form-control" />
-        </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="Surname" class="p-0"></label>
-            <input asp-for="Surname" disabled class="form-control" />
-        </div>
-        <div class="mb-3 row p-1">
-           
-            <span>@Model.GetPositionsString(Model.Positions)</span>
-
-@*            <label asp-for="Positions" class="p-0"></label>
-            <select asp-for="Positions" disabled asp-items="@(PlayerPositionsHelper.GetPlayerPositions())" multiple></select>*@
-            @*<select asp-for="Positions" asp-items="@(new SelectList(Enum.GetNames(typeof(PlayerPosition))))"></select>*@
-            @*  <select asp-for="Positions" asp-items="Html.GetEnumSelectList<PlayerPosition>()" class="form-control"></select>*@
-        </div>
         <div class="row">
-            <div class="col-6 col-md-3">
-                <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć tego zawodnika?')" class="btn btn-danger form-control">Usuń</button>
-            </div>
-            <div class="col-6 col-md-3">
-                <a asp-controller="Player" asp-action="Index" class="btn btn-outline-secondary form-control">Wróć do listy zawodników</a>
-            </div>
+            <div class="col-md-6">
+                <!-- Left side -->
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" disabled />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Surname" class="form-label"></label>
+                    <input asp-for="Surname" class="form-control" disabled />
+                </div>
+                <div class="mb-3">
+                    <label  class="form-label">Drużyna</label>
+                    <input asp-for="Team.Name" class="form-control" disabled />
+                </div>
+                <div class="mb-3 ">
+                    @if (Model.Photo != null)
+                    {
+                        <img id="player-photo" src="data:image/png;base64,@(Convert.ToBase64String(Model.Photo))" style="max-height:20%;max-width:20%;" />
+                    }
+                    else
+                    {
+                        <img id="player-photo" src="~/images/default-user.jpg" alt="Domyślne zdjęcie" class="img-fluid" style="max-height:20%;max-width:20%;">
+                    }
 
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- Right side -->
+                <div class="mb-3">
+                    <label asp-for="Birthday" class="form-label"></label>
+                    <input asp-for="Birthday" type="date" class="form-control" min="1900-01-01" max="2015-12-31" disabled />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="UniformNumber" class="form-label"></label>
+                    <input asp-for="UniformNumber" class="form-control" placeholder="Numer na koszulce" disabled />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Height" class="form-label"></label>
+                    <input asp-for="Height" class="form-control" placeholder="Wzrost w cm" disabled />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Weight" class="form-label"></label>
+                    <input asp-for="Weight" class="form-control" placeholder="Waga w kg" disabled />
+                </div>
+
+            </div>
         </div>
+
+
+
+<div class="row justify-content-center">
+    <div class="col-auto">
+        <button type="submit" onclick="return confirm('Czy na pewno chcesz usunąć tego zawodnika?')" class="btn btn-danger form-control">Usuń</button>
+    </div>
+    <div class="col-auto">
+        <a asp-controller="Player" asp-action="Index" class="btn btn-outline-secondary form-control">Wróć do listy zawodników</a>
+    </div>
+</div>
+
+
     </div>
 </form>

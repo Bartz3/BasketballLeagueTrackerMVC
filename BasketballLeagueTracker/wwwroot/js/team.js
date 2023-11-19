@@ -25,8 +25,6 @@ function loadTable() {
     }
     dataTable = $('#teamData',).DataTable({
         ajax: { url: ajaxURL },
-        //responsive: true,
-        //scrollY: '70vh',
         
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pl.json',

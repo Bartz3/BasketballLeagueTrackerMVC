@@ -1,9 +1,6 @@
 ﻿$(document).ready(
     function () {
         loadTable();
-        //deletePlayersInRange();
-        //addPlayerToTeamListener();
-
     }
 )
 
@@ -51,8 +48,6 @@ function loadTable() {
             {
                 data: { Id: "Id", LockoutEnd: "lockoutEnd" },
                 render: function (data) {
-                //console.log(data.LockoutEnd);
-                    //console.log(data.Id);
                     var date = new Date().getTime();
                     var lockout = new Date(data.LockoutEnd).getTime();
                     if (lockout > date) {
@@ -61,7 +56,7 @@ function loadTable() {
                           Zablokowane <i class="bi bi-lock-fill "></i> 
                            </a>
                            <a href="/user/EditUserRole?userId=${data.Id}" class='btn btn-warning' style="cursor:pointer">
-                         Uprawnienia <i class="bi bi-pencil-square"></i> 
+                         Role <i class="bi bi-pencil-square"></i> 
                            </a>
                         </div>`
                     } else {
@@ -70,7 +65,7 @@ function loadTable() {
                           Odblokowane <i class="bi bi-unlock-fill "></i> 
                            </a>
                            <a href="/user/EditUserRole?userId=${data.Id}" class='btn btn-warning' style="cursor:pointer">
-                         Uprawnienia <i class="bi bi-pencil-square"></i> 
+                         Role <i class="bi bi-pencil-square"></i> 
                            </a>
                         </div>`
     
@@ -96,35 +91,4 @@ function LockAccount(Id) {
         })
 }
 
-function deletePlayersInRange() {
-
-    $('#selectAllCheckbox').on('change', function () {
-        $('.player-checkbox').prop('checked', $(this).prop('checked'));
-    });
-
-    $('#deleteSelectedBtn').on('click', function () {
-        var selectedPlayers = $('.player-checkbox:checked').map(function () {
-            return $(this).val();
-        }).get();
-
-        if (selectedPlayers.length > 0) {
-            // Dodaj potwierdzenie przed usunięciem zawodników
-            if (confirm('Czy na pewno chcesz usunąć wybranych zawodników?')) {
-                $.ajax({
-                    url: '/player/deleteSelectedPlayers',
-                    method: 'POST',
-                    data: { selectedPlayers: selectedPlayers },
-                    success: function (result) {
-                        dataTable.ajax.reload();
-                    },
-                    error: function (error) {
-                        console.error(error);
-                    }
-                });
-            }
-        } else {
-            alert('Nie zaznaczono żadnych zawodników do usunięcia.');
-        }
-    });
-}
 

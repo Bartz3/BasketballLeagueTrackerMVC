@@ -24,9 +24,9 @@
                     <div class="card-body text-center">
                     @if (league.Logo != null)
                     {
-                        <img src="data:image/png;base64,@(Convert.ToBase64String(league.Logo))" alt="League Logo" class="card-img-top" style="width: 100px; height: 100px;">
+                        <img src="data:image/png;base64,@(Convert.ToBase64String(league.Logo))" alt="League Logo" class="card-img-top" style="width: 80%;">
                     }else{
-                            <img src="/images/deafult-league.png" alt=":(" style="max-width: 100%; ">
+                            <img src="/images/deafult-league.png" alt=":(" style="width: 80%; ">
                     }
                     <hr>
                         <a asp-controller="League" asp-action="Details" asp-route-leagueId="@league.LeagueId" class="link">

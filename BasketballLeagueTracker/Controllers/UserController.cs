@@ -72,7 +72,12 @@ namespace BasketballLeagueTracker.Controllers
         public IActionResult EditUserRole(string userId)
         {
             var user = _userRepository.Get(x=>x.Id==userId, null);
-
+            bool isLockedOut=false;
+            if (user != null)
+            {
+                isLockedOut = user.LockoutEnd.HasValue && user.LockoutEnd > DateTimeOffset.UtcNow;
+            }
+            ViewBag.isLockedOut = isLockedOut;
             var roleId = _userRepository.GetUsersRoles().FirstOrDefault(x => x.UserId == user.Id).RoleId;
             RoleViewModel roleVM = new RoleViewModel()
             {

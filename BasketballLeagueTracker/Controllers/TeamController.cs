@@ -86,6 +86,18 @@ namespace BasketballLeagueTracker.Controllers
         {
             var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players");
 
+            ViewBag.Coach = null;
+            
+            foreach ( var player in team.Players)
+                if(player.Positions== PlayerPosition.Coach)
+                {
+                    ViewBag.Coach = player.FullName;
+                    ViewBag.CoachPhoto = player.Photo;
+                }
+
+
+
+
             ViewBag.IsFavourite = IsFavourite(teamId);
 
             if (team == null)
