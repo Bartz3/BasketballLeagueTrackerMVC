@@ -7,7 +7,7 @@
             <div class="card shadow border-0">
                 <div class="card-header bg-primary text-white">
                     <h2 class="text-center">
-                        @( Model.Team.TeamId == 0 ? "Edytuj " : "Dodaj ") drużynę
+                        @(Model.Team != null && Model.Team.TeamId == 0 ? "Edytuj " : "Dodaj ") drużynę
                     </h2>
                 </div>
                 <div class="card-body p-4">
@@ -29,12 +29,7 @@
                                 <label asp-for="Team.TeamLogo" class="ms-2"></label>
                                 <input asp-for="Team.TeamLogo" name="file" type="file" class="form-control border-0 shadow " onchange="handleFileInputChange(this,'teamLogoPreview')" />
                             </div>
-                            <div class="form-group">
-                                <label for="stadiumLocation">Lokalizacja stadionu:</label>
-                                <div id="map" style="height: 300px;"></div> <!-- Kontener mapy -->
-                                <input type="hidden" asp-for="Team.StadiumLatitude" />
-                                <input type="hidden" asp-for="Team.StadiumLongitude" />
-                            </div>
+
 
                             @if (Model.Team.TeamLogo != null)
                             {
@@ -43,8 +38,17 @@
                             <div class="mb-3 row p-1">
                                 <img id="teamLogoPreview" src="#" alt="" style="max-width: 200px; max-height: 200px;" />
                             </div>
+
+                            <div class="form-group">
+                                <label for="stadiumLocation">Lokalizacja stadionu:</label>
+                                <div id="map" style="height: 300px;"></div>
+                                <input id ="teamLat" type="hidden" asp-for="Team.StadiumLatitude" name="Team.StadiumLatitude" />
+                                <input id="teamLong" type="hidden" asp-for="Team.StadiumLongitude" name="Team.StadiumLongitude" />
+
+                            </div>
+
                             <div class="row">
-                                <div class="col-6 col-md-3">
+                                <div class="col-6 col-md-3 mt-4">
                                     @if (Model.Team.TeamId == 0)
                                     {
                                         <button type="submit" class="btn btn-primary form-control">Edytuj</button>
@@ -72,60 +76,46 @@
     @{
         <partial name="_ValidationScriptsPartial" />
         <script src="~/js/site.js"></script>
-        
-         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-WLvSSFAzty14uSchw8-AJnRBUQxoh4o&callback=initMap" async defer></script>
-    <script>
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: { lat: 53.07, lng: 23.09 },
-                zoom: 8
-            });
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-            var marker;
-
-            // Dodaj listener kliknięcia, aby umieścić znacznik
-            map.addListener('click', function (e) {
-                if (marker) marker.setMap(null); // Usuń poprzedni znacznik, jeśli istnieje
-                marker = new google.maps.Marker({
-                    position: e.latLng,
-                    map: map
+        //defer
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-WLvSSFAzty14uSchw8-AJnRBUQxoh4o&callback=initMap" defer ></script>
+        <script>
+            function initMap() {
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    center: { lat: 53.07, lng: 23.09 },
+                    zoom: 8
                 });
 
-                // Ustaw wartości dla ukrytych pól formularza
-                $('input[name="Team.StadiumLatitude"]').val(e.latLng.lat());
-                $('input[name="Team.StadiumLongitude"]').val(e.latLng.lng());
-            });
-        }
-    </script>
+                var marker;
 
-        //<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
-        //<script>
-        //    function initMap() {
-        //        // Tworzenie mapy
-        //        var map = new google.maps.Map(document.getElementById('map'), {
-        //            zoom: 12,
-        //            center: { lat: 52.2297, lng: 21.0122 } // Ustawienie domyślnego położenia
-        //        });
+                map.addListener('click', function (e) {
+                    if (marker) marker.setMap(null); 
+                    marker = new google.maps.Marker({
+                        position: e.latLng,
+                        map: map
+                    });
 
-        //        // Pobieranie koordynat geograficznych dla adresu stadionu
-        //        var geocoder = new google.maps.Geocoder();
-        //        var address = "ul. Księcia Józefa Poniatowskiego 1, 03-901 Warszawa";
-        //        geocoder.geocode({ 'address': address }, function (results, status) {
-        //            if (status === 'OK') {
-        //                // Ustawienie znacznika na mapie
-        //                var marker = new google.maps.Marker({
-        //                    position: results[0].geometry.location,
-        //                    map: map,
-        //                    title: "Stadion Narodowy"
-        //                });
-        //                // Ustawienie centrum mapy na pozycji znacznika
-        //                map.setCenter(results[0].geometry.location);
-        //            } else {
-        //                alert('Geocode was not successful for the following reason: ' + status);
-        //            }
-        //        });
-        //    }
-        //</script>
+                    //var latitude = e.latLng.lat();
+                    //var inputElement = document.getElementById('teamLat');
+                    //inputElement.value = latitude;
+
+                    //var longitude = e.latLng.lng();
+                    //var inputElement2 = document.getElementById('teamLong');
+                    //inputElement2.value = longitude;
+
+                   //let xd= document.getElementById("teamLat").value = e.latLng.lat();
+                   //let xd2= document.getElementById("teamLong").value = e.latLng.lng();
+                   //console.log(xd);
+                   //console.log(xd2);
+                    $('input[name="StadiumLatitude"]').val(e.latLng.lat());
+                    $('input[name="StadiumLongitude"]').val(e.latLng.lng());
+
+                    console.log("lat: " + e.latLng.lat());
+                    console.log("lng: " + e.latLng.lng());
+                });
+            }
+        </script>
     }
 }
 

@@ -57,7 +57,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.ArticleImage", b =>
@@ -82,7 +82,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("ArticaleImages");
+                    b.ToTable("ArticaleImages", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.Comment", b =>
@@ -115,7 +115,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.FavouriteLeague", b =>
@@ -133,7 +133,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("LeagueId");
 
-                    b.ToTable("FavouriteLeague");
+                    b.ToTable("FavouriteLeague", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.FavouritePlayer", b =>
@@ -151,7 +151,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("FavouritePlayers");
+                    b.ToTable("FavouritePlayers", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.FavouriteTeam", b =>
@@ -169,7 +169,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("FavouriteTeam");
+                    b.ToTable("FavouriteTeam", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.Game", b =>
@@ -209,7 +209,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("LeagueId");
 
-                    b.ToTable("Games");
+                    b.ToTable("Games", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.GamePlayerStats", b =>
@@ -257,7 +257,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("GameId");
 
-                    b.ToTable("GamePlayerStats");
+                    b.ToTable("GamePlayerStats", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.League", b =>
@@ -294,7 +294,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("LeaugeMVPPlayerId");
 
-                    b.ToTable("Leagues");
+                    b.ToTable("Leagues", (string)null);
 
                     b.HasData(
                         new
@@ -356,7 +356,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
 
                     b.HasData(
                         new
@@ -430,7 +430,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("SeasonStatistics");
+                    b.ToTable("SeasonStatistics", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.Stadium", b =>
@@ -454,7 +454,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasKey("StadiumId");
 
-                    b.ToTable("Stadiums");
+                    b.ToTable("Stadiums", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.Team", b =>
@@ -500,7 +500,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                         .IsUnique()
                         .HasFilter("[StadiumId] IS NOT NULL");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.UserCommentRating", b =>
@@ -530,7 +530,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserCommentRatings");
+                    b.ToTable("UserCommentRatings", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

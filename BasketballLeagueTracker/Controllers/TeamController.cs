@@ -169,7 +169,8 @@ namespace BasketballLeagueTracker.Controllers
                 _unitOfWork.Save();
                 return RedirectToAction("Index");
             }
-            return View();
+            TempData["error"] = "Wystąpił błąd przy dodawaniu";
+            return View(teamVM);
         }
         public IActionResult Delete(int? id)
         {
