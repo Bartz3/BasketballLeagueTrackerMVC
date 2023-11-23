@@ -73,11 +73,13 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 .HasOne(p => p.Team)
                 .WithMany(t => t.Players)
                 .HasForeignKey(p => p.TeamId);
-            // Jedna drużyna ma jeden stadion
+            // Jedna drużyna ma jeden stadion, po usunięciu drużyny usuwamy stadion
             modelBuilder.Entity<Team>()
                 .HasOne(t => t.Stadium)
                 .WithOne(s => s.Team)
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey<Stadium>(s => s.TeamId) 
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Jedna drużyna ma wiele statystyk sezonu
             modelBuilder.Entity<SeasonStatistics>()
                 .HasOne(ss => ss.Team)

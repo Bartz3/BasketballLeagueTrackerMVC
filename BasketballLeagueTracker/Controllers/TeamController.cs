@@ -155,8 +155,22 @@ namespace BasketballLeagueTracker.Controllers
                 }
                 //team = teamVM.Team;
 
-                if (teamVM.Team.TeamId == 0)
+                // Stadium manage
+                if (teamVM.TeamStadium.StadiumId == 0 || teamVM.TeamStadium.StadiumId == null)
                 {
+                    _unitOfWork.Stadium.Add(teamVM.TeamStadium);
+                   
+                    _unitOfWork.Save();
+                }
+                else
+                {
+                    _unitOfWork.Stadium.Update(teamVM.TeamStadium);
+                }
+
+
+                if (teamVM.Team.TeamId == 0 || teamVM.Team.TeamId==null)
+                {
+                    teamVM.Team.Stadium = teamVM.TeamStadium;
                     _unitOfWork.Team.Add(teamVM.Team);
                     TempData["success"] = "Zespół został dodany";
                 }

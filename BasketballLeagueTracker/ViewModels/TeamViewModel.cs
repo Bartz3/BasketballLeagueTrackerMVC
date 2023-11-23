@@ -9,5 +9,7 @@ namespace BasketballLeagueTracker.ViewModels
         public IFormFile? Image { get; set; }
 
         public IEnumerable<Player>? AvailablePlayers { get; set; }
+
+        public Stadium? TeamStadium { get; set; }
     }
 }

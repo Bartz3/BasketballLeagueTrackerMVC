@@ -39,13 +39,27 @@
                                 <img id="teamLogoPreview" src="#" alt="" style="max-width: 200px; max-height: 200px;" />
                             </div>
 
+
+                            <div class="form-group">
+                                <label for="latitude">Szerokość geograficzna:</label>
+                                <input type="text" id="latitude" asp-for=TeamStadium.StadiumLatitude class="form-control" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label for="longitude">Długość geograficzna:</label>
+                                <input type="text" id="longitude" asp-for=TeamStadium.StadiumLongitude class="form-control" readonly />
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Adress</label>
+                                <input type="text" id="address" asp-for=TeamStadium.Address class="form-control" readonly />
+                            </div>
+
                             <div class="form-group">
                                 <label for="stadiumLocation">Lokalizacja stadionu:</label>
                                 <div id="map" style="height: 300px;"></div>
-                                <input id ="teamLat" type="hidden" asp-for="Team.StadiumLatitude" name="Team.StadiumLatitude" />
-                                <input id="teamLong" type="hidden" asp-for="Team.StadiumLongitude" name="Team.StadiumLongitude" />
-
+                                @* <input id="teamLat" type="hidden" asp-for="Team.StadiumLatitude" name="Team.StadiumLatitude" /> *@
+                                @* <input id="teamLong" type="hidden" asp-for="Team.StadiumLongitude" name="Team.StadiumLongitude" /> *@
                             </div>
+
 
                             <div class="row">
                                 <div class="col-6 col-md-3 mt-4">
@@ -76,46 +90,63 @@
     @{
         <partial name="_ValidationScriptsPartial" />
         <script src="~/js/site.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        //<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-WLvSSFAzty14uSchw8-AJnRBUQxoh4o&libraries=places"></script>
 
-        //defer
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-WLvSSFAzty14uSchw8-AJnRBUQxoh4o&callback=initMap" defer ></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-WLvSSFAzty14uSchw8-AJnRBUQxoh4o&callback=initMap" defer></script>
+
         <script>
+            var map;
+            var marker;
+            var geocoder; // Geocoder to address
+
+            var latitudeField = document.getElementById('latitude');
+            var longitudeField = document.getElementById('longitude');
+            var addressField = document.getElementById('address');
             function initMap() {
-                var map = new google.maps.Map(document.getElementById('map'), {
+                map = new google.maps.Map(document.getElementById('map'), {
                     center: { lat: 53.07, lng: 23.09 },
                     zoom: 8
                 });
 
-                var marker;
+                marker;
+
+
+                // Inicjalizacja Geocoder
+                geocoder = new google.maps.Geocoder();
 
                 map.addListener('click', function (e) {
-                    if (marker) marker.setMap(null); 
+                    if (marker) marker.setMap(null);
                     marker = new google.maps.Marker({
                         position: e.latLng,
                         map: map
                     });
 
-                    //var latitude = e.latLng.lat();
-                    //var inputElement = document.getElementById('teamLat');
-                    //inputElement.value = latitude;
+                    latitudeField.value = e.latLng.lat();
+                    longitudeField.value = e.latLng.lng();
 
-                    //var longitude = e.latLng.lng();
-                    //var inputElement2 = document.getElementById('teamLong');
-                    //inputElement2.value = longitude;
-
-                   //let xd= document.getElementById("teamLat").value = e.latLng.lat();
-                   //let xd2= document.getElementById("teamLong").value = e.latLng.lng();
-                   //console.log(xd);
-                   //console.log(xd2);
-                    $('input[name="StadiumLatitude"]').val(e.latLng.lat());
-                    $('input[name="StadiumLongitude"]').val(e.latLng.lng());
-
-                    console.log("lat: " + e.latLng.lat());
-                    console.log("lng: " + e.latLng.lng());
+                    // Wywołanie funkcji geokodowania
+                    reverseGeocode(e.latLng);
                 });
             }
+
+            //function reverseGeocode(latlng) {
+            //    geocoder.geocode({ 'location': latlng }, function (results, status) {
+            //        if (status === google.maps.GeocoderStatus.OK) {
+            //            if (results[0]) {
+            //                var formattedAddress = results[0].formatted_address;
+            //                addressField.value = formattedAddress;
+            //                console.log('Adres: ' + formattedAddress);
+
+            //                // Tutaj możesz wykorzystać znaleziony adres do wyświetlenia lub przetworzenia
+            //            } else {
+            //                console.log('Nie znaleziono adresu.');
+            //            }
+            //        } else {
+            //            console.log('Błąd Geocodingu: ' + status);
+            //        }
+            //    });
+            //}
         </script>
+
     }
 }
-

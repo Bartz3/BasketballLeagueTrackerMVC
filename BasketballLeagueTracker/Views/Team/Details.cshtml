@@ -86,8 +86,26 @@
             }
         </tbody>
     </table>
+    <div id="map" style="height:300px;">
 
     </div>
+    </div>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-WLvSSFAzty14uSchw8-AJnRBUQxoh4o&callback=initMap" defer></script>
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: 53.07, lng: 23.09 },
+            zoom: 8
+        });
+
+        // Umieszczenie markera na mapie w określonej lokalizacji
+        var marker = new google.maps.Marker({
+            position: { lat: parseFloat("53.07"), lng: parseFloat("23.09") },
+            map: map
+        });
+    }
+</script>
     <style>
         .team-details-card {
     background: #f8f9fa;

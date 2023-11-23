@@ -24,12 +24,11 @@ namespace BasketballLeagueTracker.Models
         public int? LeagueId { get; set; }
         public League? League { get; set; }
 
-        public double? StadiumLatitude { get; set; }
-        public double? StadiumLongitude { get; set; }
+        public string? StadiumLatitude { get; set; }
+        public string? StadiumLongitude { get; set; }
 
         public ICollection<Player>? Players { get; set; }
 
-        public int? StadiumId { get; set; }
         public Stadium? Stadium { get; set; }
 
         //public ICollection<FavouriteTeam>? FavouriteTeams { get; set; }
