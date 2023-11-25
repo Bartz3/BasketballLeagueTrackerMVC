@@ -84,7 +84,7 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Details(int teamId)
         {
-            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players");
+            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Stadium,Players");
 
             ViewBag.Coach = null;
             
@@ -167,15 +167,16 @@ namespace BasketballLeagueTracker.Controllers
                     _unitOfWork.Stadium.Update(teamVM.TeamStadium);
                 }
 
-
+                if (teamVM.Team.Stadium == null) teamVM.Team.Stadium = teamVM.TeamStadium;
+                
                 if (teamVM.Team.TeamId == 0 || teamVM.Team.TeamId==null)
                 {
-                    teamVM.Team.Stadium = teamVM.TeamStadium;
                     _unitOfWork.Team.Add(teamVM.Team);
                     TempData["success"] = "Zespół został dodany";
                 }
                 else
                 {
+
                     _unitOfWork.Team.Update(teamVM.Team);
                     TempData["success"] = "Zespół pomyślnie zmieniony";
                 }

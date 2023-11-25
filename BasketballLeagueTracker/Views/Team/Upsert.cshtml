@@ -129,23 +129,23 @@
                 });
             }
 
-            //function reverseGeocode(latlng) {
-            //    geocoder.geocode({ 'location': latlng }, function (results, status) {
-            //        if (status === google.maps.GeocoderStatus.OK) {
-            //            if (results[0]) {
-            //                var formattedAddress = results[0].formatted_address;
-            //                addressField.value = formattedAddress;
-            //                console.log('Adres: ' + formattedAddress);
+            function reverseGeocode(latlng) {
+                geocoder.geocode({ 'location': latlng }, function (results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        if (results[0]) {
+                            var formattedAddress = results[0].formatted_address;
+                            addressField.value = formattedAddress;
+                            console.log('Adres: ' + formattedAddress);
 
-            //                // Tutaj możesz wykorzystać znaleziony adres do wyświetlenia lub przetworzenia
-            //            } else {
-            //                console.log('Nie znaleziono adresu.');
-            //            }
-            //        } else {
-            //            console.log('Błąd Geocodingu: ' + status);
-            //        }
-            //    });
-            //}
+                            // Tutaj możesz wykorzystać znaleziony adres do wyświetlenia lub przetworzenia
+                        } else {
+                            console.log('Nie znaleziono adresu.');
+                        }
+                    } else {
+                        console.log('Błąd Geocodingu: ' + status);
+                    }
+                });
+            }
         </script>
 
     }

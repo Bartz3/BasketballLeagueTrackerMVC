@@ -86,62 +86,87 @@
             }
         </tbody>
     </table>
-    <div id="map" style="height:300px;">
+    <div id="map"
+         data-lat="@(Model.Stadium != null && Model.Stadium.StadiumLatitude != null ? Model.Stadium.StadiumLatitude : "")"
+         data-lng="@(Model.Stadium != null && Model.Stadium.StadiumLongitude != null ? Model.Stadium.StadiumLongitude : "")"
+         style="height:300px;">
+    </div>
 
+    <div id="stadium-address">
+        @if (Model.Stadium != null && !string.IsNullOrEmpty(Model.Stadium.Address))
+        {
+            <p>Adres: @Model.Stadium.Address</p>
+        }
+        else
+        {
+            <p>Adres nie jest dostępny.</p>
+            <p>Adres: @Model.Stadium.StadiumLatitude</p>
+            <p>Adres: @Model.Stadium.StadiumLongitude</p>
+        }
     </div>
-    </div>
+</div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-WLvSSFAzty14uSchw8-AJnRBUQxoh4o&callback=initMap" defer></script>
 <script>
     function initMap() {
+        var mapElement = document.getElementById('map');
+
+        var lat = parseFloat(mapElement.getAttribute('data-lat'));
+        var lng = parseFloat(mapElement.getAttribute('data-lng'));
+
+        console.log(lat);
+        console.log(lng);
+        if (isNaN(lat) || isNaN(lng)) {
+            lat = 53.07;
+            lng = 23.09;
+        }
         var map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: 53.07, lng: 23.09 },
+            center: { lat: lat, lng: lng },
             zoom: 8
         });
 
-        // Umieszczenie markera na mapie w określonej lokalizacji
         var marker = new google.maps.Marker({
-            position: { lat: parseFloat("53.07"), lng: parseFloat("23.09") },
+            position: { lat: lat, lng: lng},
             map: map
         });
     }
 </script>
-    <style>
-        .team-details-card {
-    background: #f8f9fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+<style>
+    .team-details-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.team-logo-section img {
-    max-width: 100%;
-    border-radius: 5px;
-}
+    .team-logo-section img {
+        max-width: 100%;
+        border-radius: 5px;
+    }
 
-.team-description {
-    color: #343344;
-    margin-bottom: 1rem;
-}
+    .team-description {
+        color: #343344;
+        margin-bottom: 1rem;
+    }
 
-.coach-info {
-    display: flex;
-    align-items: center;
-}
+    .coach-info {
+        display: flex;
+        align-items: center;
+    }
 
-.coach-label {
-    font-weight: bold;
-    margin-right: 10px;
-}
+    .coach-label {
+        font-weight: bold;
+        margin-right: 10px;
+    }
 
-.coach-photo {
-    max-width: 50px;
-    border-radius: 50%;
-    margin-left: 10px;
-}
+    .coach-photo {
+        max-width: 50px;
+        border-radius: 50%;
+        margin-left: 10px;
+    }
 
-/* Stylizacja tabeli zawodników */
+    /* Stylizacja tabeli zawodników */
 
-    </style>
+</style>
 
 <link rel="stylesheet" type="text/css" href="~/css/default.css" />
 <link rel="stylesheet" type="text/css" href="~/css/teamDetails.css" />
