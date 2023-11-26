@@ -24,7 +24,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
 
         public void Update(Stadium stadium)
         {
-            throw new NotImplementedException();
+            _db.Update(stadium);
         }
 
         public void Save()

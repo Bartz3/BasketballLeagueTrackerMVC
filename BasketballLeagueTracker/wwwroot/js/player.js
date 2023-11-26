@@ -80,10 +80,10 @@ function loadTable() {
                         return null;
                     } else {
                         return `<div class="w-75 btn-group" role="group">
-                         <a href="/player/upsert?id=${data}">
+                         <a href="/player/upsert?id=${data}" class='btn btn-info me-1'>
                          <i class="bi bi-pencil-square"> Edytuj</i>
                          </a>
-                         <a href="/player/delete?id=${data}">
+                         <a href="/player/delete?id=${data}" class='btn btn-danger'>
                          <i class="bi bi-trash3 p-2"> Usuń</i>
                          </a>
                          </div>`

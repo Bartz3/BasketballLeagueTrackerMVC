@@ -1,4 +1,5 @@
 ﻿using BasketballLeagueTracker.DataAccess.Data;
+using BasketballLeagueTracker.DataAccess.Migrations;
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.Models;
 using Microsoft.Extensions.Logging;
@@ -50,9 +51,16 @@ namespace BasketballLeagueTracker.DataAccess.Repository
 
             _db.Teams.Remove(entity);
         }
-        public void Update(Team team)
+
+        public void Update(int teamId,Team team)
         {
-            _db.Teams.Update(team);
+            var existingTeam = _db.Teams.First(t => t.TeamId== teamId);
+
+            existingTeam.Name= team.Name;
+            existingTeam.Description= team.Description;
+            existingTeam.TeamLogo= team.TeamLogo;
+
+            _db.Teams.Update(existingTeam);
         }
     }
 

@@ -7,7 +7,7 @@
             <div class="card shadow border-0">
                 <div class="card-header bg-primary text-white">
                     <h2 class="text-center">
-                        @(Model.Team != null && Model.Team.TeamId == 0 ? "Edytuj " : "Dodaj ") drużynę
+                        @(Model.Team != null && Model.Team.TeamId != 0 ? "Edytuj " : "Dodaj ") drużynę
                     </h2>
                 </div>
                 <div class="card-body p-4">
@@ -55,15 +55,18 @@
 
                             <div class="form-group">
                                 <label for="stadiumLocation">Lokalizacja stadionu:</label>
-                                <div id="map" style="height: 300px;"></div>
-                                @* <input id="teamLat" type="hidden" asp-for="Team.StadiumLatitude" name="Team.StadiumLatitude" /> *@
-                                @* <input id="teamLong" type="hidden" asp-for="Team.StadiumLongitude" name="Team.StadiumLongitude" /> *@
+                                <div id="map"
+                                     data-lat="@(Model.TeamStadium != null && Model.TeamStadium.StadiumLatitude != null ? Model.TeamStadium.StadiumLatitude : "")"
+                                     data-lng="@(Model.TeamStadium != null && Model.TeamStadium.StadiumLongitude != null ? Model.TeamStadium.StadiumLongitude : "")"
+                                     style="height:300px;">
+                                </div>
+
                             </div>
 
 
                             <div class="row">
                                 <div class="col-6 col-md-3 mt-4">
-                                    @if (Model.Team.TeamId == 0)
+                                    @if (Model.Team.TeamId != 0)
                                     {
                                         <button type="submit" class="btn btn-primary form-control">Edytuj</button>
                                     }
@@ -99,22 +102,37 @@
             var marker;
             var geocoder; // Geocoder to address
 
+            var mapElement = document.getElementById('map');
+
+            var initLat = parseFloat(mapElement.getAttribute('data-lat'));
+            var initLng = parseFloat(mapElement.getAttribute('data-lng'));
+
+            if (isNaN(initLat) || isNaN(initLng)) {
+                initLat = 53.07;
+                initLng = 23.09;
+            }
+
             var latitudeField = document.getElementById('latitude');
             var longitudeField = document.getElementById('longitude');
             var addressField = document.getElementById('address');
+
             function initMap() {
                 map = new google.maps.Map(document.getElementById('map'), {
-                    center: { lat: 53.07, lng: 23.09 },
+                    center: { lat: initLat, lng: initLng },
                     zoom: 8
                 });
 
-                marker;
 
-
-                // Inicjalizacja Geocoder
+                // Geocoder Init
                 geocoder = new google.maps.Geocoder();
 
+                var tempMarker = new google.maps.Marker({
+                    position: { lat: initLat, lng: initLng },
+                    map: map
+                });
+
                 map.addListener('click', function (e) {
+                    tempMarker.setMap(null);
                     if (marker) marker.setMap(null);
                     marker = new google.maps.Marker({
                         position: e.latLng,
@@ -135,7 +153,7 @@
                         if (results[0]) {
                             var formattedAddress = results[0].formatted_address;
                             addressField.value = formattedAddress;
-                            console.log('Adres: ' + formattedAddress);
+                            //console.log('Adres: ' + formattedAddress);
 
                             // Tutaj możesz wykorzystać znaleziony adres do wyświetlenia lub przetworzenia
                         } else {

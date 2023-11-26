@@ -1,7 +1,12 @@
 ﻿@using BasketballLeagueTracker.ViewModels;
 @using System.Security.Claims;
 @model Article
-
+@{
+    var commentVM = new CommentViewModel
+            {
+                ArticleId = Model.ArticleId,
+            };
+}
 <style>
     .article-content {
         border: 1px solid #e2e2e2;
@@ -48,6 +53,22 @@
     .comment-header {
         font-style: revert;
     }
+
+    .login-alert {
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #007bff;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+        .login-alert a {
+            color: #007bff;
+            text-decoration: underline;
+            font-weight: bold;
+        }
+
 </style>
 
 
@@ -61,10 +82,24 @@
 }
 <div class="comment-section">
     <h3 class="comment-header">Komentarze</h3>
+
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        <partial name="_AddCommentPartial" model="commentVM" />
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            Aby dodać komentarz, <a href="/Identity/Account/Login" class="alert-link">zaloguj się</a>.
+        </div>
+    }
+}
     @foreach (var comment in Model.Comments) //.OrderBy(x=>x.DateAdded)
     {
         var localDate = TimeZoneInfo.ConvertTimeFromUtc(comment.DateAdded, localZone);
-        var isAuthorOrAdmin = User.Identity.IsAuthenticated && comment.User.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin);
+        var isAuthorOrAdmin = User.Identity.IsAuthenticated && comment.User.Id == User.FindFirst(ClaimTypes.NameIdentifier)?.Value 
+        || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin);
         <div class="comment">
             <div class="comment-actions">
                 @if (isAuthorOrAdmin)
@@ -75,7 +110,7 @@
                 }
             </div>
             <div class="comment-info">
-                @comment.User.GetDisplayName() napisał(a) @localDate.ToString("dd-MM-yyyy HH:mm")@if (comment.isEdited == true)
+                @comment.User?.GetDisplayName() napisał(a) @localDate.ToString("dd-MM-yyyy HH:mm")@if (comment.isEdited == true)
                 {
                     <text> (edytowany)</text>
                 }:
@@ -95,15 +130,6 @@
 </div>
 
 
-
-
-@{
-    var commentVM = new CommentViewModel
-            {
-                ArticleId = Model.ArticleId,
-            };
-}
-<partial name="_AddCommentPartial" model="commentVM" />
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script>
 

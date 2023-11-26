@@ -1,1 +1,44 @@
-﻿
+﻿.team-details-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.coach-name{
+    color:black;
+}
+
+.team-logo-section img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.team-description {
+    color: #343344;
+    margin-bottom: 1rem;
+}
+
+.coach-info {
+    font-size: 1.1em;
+}
+
+.coach-label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.stadium-address-link {
+    color: black;
+    text-decoration: none;
+}
+.stadium-address-link :hover {
+    text-decoration:dotted;
+    color:blue;
+}
+.card-footer a {
+    margin: 5px;
+}
+
+.btn-outline-primary, .btn-success {
+    width: auto; /* Adjust as needed */
+    padding: 5px 10px; /* Adjust as needed */

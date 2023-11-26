@@ -84,7 +84,9 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Details(int teamId)
         {
+
             var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Stadium,Players");
+            //Team? team = _unitOfWork.Team.Get(p => p.TeamId == teamId, "Stadium");
 
             ViewBag.Coach = null;
             
@@ -94,8 +96,6 @@ namespace BasketballLeagueTracker.Controllers
                     ViewBag.Coach = player.FullName;
                     ViewBag.CoachPhoto = player.Photo;
                 }
-
-
 
 
             ViewBag.IsFavourite = IsFavourite(teamId);
@@ -123,7 +123,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             else
             {
-                Team? team = _unitOfWork.Team.Get(p => p.TeamId == id, null);
+                Team? team = _unitOfWork.Team.Get(p => p.TeamId == id, "Stadium");
 
                 var availablePlayers = _unitOfWork.Player.GetAll(null)
                     .Where(p => p.IsInTeam == false);
@@ -131,6 +131,7 @@ namespace BasketballLeagueTracker.Controllers
                 var teamVM = new TeamViewModel
                 {
                     Team = team,
+                    TeamStadium=team.Stadium,
                     AvailablePlayers = availablePlayers
                 };
 
@@ -144,6 +145,16 @@ namespace BasketballLeagueTracker.Controllers
             if (ModelState.IsValid)
             {
                 //Team team;
+                var stadiums = _unitOfWork.Stadium.GetAll(null);
+                Stadium teamStadium = null;
+                foreach (var stadium in stadiums)
+                {
+                    if (stadium.TeamId == teamVM.Team.TeamId)
+                    {
+                        teamStadium=stadium;
+                        break;
+                    }
+                }
 
                 if (file != null)
                 {
@@ -156,15 +167,22 @@ namespace BasketballLeagueTracker.Controllers
                 //team = teamVM.Team;
 
                 // Stadium manage
-                if (teamVM.TeamStadium.StadiumId == 0 || teamVM.TeamStadium.StadiumId == null)
+                if (teamStadium==null)
                 {
+                    //teamVM.TeamStadium.Team=teamVM.Team;
+                    teamVM.TeamStadium.TeamId= teamVM.Team.TeamId;
+                    
                     _unitOfWork.Stadium.Add(teamVM.TeamStadium);
                    
                     _unitOfWork.Save();
                 }
                 else
                 {
-                    _unitOfWork.Stadium.Update(teamVM.TeamStadium);
+                    teamStadium.StadiumLatitude = teamVM.TeamStadium.StadiumLatitude;
+                    teamStadium.StadiumLongitude = teamVM.TeamStadium.StadiumLongitude;
+                    teamStadium.Address = teamVM.TeamStadium.Address;
+
+                    _unitOfWork.Stadium.Update(teamStadium);
                 }
 
                 if (teamVM.Team.Stadium == null) teamVM.Team.Stadium = teamVM.TeamStadium;
@@ -177,7 +195,9 @@ namespace BasketballLeagueTracker.Controllers
                 else
                 {
 
-                    _unitOfWork.Team.Update(teamVM.Team);
+                    int teamId = teamVM.Team.TeamId.Value; 
+
+                    _unitOfWork.Team.Update(teamId,teamVM.Team);
                     TempData["success"] = "Zespół pomyślnie zmieniony";
                 }
 

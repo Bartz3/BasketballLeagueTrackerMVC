@@ -24,7 +24,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
 
         public void Update(FavouriteTeam favTeam)
         {
-            throw new NotImplementedException();
+            _db.FavouriteTeams.Update(favTeam);
         }
 
         public void Save()

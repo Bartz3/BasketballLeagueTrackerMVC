@@ -40,7 +40,7 @@ function loadTable() {
                         </a>`;
                     } else {
 
-                        return '<input type="checkbox" class="team-checkbox" value="' + data + '" />';
+                        return null;
                     }
                 }
             },
@@ -59,7 +59,7 @@ function loadTable() {
                 //data:'name'
                 data: 'name',
                 render: function (data, type, row) {
-                    return '<a href="/team/details?teamid=' + row.teamId + '" id="link">' + data + '</a>';
+                    return '<a href="/team/details?teamid=' + row.teamId + '" class="link">' + data + '</a>';
                 }
             },
             {
@@ -71,12 +71,12 @@ function loadTable() {
                     if (fromAddTeamToLeague) {
                         return ''
                     } else {
-                        return `<div class="w-75 btn-group" role="group">
-                         <a href="/team/upsert?id=${data}">
+                        return `<div class="btn-group" role="group">
+                         <a href="/team/upsert?id=${data}" class='btn btn-info me-2'>
                          <i class="bi bi-pencil-square"> Edytuj</i>
                          </a>
-                         <a href="/team/delete?id=${data}">
-                         <i class="bi bi-trash3 p-2"> Usuń</i>
+                         <a href="/team/delete?id=${data}" class='btn btn-danger'>
+                         <i class="bi bi-trash3 p-2" > Usuń</i>
                          </a>
                          </div>`
                     }

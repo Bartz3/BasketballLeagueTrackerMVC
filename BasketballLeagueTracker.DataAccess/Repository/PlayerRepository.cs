@@ -38,6 +38,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             existingPlayer.Weight = player.Weight;
             existingPlayer.Height = player.Height;
             existingPlayer.Positions = player.Positions;
+            existingPlayer.Photo= player.Photo;
 
             _db.Players.Update(existingPlayer);
         }
