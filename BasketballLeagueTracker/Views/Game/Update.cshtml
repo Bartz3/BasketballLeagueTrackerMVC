@@ -9,6 +9,10 @@
     <input asp-for="Game.GameId" type="hidden" />
     <input asp-for="Game.AwayTeam.Players" type="hidden" />
     <input asp-for="Game.HomeTeam.Players" type="hidden" />
+    <input asp-for="@Model.LeagueId" type="hidden" />
+
+
+
     <div class="card">
         <div class="card-header text-center">
             <h2 class="card-title">
@@ -29,9 +33,9 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                        <div class="form-group">
-                            <label asp-for="Game.HomeTeam.Name" class="control-label">Drużyna gospodarzy</label>
-                            <input asp-for="Game.HomeTeam.Name" class="form-control" readonly />
+                    <div class="form-group">
+                        <label asp-for="Game.HomeTeam.Name" class="control-label">Drużyna gospodarzy</label>
+                        <input asp-for="Game.HomeTeam.Name" class="form-control" readonly />
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -85,42 +89,53 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var player in Model.Game.HomeTeam.Players)
+                @for (int i = 0; i < Model.HomeTeamGPS.Count; i++)
                 {
                     <tr>
-                        <td>@player.FullName (#@player.UniformNumber)</td>
-                        @{
-                            var playerStats = Model.HomeTeamGPS.FirstOrDefault(stats => stats.PlayerId == player.PlayerId);
-                        }
+                        <td>@Model.HomeTeamGPS[i].Player.FullName (#@Model.HomeTeamGPS[i].Player.UniformNumber)</td>
+                        <input asp-for="@Model.HomeTeamGPS[i].PlayerId" type="hidden" />
+                        <input asp-for="@Model.HomeTeamGPS[i].GameId" type="hidden" />
                         <td>
-                            <input asp-for="@playerStats.TimeSpend" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].TimeSpend" class="form-control" />
                         </td>
                         <td>
-                            <input asp-for="@playerStats.Points" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].Points" class="form-control" />
                         </td>
                         <td>
-                            <input asp-for="@playerStats.Rebounds" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].Rebounds" class="form-control" />
                         </td>
                         <td>
-                            <input asp-for="@playerStats.DefensiveRebounds" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].DefensiveRebounds" class="form-control" />
                         </td>
                         <td>
-                            <input asp-for="@playerStats.OffensiveRebounds" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].OffensiveRebounds" class="form-control" />
                         </td>
                         <td>
-                            <input asp-for="@playerStats.Assists" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].Assists" class="form-control" />
                         </td>
                         <td>
-                            <input asp-for="@playerStats.Steals" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].Steals" class="form-control" />
                         </td>
                         <td>
-                            <input asp-for="@playerStats.Blocks" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].Blocks" class="form-control" />
                         </td>
                         <td>
-                            <input asp-for="@playerStats.Turnovers" class="form-control" />
+                            <input asp-for="@Model.HomeTeamGPS[i].Turnovers" class="form-control" />
                         </td>
                     </tr>
                 }
+                <tr>
+                    <td><strong>Suma drużyny</strong></td>
+                    <td></td>
+                    <td id="HomeTeam_Points"></td>
+                    <td id="HomeTeam_Rebounds"></td>
+                    <td id="HomeTeam_DefensiveRebounds"></td>
+                    <td id="HomeTeam_OffensiveRebounds"></td>
+                    <td id="HomeTeam_Assists"></td>
+                    <td id="HomeTeam_Steals"></td>
+                    <td id="HomeTeam_Blocks"></td>
+                    <td id="HomeTeam_Turnovers"></td>
+                </tr>
             </tbody>
         </table>
 
@@ -143,80 +158,65 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var player in Model.Game.AwayTeam.Players)
+                @for (int i = 0; i < Model.AwayTeamGPS.Count; i++)
                 {
                     <tr>
-                        @{
-                            var playerStats = player.PlayerStats.Where(x => x.GameId == Model.Game.GameId);
-                        }
-                        <td>@player.FullName (#@player.UniformNumber)</td>
+                        <td>@Model.AwayTeamGPS[i].Player.FullName (#@Model.AwayTeamGPS[i].Player.UniformNumber)</td>
+
+                        <input asp-for="@Model.AwayTeamGPS[i].PlayerId" type="hidden" />
+                        <input asp-for="@Model.AwayTeamGPS[i].GameId" type="hidden" />
+
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.TimeSpend" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].TimeSpend" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Points" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].Points" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Rebounds" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].Rebounds" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.DefensiveRebounds" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].DefensiveRebounds" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.OffensiveRebounds" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].OffensiveRebounds" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Assists" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].Assists" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Steals" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].Steals" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Blocks" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].Blocks" class="form-control" />
                         </td>
                         <td>
-                            @foreach (var stat in playerStats)
-                            {
-                                <input asp-for="@stat.Turnovers" class="form-control" />
-                            }
+                            <input asp-for="@Model.AwayTeamGPS[i].Turnovers" class="form-control" />
                         </td>
                     </tr>
                 }
+                <tr>
+                    <td><strong>Suma drużyny</strong></td>
+                    <td ></td>
+                    <td id="AwayTeam_Points"></td>
+                    <td id="AwayTeam_Rebounds"></td>
+                    <td id="AwayTeam_DefensiveRebounds"></td>
+                    <td id="AwayTeam_OffensiveRebounds"></td>
+                    <td id="AwayTeam_Assists"></td>
+                    <td id="AwayTeam_Steals"></td>
+                    <td id="AwayTeam_Blocks"></td>
+                    <td id="AwayTeam_Turnovers"></td>
+                </tr>
+                
             </tbody>
         </table>
 
 
         <div class="card-footer text-center">
-        <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
+            <button type="submit" class="btn btn-primary">Zapisz zmiany</button>
             <a asp-controller="League" asp-action="Details" asp-route-leagueId="@Model.LeagueId" class="btn btn-outline-dark">Wróć do widoku ligi</a>
         </div>
     </div>
-    @*<span asp-validation-summary="All" class="text-danger"></span>*@
-
 
 </form>
 
@@ -228,6 +228,94 @@
 
 
 @section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function updateScores() {
+                var homeTeamTotal = 0;
+                var awayTeamTotal = 0;
+
+                // Sumowanie punktów dla drużyny gospodarzy
+                $('input[name^="HomeTeamGPS["]').each(function () {
+                    if ($(this).attr('name').includes(".Points")) {
+                        homeTeamTotal += parseInt($(this).val()) || 0;
+                    }
+                });
+
+                // Sumowanie punktów dla drużyny gości
+                $('input[name^="AwayTeamGPS["]').each(function () {
+                    if ($(this).attr('name').includes(".Points")) {
+                        awayTeamTotal += parseInt($(this).val()) || 0;
+                    }
+                });
+
+                // Aktualizacja pól wynikowych
+                $('#Game_HomeTeamScore').val(homeTeamTotal);
+                $('#Game_AwayTeamScore').val(awayTeamTotal);
+            }
+
+            // Nasłuchiwanie zmian w polach punktowych
+            $('input[name$=".Points"]').on('input', function () {
+                updateScores();
+            });
+
+            // Początkowe obliczenie wyników
+            updateScores();
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function updateTeamStats() {
+                var stats = {
+                    'HomeTeam': { 'TimeSpend': 0, 'Points': 0, 'Rebounds': 0, 'DefensiveRebounds': 0, 'OffensiveRebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0 },
+                    'AwayTeam': { 'TimeSpend': 0, 'Points': 0, 'Rebounds': 0, 'DefensiveRebounds': 0, 'OffensiveRebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0 }
+                };
+
+                // Sumowanie statystyk dla drużyny gospodarzy i gości
+                $('input[name^="HomeTeamGPS["], input[name^="AwayTeamGPS["]').each(function () {
+                    var nameParts = $(this).attr('name').split('.');
+                    var team = nameParts[0].includes("HomeTeamGPS") ? 'HomeTeam' : 'AwayTeam';
+                    var statName = nameParts[1];
+
+                    if (stats[team].hasOwnProperty(statName)) {
+                        stats[team][statName] += parseInt($(this).val()) || 0;
+                    }
+                });
+
+                // Aktualizacja pól wynikowych dla drużyn
+                for (var team in stats) {
+                    for (var stat in stats[team]) {
+                        $('#' + team + '_' + stat).text(stats[team][stat]);
+                    }
+                }
+            }
+
+            function calculateRebounds() {
+                $('input[name$=".DefensiveRebounds"], input[name$=".OffensiveRebounds"]').each(function () {
+                    var namePrefix = $(this).attr('name').split('.')[0];
+                    var defensiveRebounds = parseInt($(`input[name="${namePrefix}.DefensiveRebounds"]`).val()) || 0;
+                    var offensiveRebounds = parseInt($(`input[name="${namePrefix}.OffensiveRebounds"]`).val()) || 0;
+                    var totalRebounds = defensiveRebounds + offensiveRebounds;
+
+                    $(`input[name="${namePrefix}.Rebounds"]`).val(totalRebounds);
+                });
+            }
+
+            // Nasłuchiwanie zmian w polach statystyk i zbiórek
+            $('input[name$=".TimeSpend"], input[name$=".Points"], input[name$=".DefensiveRebounds"], input[name$=".OffensiveRebounds"], input[name$=".Assists"], input[name$=".Steals"], input[name$=".Blocks"], input[name$=".Turnovers"]').on('input', function () {
+                calculateRebounds();
+                updateTeamStats();
+            });
+
+            // Zablokowanie możliwości ręcznej edycji pola zbiórek
+            $('input[name$=".Rebounds"]').prop('readonly', true);
+
+            // Początkowe obliczenie statystyk i zbiórek
+            calculateRebounds();
+            updateTeamStats();
+        });
+    </script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

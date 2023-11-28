@@ -24,7 +24,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
 
         public void Update(GamePlayerStats gps)
         {
-            throw new NotImplementedException();
+           _db.GamePlayerStats.Update(gps);
         }
 
         public void Save()

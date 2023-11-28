@@ -65,7 +65,6 @@ namespace BasketballLeagueTracker.Controllers
             Game? game = _unitOfWork.Game.Get(p => p.GameId == id, "HomeTeam.Players.PlayerStats,AwayTeam.Players.PlayerStats");
 
 
-
             gameVM.Game = game;
             gameVM.Game.HomeTeam.Name = game.HomeTeam.Name;
             gameVM.Game.AwayTeam.Name = game.AwayTeam.Name;
@@ -88,56 +87,37 @@ namespace BasketballLeagueTracker.Controllers
                 gameVM.AwayTeamGPS.Add(awayPlayerStats);
             }
 
-
-            //foreach (var homePlayerStats in gameVM.Game.HomeTeam.Players.SelectMany(p => p.PlayerStats))
-            //{
-            //    gameVM.HomeTeamGPS.Add(homePlayerStats);
-            // Znajdź odpowiedni PlayerStats w kolekcji
-            //var dbHomePlayerStats = game.HomeTeam.Players
-            //.FirstOrDefault(p => p.PlayerId == homePlayerStats.PlayerId)
-            //?.PlayerStats
-            //.FirstOrDefault(s => s.PlayerId == homePlayerStats.PlayerId && s.GameId == homePlayerStats.GameId);
-
-            //if (dbHomePlayerStats != null)
-            //{
-            //    // Aktualizuj dane PlayerStats
-            //    dbHomePlayerStats.Points = homePlayerStats.Points;
-            //    dbHomePlayerStats.TimeSpend = homePlayerStats.TimeSpend;
-            //    // Dodaj inne właściwości PlayerStats
-            //}
-            //}
-
-            //gameVM.Game.HomeTeam = game.HomeTeam;
-            //gameVM.Game.AwayTeam = game.AwayTeam;
-
-            //gameVM.Game.AwayTeam.Players = game.AwayTeam.Players;
-            //gameVM.Game.HomeTeam.Players = game.HomeTeam.Players;
-
             return View(gameVM);
 
         }
 
         [HttpPost]
-        public IActionResult Update(GameViewModel gameVM)
+        public IActionResult Update(GameViewModel gameVM,List<GamePlayerStats> gps)
         {
 
             if (ModelState.IsValid)
             {
+
+
+                foreach (var homeStat in gameVM.HomeTeamGPS)
+                {
+                    _unitOfWork.GamePlayerStats.Update(homeStat);
+                }
+                foreach (var awayStat in gameVM.AwayTeamGPS)
+                {
+                    _unitOfWork.GamePlayerStats.Update(awayStat);
+                }
+                _unitOfWork.Save();
+
                 var game = _unitOfWork.Game.Get(x => x.GameId == gameVM.Game.GameId, "HomeTeam.Players.PlayerStats,AwayTeam.Players.PlayerStats");
-                if (gameVM.Game.HomeTeamId == gameVM.Game.AwayTeamId)
+
+                if (game.AwayTeam.TeamId == game.HomeTeam.TeamId)
                 {
                     ModelState.AddModelError("", "Drużyny muszą być różne.");
                     PopulateTeamSL(ref gameVM);
                     return View(gameVM);
                 }
-                int _leagueId = 0;
-                if (TempData["LeagueId"] != null)
-                {
-                    _leagueId = Convert.ToInt32(TempData["LeagueId"]);
-                    gameVM.Game.LeagueId = _leagueId;
-                }
-
-                if (gameVM.Game.GameId == 0)
+                if (game.GameId==0 || game.GameId==null)
                 {
 
                     _unitOfWork.Game.Add(gameVM.Game);
