@@ -22,7 +22,10 @@
         <div class="card-body">
             <div class="form-group">
                 <label asp-for="Game.GameDate" class="control-label">Data meczu</label>
-                <input asp-for="Game.GameDate" class="form-control" />
+                <div class="flex-container">
+                    <input asp-for="Game.GameDate" class="form-control date-input" type="date" value="@Model.Game.GameDate.ToString("yyyy-MM-dd")" />
+                    <input asp-for="Game.GameDate" class="form-control time-input" type="time" value="@Model.Game.GameDate.ToString("HH:mm")" />
+                </div>
                 <span asp-validation-for="Game.GameDate" class="text-danger"></span>
             </div>
 
@@ -144,61 +147,92 @@
 
         <table class="table">
             <thead>
-                <tr>
-                    <th>Zawodnik</th>
-                    <th>Czas spędzony</th>
-                    <th>Punkty</th>
-                    <th>Zbiórki</th>
-                    <th>Zbiórki def</th>
-                    <th>Zbiórki off</th>
-                    <th>Asysty</th>
-                    <th>Przech</th>
-                    <th>Bloki</th>
-                    <th>Straty</th>
-                </tr>
+        <tr>
+            <th class="equal-width">Zawodnik</th>
+            <th class="equal-width">Czas gry</th>
+            <th class="equal-width">Punkty</th>
+            <th class="equal-width">2PM</th>
+            <th class="equal-width">2PA</th>
+            <th class="equal-width">3PM</th>
+            <th class="equal-width">3PA</th>
+            <th class="equal-width">FTM</th>
+            <th class="equal-width">FTA</th>
+            <th class="equal-width">Zbiórki</th>
+            <th class="equal-width">Zbiórki def</th>
+            <th class="equal-width">Zbiórki off</th>
+            <th class="equal-width">Asysty</th>
+            <th class="equal-width">Przech</th>
+            <th class="equal-width">Bloki</th>
+            <th class="equal-width">Straty</th>
+        </tr>
             </thead>
             <tbody>
                 @for (int i = 0; i < Model.AwayTeamGPS.Count; i++)
                 {
                     <tr>
-                        <td>@Model.AwayTeamGPS[i].Player.FullName (#@Model.AwayTeamGPS[i].Player.UniformNumber)</td>
 
                         <input asp-for="@Model.AwayTeamGPS[i].PlayerId" type="hidden" />
                         <input asp-for="@Model.AwayTeamGPS[i].GameId" type="hidden" />
+                        <td class="equal-width">@Model.AwayTeamGPS[i].Player.FullName (#@Model.AwayTeamGPS[i].Player.UniformNumber)</td>
 
-                        <td>
+                        <td class="equal-width2">
                             <input asp-for="@Model.AwayTeamGPS[i].TimeSpend" class="form-control" />
                         </td>
-                        <td>
+                        <td class="equal-width">
                             <input asp-for="@Model.AwayTeamGPS[i].Points" class="form-control" />
                         </td>
-                        <td>
+                        <td class="equal-width">
+                            <input asp-for="@Model.AwayTeamGPS[i].FGM" class="form-control" />
+                        </td>
+                        <td class="equal-width">
+                            <input asp-for="@Model.AwayTeamGPS[i].FGA" class="form-control" />
+                        </td>
+                        <td class="equal-width">
+                            <input asp-for="@Model.AwayTeamGPS[i].PM3" class="form-control" />
+                        </td>
+                        <td class="equal-width">
+                            <input asp-for="@Model.AwayTeamGPS[i].PA3" class="form-control" />
+                        </td>
+                        <td class="equal-width">
+                            <input asp-for="@Model.AwayTeamGPS[i].FTM" class="form-control" />
+                        </td>
+                        <td class="equal-width">
+                            <input asp-for="@Model.AwayTeamGPS[i].FTA" class="form-control" />
+                        </td>
+                        <td class="equal-width">
                             <input asp-for="@Model.AwayTeamGPS[i].Rebounds" class="form-control" />
                         </td>
-                        <td>
+                        <td class="equal-width">
                             <input asp-for="@Model.AwayTeamGPS[i].DefensiveRebounds" class="form-control" />
                         </td>
-                        <td>
+                        <td class="equal-width">
                             <input asp-for="@Model.AwayTeamGPS[i].OffensiveRebounds" class="form-control" />
                         </td>
-                        <td>
+                        <td class="equal-width">
                             <input asp-for="@Model.AwayTeamGPS[i].Assists" class="form-control" />
                         </td>
-                        <td>
+                        <td class="equal-width">
                             <input asp-for="@Model.AwayTeamGPS[i].Steals" class="form-control" />
                         </td>
-                        <td>
+                        <td class="equal-width">
                             <input asp-for="@Model.AwayTeamGPS[i].Blocks" class="form-control" />
                         </td>
-                        <td>
+                        <td class="equal-width">
                             <input asp-for="@Model.AwayTeamGPS[i].Turnovers" class="form-control" />
                         </td>
+
                     </tr>
                 }
                 <tr>
                     <td><strong>Suma drużyny</strong></td>
-                    <td ></td>
+                    <td></td>
                     <td id="AwayTeam_Points"></td>
+                    <td id="AwayTeam_FGM"></td>
+                    <td id="AwayTeam_FGA"></td>
+                    <td id="AwayTeam_PM3"></td>
+                    <td id="AwayTeam_PA3"></td>
+                    <td id="AwayTeam_FTM"></td>
+                    <td id="AwayTeam_FTA"></td>
                     <td id="AwayTeam_Rebounds"></td>
                     <td id="AwayTeam_DefensiveRebounds"></td>
                     <td id="AwayTeam_OffensiveRebounds"></td>
@@ -207,7 +241,7 @@
                     <td id="AwayTeam_Blocks"></td>
                     <td id="AwayTeam_Turnovers"></td>
                 </tr>
-                
+
             </tbody>
         </table>
 
@@ -228,96 +262,34 @@
 
 
 @section Scripts {
-    <script type="text/javascript">
-        $(document).ready(function () {
-            function updateScores() {
-                var homeTeamTotal = 0;
-                var awayTeamTotal = 0;
-
-                // Sumowanie punktów dla drużyny gospodarzy
-                $('input[name^="HomeTeamGPS["]').each(function () {
-                    if ($(this).attr('name').includes(".Points")) {
-                        homeTeamTotal += parseInt($(this).val()) || 0;
-                    }
-                });
-
-                // Sumowanie punktów dla drużyny gości
-                $('input[name^="AwayTeamGPS["]').each(function () {
-                    if ($(this).attr('name').includes(".Points")) {
-                        awayTeamTotal += parseInt($(this).val()) || 0;
-                    }
-                });
-
-                // Aktualizacja pól wynikowych
-                $('#Game_HomeTeamScore').val(homeTeamTotal);
-                $('#Game_AwayTeamScore').val(awayTeamTotal);
-            }
-
-            // Nasłuchiwanie zmian w polach punktowych
-            $('input[name$=".Points"]').on('input', function () {
-                updateScores();
-            });
-
-            // Początkowe obliczenie wyników
-            updateScores();
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            function updateTeamStats() {
-                var stats = {
-                    'HomeTeam': { 'TimeSpend': 0, 'Points': 0, 'Rebounds': 0, 'DefensiveRebounds': 0, 'OffensiveRebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0 },
-                    'AwayTeam': { 'TimeSpend': 0, 'Points': 0, 'Rebounds': 0, 'DefensiveRebounds': 0, 'OffensiveRebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0 }
-                };
-
-                // Sumowanie statystyk dla drużyny gospodarzy i gości
-                $('input[name^="HomeTeamGPS["], input[name^="AwayTeamGPS["]').each(function () {
-                    var nameParts = $(this).attr('name').split('.');
-                    var team = nameParts[0].includes("HomeTeamGPS") ? 'HomeTeam' : 'AwayTeam';
-                    var statName = nameParts[1];
-
-                    if (stats[team].hasOwnProperty(statName)) {
-                        stats[team][statName] += parseInt($(this).val()) || 0;
-                    }
-                });
-
-                // Aktualizacja pól wynikowych dla drużyn
-                for (var team in stats) {
-                    for (var stat in stats[team]) {
-                        $('#' + team + '_' + stat).text(stats[team][stat]);
-                    }
-                }
-            }
-
-            function calculateRebounds() {
-                $('input[name$=".DefensiveRebounds"], input[name$=".OffensiveRebounds"]').each(function () {
-                    var namePrefix = $(this).attr('name').split('.')[0];
-                    var defensiveRebounds = parseInt($(`input[name="${namePrefix}.DefensiveRebounds"]`).val()) || 0;
-                    var offensiveRebounds = parseInt($(`input[name="${namePrefix}.OffensiveRebounds"]`).val()) || 0;
-                    var totalRebounds = defensiveRebounds + offensiveRebounds;
-
-                    $(`input[name="${namePrefix}.Rebounds"]`).val(totalRebounds);
-                });
-            }
-
-            // Nasłuchiwanie zmian w polach statystyk i zbiórek
-            $('input[name$=".TimeSpend"], input[name$=".Points"], input[name$=".DefensiveRebounds"], input[name$=".OffensiveRebounds"], input[name$=".Assists"], input[name$=".Steals"], input[name$=".Blocks"], input[name$=".Turnovers"]').on('input', function () {
-                calculateRebounds();
-                updateTeamStats();
-            });
-
-            // Zablokowanie możliwości ręcznej edycji pola zbiórek
-            $('input[name$=".Rebounds"]').prop('readonly', true);
-
-            // Początkowe obliczenie statystyk i zbiórek
-            calculateRebounds();
-            updateTeamStats();
-        });
-    </script>
-
+    <script src="~/js/gameUpdate.js"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
 
+
+<style>
+    .flex-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .date-input {
+        flex: 70%;
+        margin-right: 15px;
+    }
+
+    .time-input {
+        flex: 30%;
+    }
+
+    .equal-width {
+        width: 5%;
+    }
+
+    .equal-width2 {
+       width:8%;
+    }
+
+</style>

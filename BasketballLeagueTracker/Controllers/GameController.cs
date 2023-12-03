@@ -43,7 +43,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             PopulateTeamSL(ref gameVM);
             gameVM.Game = new Game();
-
+            gameVM.Game.GameDate= DateTime.Now;
             return View(gameVM);
 
 
@@ -68,7 +68,7 @@ namespace BasketballLeagueTracker.Controllers
             gameVM.Game = game;
             gameVM.Game.HomeTeam.Name = game.HomeTeam.Name;
             gameVM.Game.AwayTeam.Name = game.AwayTeam.Name;
-            gameVM.Game.GameDate = DateTime.Now; // TO DELETE
+
                                                  //{[Game.HomeTeam.Name, SubKey={Name}, Key=Game.HomeTeam.Name, ValidationState=Invalid]}
 
             List<Player> xd = new List<Player>();
@@ -91,76 +91,77 @@ namespace BasketballLeagueTracker.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult Update(GameViewModel gameVM,List<GamePlayerStats> gps)
-        {
-
-            if (ModelState.IsValid)
+            [HttpPost]
+            public IActionResult Update(GameViewModel gameVM,List<GamePlayerStats> gps)
             {
 
-
-                foreach (var homeStat in gameVM.HomeTeamGPS)
+                if (ModelState.IsValid)
                 {
-                    _unitOfWork.GamePlayerStats.Update(homeStat);
-                }
-                foreach (var awayStat in gameVM.AwayTeamGPS)
-                {
-                    _unitOfWork.GamePlayerStats.Update(awayStat);
-                }
-                _unitOfWork.Save();
 
-                var game = _unitOfWork.Game.Get(x => x.GameId == gameVM.Game.GameId, "HomeTeam.Players.PlayerStats,AwayTeam.Players.PlayerStats");
 
-                if (game.AwayTeam.TeamId == game.HomeTeam.TeamId)
-                {
-                    ModelState.AddModelError("", "Drużyny muszą być różne.");
+                    foreach (var homeStat in gameVM.HomeTeamGPS)
+                    {
+                        _unitOfWork.GamePlayerStats.Update(homeStat);
+                    }
+                    foreach (var awayStat in gameVM.AwayTeamGPS)
+                    {
+                        _unitOfWork.GamePlayerStats.Update(awayStat);
+                    }
+                    _unitOfWork.Save();
+
+                    var game = _unitOfWork.Game.Get(x => x.GameId == gameVM.Game.GameId, "HomeTeam.Players.PlayerStats,AwayTeam.Players.PlayerStats");
+                    //_unitOfWork.Game.Entry(gameVM.Game).State = EntityState.Detached;
+
+                    if (game.AwayTeam.TeamId == game.HomeTeam.TeamId)
+                    {
+                        ModelState.AddModelError("", "Drużyny muszą być różne.");
+                        PopulateTeamSL(ref gameVM);
+                        return View(gameVM);
+                    }
+                    if (game.GameId==0 || game.GameId==null)
+                    {
+
+                        _unitOfWork.Game.Add(gameVM.Game);
+                        TempData["success"] = "Mecz został utworzony.";
+                    }
+                    else
+                    {
+                        _unitOfWork.Game.Update(gameVM.Game);
+                        TempData["success"] = "Mecz został zmodyfikowany";
+                    }
+                    _unitOfWork.Save();
+
                     PopulateTeamSL(ref gameVM);
-                    return View(gameVM);
-                }
-                if (game.GameId==0 || game.GameId==null)
-                {
+                    return RedirectToAction("Details", "League", new { leagueId = gameVM.LeagueId });
 
-                    _unitOfWork.Game.Add(gameVM.Game);
-                    TempData["success"] = "Mecz został utworzony.";
                 }
                 else
                 {
-                    _unitOfWork.Game.Update(gameVM.Game);
-                    TempData["success"] = "Mecz został zmodyfikowany";
-                }
-                _unitOfWork.Save();
+                    PopulateTeamSL(ref gameVM);
 
-                PopulateTeamSL(ref gameVM);
-                return RedirectToAction("Details", "League", new { leagueId = gameVM.LeagueId });
+                    Game? actualGame = _unitOfWork.Game.Get(p => p.GameId == gameVM.Game.GameId, "HomeTeam.Players.PlayerStats,AwayTeam.Players.PlayerStats");
+                    gameVM.Game = actualGame;
+
+                    gameVM.AwayTeamGPS = new List<GamePlayerStats>();
+                    gameVM.HomeTeamGPS = new List<GamePlayerStats>();
+                    foreach (var homePlayerStats in gameVM.Game.HomeTeam.Players.SelectMany(p => p.PlayerStats))
+                    {
+                        gameVM.HomeTeamGPS.Add(homePlayerStats);
+                    }
+
+                    foreach (var awayPlayerStats in gameVM.Game.AwayTeam.Players.SelectMany(p => p.PlayerStats))
+                    {
+                        gameVM.AwayTeamGPS.Add(awayPlayerStats);
+                    }
+
+
+                    return View(gameVM);
+                }
 
             }
-            else
-            {
-                PopulateTeamSL(ref gameVM);
-
-                Game? actualGame = _unitOfWork.Game.Get(p => p.GameId == gameVM.Game.GameId, "HomeTeam.Players.PlayerStats,AwayTeam.Players.PlayerStats");
-                gameVM.Game = actualGame;
-
-                gameVM.AwayTeamGPS = new List<GamePlayerStats>();
-                gameVM.HomeTeamGPS = new List<GamePlayerStats>();
-                foreach (var homePlayerStats in gameVM.Game.HomeTeam.Players.SelectMany(p => p.PlayerStats))
-                {
-                    gameVM.HomeTeamGPS.Add(homePlayerStats);
-                }
-
-                foreach (var awayPlayerStats in gameVM.Game.AwayTeam.Players.SelectMany(p => p.PlayerStats))
-                {
-                    gameVM.AwayTeamGPS.Add(awayPlayerStats);
-                }
-
-
-                return View(gameVM);
-            }
-
-        }
 
         [HttpPost]
-        public IActionResult Create(GameViewModel gameVM)
+        public IActionResult Create(GameViewModel gameVM, TimeSpan GameDateHour)
         {
 
             if (ModelState.IsValid)
@@ -180,6 +181,8 @@ namespace BasketballLeagueTracker.Controllers
 
                 if (gameVM.Game.GameId == 0)
                 {
+                    gameVM.Game.GameDate = gameVM.Game.GameDate.Add(GameDateHour); // Adding hours and minutes to gameDate
+
                     _unitOfWork.Game.Add(gameVM.Game);
                     _unitOfWork.Save();
 

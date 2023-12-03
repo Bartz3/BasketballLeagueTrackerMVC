@@ -43,7 +43,6 @@ namespace BasketballLeagueTracker.Controllers
             {
                 player = playerGenerator.GeneratePlayer();
                 _unitOfWork.Player.Add(player);
-
             }
             _unitOfWork.Save();
 

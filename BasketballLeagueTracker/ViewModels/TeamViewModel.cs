@@ -11,5 +11,7 @@ namespace BasketballLeagueTracker.ViewModels
         public IEnumerable<Player>? AvailablePlayers { get; set; }
 
         public Stadium? TeamStadium { get; set; }
+
+        public bool isNew { get; set; }
     }
 }

@@ -62,6 +62,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             ApplicationUser? user = _userRepository.Get(t => t.Id == id, null);
 
+
             if (user == null)
             {
                 return NotFound();

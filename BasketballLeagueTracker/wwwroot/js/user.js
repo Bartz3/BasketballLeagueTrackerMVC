@@ -17,7 +17,8 @@ function loadTable() {
         columns: [
             { data: 'Id' },
             {
-                data: 'Email'
+                data: 'Email',
+                width: '10%',
             },
             {
                 data: 'Nickname'
@@ -47,13 +48,14 @@ function loadTable() {
 
             {
                 data: { Id: "Id", LockoutEnd: "lockoutEnd" },
+                width: '20%',
                 render: function (data) {
                     var date = new Date().getTime();
                     var lockout = new Date(data.LockoutEnd).getTime();
                     if (lockout > date) {
                         return `<div  >
                            <a  onclick=LockAccount('${data.Id}') class='btn btn-danger mx-2' style="cursor:pointer width:50%;">
-                          Zablokowane <i class="bi bi-lock-fill "></i> 
+                           <i class="bi bi-lock-fill "></i> 
                            </a>
                            <a href="/user/EditUserRole?userId=${data.Id}" class='btn btn-warning' style="cursor:pointer">
                          Role <i class="bi bi-pencil-square"></i> 
@@ -62,13 +64,12 @@ function loadTable() {
                     } else {
                         return `<div  >
                            <a  onclick=LockAccount('${data.Id}') class='btn btn-success mx-2' style="cursor:pointer width:50%;">
-                          Odblokowane <i class="bi bi-unlock-fill "></i> 
+                           <i class="bi bi-unlock-fill "></i> 
                            </a>
                            <a href="/user/EditUserRole?userId=${data.Id}" class='btn btn-warning' style="cursor:pointer">
                          Role <i class="bi bi-pencil-square"></i> 
                            </a>
                         </div>`
-    
                     }
                 }
             }

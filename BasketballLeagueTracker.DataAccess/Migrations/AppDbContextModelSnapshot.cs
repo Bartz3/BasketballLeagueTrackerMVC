@@ -220,38 +220,56 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.Property<int?>("GameId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Assists")
-                        .HasColumnType("int");
+                    b.Property<short?>("Assists")
+                        .HasColumnType("smallint");
 
-                    b.Property<int?>("Blocks")
-                        .HasColumnType("int");
+                    b.Property<short?>("Blocks")
+                        .HasColumnType("smallint");
 
-                    b.Property<int?>("DefensiveRebounds")
-                        .HasColumnType("int");
+                    b.Property<short?>("DefensiveRebounds")
+                        .HasColumnType("smallint");
 
-                    b.Property<int?>("Fouls")
-                        .HasColumnType("int");
+                    b.Property<short?>("FGA")
+                        .HasColumnType("smallint");
+
+                    b.Property<short?>("FGM")
+                        .HasColumnType("smallint");
+
+                    b.Property<short?>("FTA")
+                        .HasColumnType("smallint");
+
+                    b.Property<short?>("FTM")
+                        .HasColumnType("smallint");
+
+                    b.Property<short?>("Fouls")
+                        .HasColumnType("smallint");
 
                     b.Property<bool?>("IsOnBench")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("OffensiveRebounds")
-                        .HasColumnType("int");
+                    b.Property<short?>("OffensiveRebounds")
+                        .HasColumnType("smallint");
 
-                    b.Property<int?>("Points")
-                        .HasColumnType("int");
+                    b.Property<short?>("PA3")
+                        .HasColumnType("smallint");
 
-                    b.Property<int?>("Rebounds")
-                        .HasColumnType("int");
+                    b.Property<short?>("PM3")
+                        .HasColumnType("smallint");
 
-                    b.Property<int?>("Steals")
-                        .HasColumnType("int");
+                    b.Property<short?>("Points")
+                        .HasColumnType("smallint");
+
+                    b.Property<short?>("Rebounds")
+                        .HasColumnType("smallint");
+
+                    b.Property<short?>("Steals")
+                        .HasColumnType("smallint");
 
                     b.Property<long?>("TimeSpend")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("Turnovers")
-                        .HasColumnType("int");
+                    b.Property<short?>("Turnovers")
+                        .HasColumnType("smallint");
 
                     b.HasKey("PlayerId", "GameId");
 

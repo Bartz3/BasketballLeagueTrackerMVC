@@ -10,41 +10,70 @@ namespace BasketballLeagueTracker.Models
 {
     public class GamePlayerStats
     {
-        
-        [Display(Name ="Punkty")]
-        public int? Points { get; set; } = 0;
+        private const string errorMessage0 = "Wartość nie może być mniejsza niż 0.";
 
-        //[Display(Name = "Czas gry")]
-        //public int? TimeSpend { get; set; } = 0;
+        [Display(Name = "Punkty")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? Points { get; set; } = 0;
+
+        [Display(Name = "2PA")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? FGA { get; set; }= 0;
+        [Display(Name = "2PM")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? FGM { get; set; } = 0;
+
+        [Display(Name = "3PA")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? PM3 { get; set; } = 0;
+        [Display(Name = "3PM")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? PA3 { get; set; } = 0;
+
+        [Display(Name = "FTA")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? FTA { get; set; } = 0;
+        [Display(Name = "FTM")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? FTM { get; set; } = 0;
+
         [Display(Name = "Czas gry")]
         [Column(TypeName = "bigint")]
         [DisplayFormat(DataFormatString = "{0:mm\\:ss}", ApplyFormatInEditMode = true)]
         public TimeSpan? TimeSpend { get; set; } = new TimeSpan(0, 0, 0);
 
         [Display(Name = "Zbiórki")]
-        public int? Rebounds { get; set; } = 0;
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? Rebounds { get; set; } = 0;
 
-        [Display(Name ="Zbiórki ofensywne")]
-        public int? OffensiveRebounds { get; set; } = 0;
+        [Display(Name = "Zbiórki ofensywne")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? OffensiveRebounds { get; set; } = 0;
 
-        [Display(Name ="Zbiórki defensywne")]
-        public int? DefensiveRebounds { get; set; } = 0;
+        [Display(Name = "Zbiórki defensywne")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? DefensiveRebounds { get; set; } = 0;
 
-        [Display(Name ="Asysty")]
-        public int? Assists { get; set; } = 0;
+        [Display(Name = "Asysty")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? Assists { get; set; } = 0;
 
-        [Display(Name ="Przechwyty")]
-        public int? Steals { get; set; } = 0;
+        [Display(Name = "Przechwyty")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? Steals { get; set; } = 0;
 
-        [Display(Name ="Bloki")]
-        public int? Blocks { get; set; } = 0;
+        [Display(Name = "Bloki")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? Blocks { get; set; } = 0;
 
-        [Display(Name ="Straty")]
-        public int? Turnovers { get; set; } = 0;
+        [Display(Name = "Straty")]
+        [Range(0, int.MaxValue, ErrorMessage = errorMessage0)]
+        public short? Turnovers { get; set; } = 0;
 
-        [Display(Name ="Faule"),
-            Range(0, 5, ErrorMessage = "Ilość fauli musi być od 0 do 5.")]
-        public int? Fouls { get; set; }
+        [Display(Name = "Faule")]
+        [Range(0, 5, ErrorMessage = "Błędna ilość fauli (0-5).")]
+        public short? Fouls { get; set; }
+
 
         [Display(Name = "Starter")]
         public bool? IsOnBench { get; set; } = true;

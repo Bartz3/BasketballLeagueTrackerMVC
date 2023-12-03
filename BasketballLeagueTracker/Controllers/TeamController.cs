@@ -117,7 +117,8 @@ namespace BasketballLeagueTracker.Controllers
                 {
                     Team = new Team(),
                     Image = null,
-                    AvailablePlayers = null
+                    AvailablePlayers = null,
+                    isNew= true,
                 };
                 return View(teamVM);
             }
@@ -132,7 +133,8 @@ namespace BasketballLeagueTracker.Controllers
                 {
                     Team = team,
                     TeamStadium=team.Stadium,
-                    AvailablePlayers = availablePlayers
+                    AvailablePlayers = availablePlayers,
+                    isNew= false,
                 };
 
                 return View(teamVM);

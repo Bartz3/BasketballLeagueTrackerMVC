@@ -19,7 +19,7 @@ namespace BasketballLeagueTracker.Utility.DataGenerator
             var teamNames = new[] { "Orły", "Jastrzębie", "Tygrysy", "Lwy", "Błyskawice", "Gwiazdy", "Wilkolaki", "Rycerze" };
 
             fakeTeamModel = new Bogus.Faker<Team>("pl")
-           .RuleFor(t => t.Name, f => f.PickRandom(teamNames) + " " + f.Address.City()) // generuje nazwę drużyny z losowego wyboru z listy nazw i dodaje nazwę miasta
+           .RuleFor(t => t.Name, f => f.PickRandom(teamNames) + " " + f.Address.City()) 
            .RuleFor(t => t.Description, f => f.Lorem.Paragraph().Substring(0,100))
            .RuleFor(t => t.LeagueId,f=>3);
 

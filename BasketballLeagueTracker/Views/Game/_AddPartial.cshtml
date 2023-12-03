@@ -14,7 +14,10 @@
         <div class="card-body">
             <div class="form-group">
                 <label asp-for="Game.GameDate" class="control-label">Data meczu</label>
-                <input asp-for="Game.GameDate" class="form-control" type="datetime-local" />
+                <div class="flex-container">
+                    <input asp-for="Game.GameDate" class="form-control date-input" type="date" value="@Model.Game.GameDate.ToString("yyyy-MM-dd")" />
+                    <input asp-for="Game.GameDate" class="form-control time-input" type="time" value="@Model.Game.GameDate.ToString("HH:mm")" />
+                </div>
                 <span asp-validation-for="Game.GameDate" class="text-danger"></span>
             </div>
 
@@ -77,7 +80,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.js"></script>
 
+<style>
+    .flex-container {
+        display: flex;
+        align-items: center;
+    }
 
+    .date-input {
+        flex: 70%;
+        margin-right: 15px;
+    }
+
+    .time-input {
+        flex: 30%;
+    }
+
+
+</style>
 
 @section Scripts {
     @{
