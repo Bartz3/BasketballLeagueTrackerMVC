@@ -19,24 +19,26 @@
 
     @*///////////////// FAVOURITE LEAGUES//////////////////////////////////*@
     <div class="tab-content mt-2">
-        <div class="tab-pane fade show active" id="leagues">
+        <div class="tab-pane fade mt-4 show active" id="leagues">
             <div class="row">
                 @foreach (var league in Model.Fav.FavouriteLeagues)
                 {
                     <div class="col-md-4 mb-4">
                         <div class="card">
-                            @if (league.Logo != null)
-                            {
-                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(league.Logo)" alt="@league.Name" class="img-fluid mb-2" style="max-height:150px;">
-                            }
-                            else
-                            {
-                                <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid mb-2" style="max-height: 150px;">
-                            }
-                           <a class="link" asp-controller="League" asp-action="Details" asp-route-leagueId="@league.LeagueId">
-                            <div class="card-body">
-                                <h5 class="card-title">@league.Name</h5>
+                            <div class="card-img-top text-center">
+                                @if (league.Logo != null)
+                                {
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(league.Logo)" alt="@league.Name" class="img-fluid rounded-circle mb-2 mt-2" style="max-height:150px; width: auto; display: inline-block;">
+                                }
+                                else
+                                {
+                                    <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid rounded-circle mb-2 mt-2" style="max-height: 150px; width: auto; display: inline-block;">
+                                }
                             </div>
+                            <a class="link" asp-controller="League" asp-action="Details" asp-route-leagueId="@league.LeagueId">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">@league.Name</h5>
+                                </div>
                             </a>
                         </div>
                     </div>
@@ -44,8 +46,9 @@
             </div>
         </div>
 
+        
         @*///////////////// FAVOURITE TEAMS //////////////////////////////////*@
-        <div class="container mt-5 tab-pane fade" id="teams">
+        <div class="container mt-4 tab-pane fade" id="teams">
             <div class="row">
                 @foreach (var team in Model.Fav.FavouriteTeams)
                 {
@@ -73,24 +76,26 @@
         </div>
 
         @*///////////////// FAVOURITE PLAYERS //////////////////////////////////*@
-        <div class="tab-pane fade mt-5" id="players">
+        <div class="tab-pane fade mt-4" id="players">
             <div class="row">
                 @foreach (var player in Model.Fav.FavouritePlayers)
                 {
                     <div class="col-md-4 mb-2">
-                        <div class="card rounded-circle">
-                            @if (player.Photo != null)
-                            {
-                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(player.Photo )" alt="@player.Name" class="img-fluid mb-2" style="max-height:150px;">
-                            }
-                            else
-                            {
-                                <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid mb-2" style="max-height: 150px;">
-                            }
-                            
+                        <div class="card">
+                            <div class="card-img-top text-center">
+                                @if (player.Photo != null)
+                                {
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(player.Photo)" alt="@player.Name" class="img-fluid rounded-circle mb-2 mt-2" style="max-height:150px; width: auto; display: inline-block;">
+                                }
+                                else
+                                {
+                                    <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid rounded-circle mb-2 mt-2" style="max-height: 150px; width: auto; display: inline-block;">
+                                }
+                            </div>
+
                             <div class="card-body text-center">
                                 <a class="link" asp-controller="Player" asp-action="Details" asp-route-playerId="@player.PlayerId">
-                                <h5 class="card-title">@player.FullName</h5>
+                                    <h5 class="card-title">@player.FullName</h5>
                                 </a>
                             </div>
                         </div>
@@ -99,9 +104,7 @@
             </div>
         </div>
 
-    </div>
-</div>
-
+    
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="~/css/default.css">

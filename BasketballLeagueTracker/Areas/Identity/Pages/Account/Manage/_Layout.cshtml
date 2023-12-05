@@ -8,21 +8,26 @@
         Layout = "/Areas/Identity/Pages/_Layout.cshtml";
     }
 }
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
 
-<h1 class="mt-3">Ustawienia konta</h1>
+<h1 class="mt-3 text-center">Ustawienia konta</h1>
 
-<div>
-    @*<h2>Change your account settings</h2>*@
-    <hr />
+<div class="container my-4">
     <div class="row">
         <div class="col-md-3">
-            <partial name="_ManageNav" />
+            @await Html.PartialAsync("_ManageNav")
         </div>
         <div class="col-md-9">
-            @RenderBody()
+            <div class="card shadow-sm p-3">
+                @RenderBody()
+            </div>
         </div>
     </div>
 </div>
+
 
 @section Scripts {
     @RenderSection("Scripts", required: false)

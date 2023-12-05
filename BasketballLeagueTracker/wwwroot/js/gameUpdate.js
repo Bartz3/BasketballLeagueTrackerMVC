@@ -72,7 +72,6 @@ $(document).ready(function () {
             $(`input[name="${namePrefix}.Rebounds"]`).val(totalRebounds);
         });
     }
-
     function updateShotsAttempted(inputField) {
         var nameParts = $(inputField).attr('name').split('.');
         var teamPrefix = nameParts[0].includes("HomeTeamGPS") ? "HomeTeamGPS" : "AwayTeamGPS";
@@ -85,13 +84,18 @@ $(document).ready(function () {
             var attemptedInputField = $(`input[name="${attemptedFieldName}"]`);
 
             var madeValue = parseInt($(inputField).val()) || 0;
+            var previousMadeValue = $(inputField).data('previous') || 0;
+            $(inputField).data('previous', madeValue); // Zapisywanie bieżącej wartości dla przyszłych porównań
+
             var attemptedValue = parseInt(attemptedInputField.val()) || 0;
 
-            if (madeValue > attemptedValue) {
-                attemptedInputField.val(madeValue);
+            // Zwiększaj liczbę oddanych rzutów, gdy liczba trafionych wzrasta
+            if (madeValue > previousMadeValue) {
+                attemptedInputField.val(attemptedValue + (madeValue - previousMadeValue));
             }
         }
     }
+
 
     // istniejące nasłuchiwanie zmian w polach statystyk i zbiórek
     $('input[name$=".TimeSpend"], input[name$=".Points"], input[name$=".DefensiveRebounds"], input[name$=".OffensiveRebounds"], input[name$=".Assists"], input[name$=".Steals"], input[name$=".Blocks"], input[name$=".Turnovers"]').on('input', function () {
