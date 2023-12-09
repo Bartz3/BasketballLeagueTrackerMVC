@@ -7,7 +7,6 @@ namespace BasketballLeagueTracker.Models
 {
     public class SeasonStatistics
     {
-        public int SeasonStatisticsId { get; set; }
 
         public int Wins { get; set; }
         public int Losses { get; set; }
@@ -19,11 +18,11 @@ namespace BasketballLeagueTracker.Models
         public double OpponentPointsPerGame { get; set; }
 
 
-        public int TeamId { get; set; }
-        public Team Team { get; set; }
+        public int? TeamId { get; set; }
+        public Team? Team { get; set; }
 
-        public int LeagueId { get; set; }
-        public League League { get; set; }
+        public int? LeagueId { get; set; }
+        public League? League { get; set; }
     }
 
 }

@@ -3,15 +3,23 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @{
-var user = await UserManager.GetUserAsync(User);
-var nickName = user?.Nickname;
-var userName = await UserManager.GetUserNameAsync(user);
+    string nickName = null;
+    string userName = null;
 
-ViewBag.NickName = nickName;
-ViewBag.UserName = userName;
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = await UserManager.GetUserAsync(User);
+        if (user != null)
+        {
+            nickName = user?.Nickname; // Zakładam, że istnieje właściwość NickName w klasie ApplicationUser
+            userName = await UserManager.GetUserNameAsync(user);
+        }
+    }
 
-
+    ViewBag.NickName = nickName;
+    ViewBag.UserName = userName;
 }
+
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {

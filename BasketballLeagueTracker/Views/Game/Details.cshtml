@@ -1,10 +1,296 @@
-﻿@model Game
+﻿@using BasketballLeagueTracker.ViewModels;
+@model GameViewModel
+<style>
+    .no-underline {
+        text-decoration: none;
+        color: inherit;
+    }
+
+</style>
+
 @{
-    if (Model != null && Model.LeagueId != 0)
+    Func<int, string> formatTime = totalSeconds =>
     {
-        TempData["LeagueId"] = Model.LeagueId;
+        int minutes = totalSeconds / 60;
+        int seconds = totalSeconds % 60;
+        return $"{minutes:00}:{seconds:00}";
+    };
+}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2 class="card-title">Szczegóły meczu</h2>
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <!-- Drużyna gospodarzy -->
+                <div class="col-md-6">
+                    @if (Model.Game.HomeTeam.TeamLogo != null)
+                    {
+                        <img src="data:image/png;base64,@(Convert.ToBase64String(Model.Game.HomeTeam.TeamLogo))" class="img-fluid" style="max-height: 100px;" alt="Team Logo" />
+                    }
+                    else
+                    {
+                        <img id="team-logo" src="~/images/default-team2.png" style="max-height: 100px;" class="img-fluid" />
+                    }
+
+                    <h3 style="font-weight: bold;">
+                        <!-- Wyróżnienie nazwy drużyny -->
+                        <a asp-controller="Team" asp-action="Details" asp-route-teamId="@Model.Game.HomeTeam.TeamId" class="no-underline">
+                            @Model.Game.HomeTeam.Name
+                        </a>
+                    </h3>
+                    <p>Wynik: @Model.Game.HomeTeamScore</p>
+
+                </div>
+
+                <!-- Drużyna gości -->
+                <div class="col-md-6">
+                    @if (Model.Game.AwayTeam.TeamLogo != null)
+                    {
+                        <img src="data:image/png;base64,@(Convert.ToBase64String(Model.Game.AwayTeam.TeamLogo))" class="img-fluid" style="max-height: 100px;" alt="Team Logo" />
+                    }
+                    else
+                    {
+                        <img id="team-logo" src="~/images/default-team2.png" style="max-height: 100px;" class="img-fluid" />
+                    }
+
+                    <h3>
+                        <a asp-controller="Team" asp-action="Details" asp-route-teamId="@Model.Game.AwayTeam.TeamId" class="no-underline">
+                            @Model.Game.AwayTeam.Name
+                        </a>
+                    </h3>
+                    <p>Wynik: @Model.Game.AwayTeamScore</p>
+                </div>
+            </div>
+
+
+            <div class="mt-4 text-center">
+                <h5>Data meczu: @Model.Game.GameDate.ToString("dd.MM.yyyy")</h5>
+                <h5>Godzina: @Model.Game.GameDate.ToString("HH:mm")</h5>
+
+                <h5>
+                    Stadion: @if (Model.Game.HomeTeam != null && !string.IsNullOrEmpty(Model.Game.HomeTeam.Stadium.Address))
+                    {
+                        <a href="#map" class="stadium-address-link no-underline"> @Model.Game.HomeTeam.Stadium.Address</a>
+                    }
+                    else
+                    {
+                        <p>Brak informacji</p>
+                    }
+                </h5>
+            </div>
+            @*@Model.Game.AwayTeam.Stadium.Address*@
+
+
+            <div class="mt-4">
+                <h3>Gospodarze @Model.Game.HomeTeam.Name </h3>
+                <table class="table table-striped table-responsive" id="homeTeamTable">
+                    <thead>
+                        <tr>
+                            <th class="equal-width">Zawodnik</th>
+                            <th class="equal-width">Czas gry</th>
+                            <th class="equal-width">Punkty</th>
+                            <th class="equal-width">2PM</th>
+                            <th class="equal-width">2PA</th>
+                            <th class="equal-width">3PM</th>
+                            <th class="equal-width">3PA</th>
+                            <th class="equal-width">FTM</th>
+                            <th class="equal-width">FTA</th>
+                            <th class="equal-width">Zbiórki</th>
+                            <th class="equal-width">Zbiórki def</th>
+                            <th class="equal-width">Zbiórki off</th>
+                            <th class="equal-width">Asysty</th>
+                            <th class="equal-width">Przech</th>
+                            <th class="equal-width">Bloki</th>
+                            <th class="equal-width">Straty</th>
+
+                            <th class="equal-width">2P %</th>
+                            <th class="equal-width">3P %</th>
+                            <th class="equal-width">FT %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.AwayTeamGPS.Count; i++)
+                        {
+                            <tr>
+                                <td class="equal-width3">@Model.HomeTeamGPS[i].Player.FullName (#@Model.HomeTeamGPS[i].Player.UniformNumber)</td>
+                                @*<td class="equal-width2">@Model.HomeTeamGPS[i].TimeSpend</td>*@
+                                <td class="equal-width2">@Model.HomeTeamGPS[i].TimeSpend.Value.ToString(@"mm\:ss")</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].Points</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].FGM</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].FGA</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].PM3</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].PA3</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].FTM</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].FTA</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].Rebounds</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].DefensiveRebounds</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].OffensiveRebounds</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].Assists</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].Steals</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].Blocks</td>
+                                <td class="equal-width">@Model.HomeTeamGPS[i].Turnovers</td>
+
+                                <td class="equal-width"></td> <!-- 2P % -->
+                                <td class="equal-width"></td> <!-- 3P % -->
+                                <td class="equal-width"></td> <!-- FT % -->
+
+                            </tr>
+                        }
+                        <tr>
+                            <td><strong>Suma drużyny</strong></td>
+                            <td></td>
+                            <td id="HomeTeam_Points"></td>
+                            <td id="HomeTeam_FGM"></td>
+                            <td id="HomeTeam_FGA"></td>
+                            <td id="HomeTeam_PM3"></td>
+                            <td id="HomeTeam_PA3"></td>
+                            <td id="HomeTeam_FTM"></td>
+                            <td id="HomeTeam_FTA"></td>
+                            <td id="HomeTeam_Rebounds"></td>
+                            <td id="HomeTeam_DefensiveRebounds"></td>
+                            <td id="HomeTeam_OffensiveRebounds"></td>
+                            <td id="HomeTeam_Assists"></td>
+                            <td id="HomeTeam_Steals"></td>
+                            <td id="HomeTeam_Blocks"></td>
+                            <td id="HomeTeam_Turnovers"></td>
+
+                            <td id="HomeTeam_2P_Percent"></td> <!-- 2P % -->
+                            <td id="HomeTeam_3P_Percent"></td> <!-- 3P % -->
+                            <td id="HomeTeam_FT_Percent"></td> <!-- FT % -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4">
+                <h3>Goście @Model.Game.AwayTeam.Name</h3>
+                <table id="awayTeamTable" class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th class="equal-width">Zawodnik</th>
+                            <th class="equal-width">Czas gry</th>
+                            <th class="equal-width">Punkty</th>
+                            <th class="equal-width">2PM</th>
+                            <th class="equal-width">2PA</th>
+                            <th class="equal-width">3PM</th>
+                            <th class="equal-width">3PA</th>
+                            <th class="equal-width">FTM</th>
+                            <th class="equal-width">FTA</th>
+                            <th class="equal-width">Zbiórki</th>
+                            <th class="equal-width">Zbiórki def</th>
+                            <th class="equal-width">Zbiórki off</th>
+                            <th class="equal-width">Asysty</th>
+                            <th class="equal-width">Przech</th>
+                            <th class="equal-width">Bloki</th>
+                            <th class="equal-width">Straty</th>
+
+                            <th class="equal-width">2P %</th>
+                            <th class="equal-width">3P %</th>
+                            <th class="equal-width">FT %</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.AwayTeamGPS.Count; i++)
+                        {
+                            <tr>
+                                <td class="equal-width3">@Model.AwayTeamGPS[i].Player.FullName (#@Model.AwayTeamGPS[i].Player.UniformNumber)</td>
+                                <td class="equal-width2">@Model.AwayTeamGPS[i].TimeSpend.Value.ToString(@"mm\:ss")</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].Points</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].FGM</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].FGA</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].PM3</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].PA3</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].FTM</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].FTA</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].Rebounds</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].DefensiveRebounds</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].OffensiveRebounds</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].Assists</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].Steals</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].Blocks</td>
+                                <td class="equal-width">@Model.AwayTeamGPS[i].Turnovers</td>
+
+                                <td class="equal-width"></td> <!-- 2P % -->
+                                <td class="equal-width"></td> <!-- 3P % -->
+                                <td class="equal-width"></td> <!-- FT % -->
+                            </tr>
+                        }
+                        <tr>
+                            <td><strong>Suma drużyny</strong></td>
+                            <td></td>
+                            <td id="AwayTeam_Points"></td>
+                            <td id="AwayTeam_FGM"></td>
+                            <td id="AwayTeam_FGA"></td>
+                            <td id="AwayTeam_PM3"></td>
+                            <td id="AwayTeam_PA3"></td>
+                            <td id="AwayTeam_FTM"></td>
+                            <td id="AwayTeam_FTA"></td>
+                            <td id="AwayTeam_Rebounds"></td>
+                            <td id="AwayTeam_DefensiveRebounds"></td>
+                            <td id="AwayTeam_OffensiveRebounds"></td>
+                            <td id="AwayTeam_Assists"></td>
+                            <td id="AwayTeam_Steals"></td>
+                            <td id="AwayTeam_Blocks"></td>
+                            <td id="AwayTeam_Turnovers"></td>
+
+                            <td id="AwayTeam_2P_Percent"></td> <!-- 2P % -->
+                            <td id="AwayTeam_3P_Percent"></td> <!-- 3P % -->
+                            <td id="AwayTeam_FT_Percent"></td> <!-- FT % -->
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="card-footer text-center mt-2">
+        <a asp-controller="League" asp-action="Details" asp-route-leagueId="@Model.Game.LeagueId" class="btn btn-outline-dark">Wróć do widoku ligi</a>
+    </div>
+</div>
+
+
+<div id="map"
+     data-lat="@(Model.Game.HomeTeam.Stadium != null && Model.Game.HomeTeam.Stadium.StadiumLatitude != null ? Model.Game.HomeTeam.Stadium.StadiumLatitude : "")"
+     data-lng="@(Model.Game.HomeTeam.Stadium != null && Model.Game.HomeTeam.Stadium.StadiumLongitude != null ? Model.Game.HomeTeam.Stadium.StadiumLongitude : "")"
+     style="height:300px; margin-top:20px;">
+</div>
+
+@section Scripts {
+    <script src="~/js/gameDetails.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
 
+@*<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC-WLvSSFAzty14uSchw8-AJnRBUQxoh4o&callback=initMap" defer></script>
+<script>
+    function initMap() {
+        var mapElement = document.getElementById('map');
 
-<link rel="stylesheet" type="text/css" href="~/css/default.css" />
+        var lat = parseFloat(mapElement.getAttribute('data-lat'));
+        var lng = parseFloat(mapElement.getAttribute('data-lng'));
+
+        //console.log(lat);
+        //console.log(lng);
+        if (isNaN(lat) || isNaN(lng)) {
+            lat = 53.07;
+            lng = 23.09;
+        }
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: lat, lng: lng },
+            zoom: 15
+        });
+
+        var marker = new google.maps.Marker({
+            position: { lat: lat, lng: lng },
+            map: map
+        });
+    }
+</script>
+*@
+

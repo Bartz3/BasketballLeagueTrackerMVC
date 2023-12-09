@@ -35,29 +35,56 @@ $(document).ready(function () {
 $(document).ready(function () {
     function updateTeamStats() {
         var stats = {
-            'HomeTeam': { 'TimeSpend': 0, 'Points': 0, 'Rebounds': 0, 'DefensiveRebounds': 0, 'OffensiveRebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0, 'FGA': 0, 'FGM': 0, 'PM3': 0, 'PA3': 0, 'FTA': 0, 'FTM': 0 },
-            'AwayTeam': { 'TimeSpend': 0, 'Points': 0, 'Rebounds': 0, 'DefensiveRebounds': 0, 'OffensiveRebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0, 'FGA': 0, 'FGM': 0, 'PM3': 0, 'PA3': 0, 'FTA': 0, 'FTM': 0 }
+            'HomeTeam': { 'Players': {}, 'TimeSpend': 0, 'Points': 0, 'Rebounds': 0, 'DefensiveRebounds': 0, 'OffensiveRebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0, 'FGA': 0, 'FGM': 0, 'PM3': 0, 'PA3': 0, 'FTA': 0, 'FTM': 0 },
+            'AwayTeam': { 'Players': {}, 'TimeSpend': 0, 'Points': 0, 'Rebounds': 0, 'DefensiveRebounds': 0, 'OffensiveRebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0, 'FGA': 0, 'FGM': 0, 'PM3': 0, 'PA3': 0, 'FTA': 0, 'FTM': 0 }
         };
 
         $('input[name^="HomeTeamGPS["], input[name^="AwayTeamGPS["]').each(function () {
             var nameParts = $(this).attr('name').split('.');
             var team = nameParts[0].includes("HomeTeamGPS") ? 'HomeTeam' : 'AwayTeam';
+            var playerId = nameParts[0].match(/\[(\d+)\]/)[1];
+
             var statName = nameParts[1];
 
-            if (stats[team].hasOwnProperty(statName)) {
+            if (!stats[team].Players[playerId]) {
+                stats[team].Players[playerId] = { 'Points': 0, 'Rebounds': 0, 'Assists': 0, 'Steals': 0, 'Blocks': 0, 'Turnovers': 0, 'FGM': 0, 'PM3': 0, 'FTM': 0 };
+            }
+
+            if (statName in stats[team].Players[playerId]) {
+                stats[team].Players[playerId][statName] += parseInt($(this).val()) || 0;
+            }
+
+            if (statName in stats[team]) {
                 stats[team][statName] += parseInt($(this).val()) || 0;
             }
+
+            var playerStats = stats[team].Players[playerId];
+  
+            playerStats.Points = (playerStats.FGM * 2) + (playerStats.PM3 * 3) + playerStats.FTM;
         });
 
-        // Obliczanie punktów na podstawie trafionych rzutów
+        // Obliczanie i aktualizacja punktów dla drużyn
         for (var team in stats) {
-            stats[team].Points = (stats[team].FGM * 2) + (stats[team].PM3 * 3) + stats[team].FTM;
-        }
 
-        // Aktualizacja pól wynikowych dla drużyn
-        for (var team in stats) {
+            stats[team].Points = (stats[team].FGM * 2) + (stats[team].PM3 * 3) + stats[team].FTM;
+            // Aktualizacja pól wynikowych na stronie
+            if (team === 'HomeTeam') {
+                $('#Game_HomeTeamScore').val(stats[team].Points);
+            } else if (team === 'AwayTeam') {
+                $('#Game_AwayTeamScore').val(stats[team].Points);
+            }
             for (var stat in stats[team]) {
                 $('#' + team + '_' + stat).text(stats[team][stat]);
+            }
+        }
+
+        for (var team in stats) {
+            for (var playerId in stats[team].Players) {
+                var player = stats[team].Players[playerId];
+                player.Points = (player.FGM * 2) + (player.PM3 * 3) + player.FTM;
+                // Aktualizacja punktów na stronie 
+                $('#' + team+"GPS_" + playerId + '__Points').val(player.Points);
+
             }
         }
     }
@@ -77,6 +104,7 @@ $(document).ready(function () {
         var teamPrefix = nameParts[0].includes("HomeTeamGPS") ? "HomeTeamGPS" : "AwayTeamGPS";
         var statName = nameParts[1];
         var playerId = nameParts[0].match(/\[(\d+)\]/)[1];
+
 
         if (statName === "FGM" || statName === "PM3" || statName === "FTM") {
             var attemptedStatName = statName === "FTM" ? "FTA" : (statName === "PM3" ? "PA3" : "FGA");
@@ -110,7 +138,7 @@ $(document).ready(function () {
     });
 
     $('input[name$=".Rebounds"]').prop('readonly', true);
-    $('input[name$=".Points"]').prop('readonly', true);
+    //$('input[name$=".Points"]').prop('readonly', false);
 
     // Początkowe obliczenie statystyk, zbiórek i punktów
     calculateRebounds();

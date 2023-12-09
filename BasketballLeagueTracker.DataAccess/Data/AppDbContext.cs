@@ -24,7 +24,6 @@ namespace BasketballLeagueTracker.DataAccess.Data
 
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Article> Articles { get; set; }
-        public DbSet<ArticleImage> ArticaleImages { get; set; }
 
         public DbSet<FavouritePlayer> FavouritePlayers { get; set; }
         public DbSet<FavouriteTeam> FavouriteTeams { get; set; }
@@ -113,11 +112,6 @@ namespace BasketballLeagueTracker.DataAccess.Data
                 .WithMany(u => u.UserCommentRaitings)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            // Jeden artykuł może posaidać wiele zdjęć, jedno zdjęcie przypisane jest do danego artykułu
-            modelBuilder.Entity<Article>()
-                .HasMany(a => a.Images)
-                .WithOne(i => i.Article)
-                .OnDelete(DeleteBehavior.NoAction);
             // Jeden artykył przypisany jest do jednej ligi, liga może posiadać wiele artykułów
             modelBuilder.Entity<Article>()
                 .HasOne(a => a.League)
@@ -203,6 +197,9 @@ namespace BasketballLeagueTracker.DataAccess.Data
 
             modelBuilder.Entity<GamePlayerStats>()
                 .HasKey(g => new { g.PlayerId, g.GameId });
+
+            modelBuilder.Entity<SeasonStatistics>()
+                .HasKey(s => new { s.TeamId,s.LeagueId });
 
             modelBuilder.Entity<Player>()
                 .HasMany(p => p.PlayerStats)

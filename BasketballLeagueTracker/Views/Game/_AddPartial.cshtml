@@ -16,7 +16,7 @@
                 <label asp-for="Game.GameDate" class="control-label">Data meczu</label>
                 <div class="flex-container">
                     <input asp-for="Game.GameDate" class="form-control date-input" type="date" value="@Model.Game.GameDate.ToString("yyyy-MM-dd")" />
-                    <input asp-for="Game.GameDate" class="form-control time-input" type="time" value="@Model.Game.GameDate.ToString("HH:mm")" />
+                    <input asp-for=GameDateHour class="form-control time-input" type="time" value="@Model.Game.GameDate.ToString("HH:mm")" />
                 </div>
                 <span asp-validation-for="Game.GameDate" class="text-danger"></span>
             </div>

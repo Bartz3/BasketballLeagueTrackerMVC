@@ -9,6 +9,6 @@ namespace BasketballLeagueTracker.DataAccess.Repository.IRepository
 {
     public interface IGameRepository : IRepository<Game>
     {
-        void Update(Game game);
+        void Update(int gameID, Game game);
     }
 }

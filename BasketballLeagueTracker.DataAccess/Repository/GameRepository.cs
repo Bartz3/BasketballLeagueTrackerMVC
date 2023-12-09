@@ -20,9 +20,16 @@ namespace BasketballLeagueTracker.DataAccess.Repository
         }
 
 
-        public void Update(Game game)
+        public void Update(int gameID,Game game)
         {
-            _db.Games.Update(game);
+
+            var existingGame = _db.Games.FirstOrDefault(g => g.GameId == gameID);
+            if (existingGame == null) return;
+            existingGame.AwayTeamScore = game.AwayTeamScore;
+            existingGame.HomeTeamScore = game.HomeTeamScore;
+            existingGame.Status = game.Status;
+
+            _db.Games.Update(existingGame);
         }
     }
 

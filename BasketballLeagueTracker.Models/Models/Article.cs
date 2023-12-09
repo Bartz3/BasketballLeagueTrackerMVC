@@ -27,6 +27,5 @@ namespace BasketballLeagueTracker.Models
 
         public ICollection<Comment>? Comments { get; set; }
 
-        public ICollection<ArticleImage>? Images { get; set; }
     }
 }

@@ -60,31 +60,6 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("BasketballLeagueTracker.Models.ArticleImage", b =>
-                {
-                    b.Property<int>("ArticleImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticleImageId"));
-
-                    b.Property<int>("ArticleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<byte[]>("ImageData")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("ArticleImageId");
-
-                    b.HasIndex("ArticleId");
-
-                    b.ToTable("ArticaleImages");
-                });
-
             modelBuilder.Entity("BasketballLeagueTracker.Models.Comment", b =>
                 {
                     b.Property<int>("CommentId")
@@ -412,16 +387,13 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.SeasonStatistics", b =>
                 {
-                    b.Property<int>("SeasonStatisticsId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int?>("TeamId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SeasonStatisticsId"));
+                    b.Property<int?>("LeagueId")
+                        .HasColumnType("int");
 
                     b.Property<int>("GamesPlayed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LeagueId")
                         .HasColumnType("int");
 
                     b.Property<int>("LeaguePoints")
@@ -436,17 +408,12 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.Property<double>("PointsPerGame")
                         .HasColumnType("float");
 
-                    b.Property<int>("TeamId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Wins")
                         .HasColumnType("int");
 
-                    b.HasKey("SeasonStatisticsId");
+                    b.HasKey("TeamId", "LeagueId");
 
                     b.HasIndex("LeagueId");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("SeasonStatistics");
                 });
@@ -790,17 +757,6 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BasketballLeagueTracker.Models.ArticleImage", b =>
-                {
-                    b.HasOne("BasketballLeagueTracker.Models.Article", "Article")
-                        .WithMany("Images")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-                });
-
             modelBuilder.Entity("BasketballLeagueTracker.Models.Comment", b =>
                 {
                     b.HasOne("BasketballLeagueTracker.Models.Article", "Article")
@@ -1049,8 +1005,6 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
             modelBuilder.Entity("BasketballLeagueTracker.Models.Article", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.Comment", b =>

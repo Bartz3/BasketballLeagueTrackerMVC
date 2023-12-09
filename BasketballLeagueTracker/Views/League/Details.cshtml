@@ -54,21 +54,24 @@
                     <div class="col-md-3 col-12 mb-4">
                         <div class="card">
                             <div class="card-body text-center" style="max-height: 60%;">
-                                <a asp-controller="Game" asp-action="Details" asp-route-teamId="@game.GameId" class="link">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="text-end">
-                                                <div class="btn-group" role="group" aria-label="Przyciski">
-                                                    <a asp-controller="Game" asp-action="DeletePOST" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.LeagueId"
-                                                   class="btn btn-sm btn-outline-danger float-end" onclick="return confirm('Czy na pewno chcesz usunąć to spotkanie?')"><i class="bi bi-trash"></i></a>
-                                                    <a asp-controller="Game" asp-action="Update" asp-route-id="@game.GameId" asp-route-leagueId="@Model.LeagueId"
-                                                    class="btn btn-sm btn-outline-primary float-end" style=" margin-left: 10px;"><i class="bi bi-pencil"></i></a>
-                                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="text-end">
+                                            <div class="btn-group" role="group" aria-label="Przyciski">
+                                                <a asp-controller="Game" asp-action="DeletePOST" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.LeagueId"
+                                               class="btn btn-sm btn-outline-danger float-end" onclick="return confirm('Czy na pewno chcesz usunąć to spotkanie?')">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                                <a asp-controller="Game" asp-action="Update" asp-route-id="@game.GameId" asp-route-leagueId="@Model.LeagueId"
+                                               class="btn btn-sm btn-outline-primary float-end" style="margin-left: 10px;">
+                                                    <i class="bi bi-pencil"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
 
-
+                                <a asp-controller="Game" asp-action="Details" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.LeagueId" style="text-decoration:none">
                                     <!-- Nazwa drużyny gospodarzy i wynik -->
                                     <h5 class="card-title link">@game.HomeTeam.Name</h5>
                                     <p class="card-text link">@game.HomeTeamScore</p>
@@ -76,9 +79,13 @@
                                     <!-- Nazwa drużyny gości i wynik -->
                                     <h5 class="card-title link">@game.AwayTeam.Name</h5>
                                     <p class="card-text link">@game.AwayTeamScore</p>
+
+                                    <!-- Dodanie daty spotkania -->
+                                    <h6 class="card-subtitle mb-2 text-muted">@game.GameDate.ToString("dd.MM.yyyy HH:mm")</h6>
                                 </a>
                             </div>
                         </div>
+
                     </div>
                 }
             </div>

@@ -19,7 +19,7 @@ namespace BasketballLeagueTracker.ViewModels
 
         public List<GamePlayerStats>? HomeTeamGPS { get; set; }
         public List<GamePlayerStats>? AwayTeamGPS { get; set; }
-
+        public TimeSpan GameDateHour { get; set; }
     }
     public class SelectListItemWithImage : SelectListItem
     {
