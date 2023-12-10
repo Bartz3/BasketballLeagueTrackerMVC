@@ -9,13 +9,14 @@ namespace BasketballLeagueTracker.DataAccess.Repository.IRepository
     public interface IUnitOfWork
     {
         IArticleRepository Article { get; }
+        IGameRepository Game { get; }
+        IGamePlayerStatsRepository GamePlayerStats { get; }
+        ISeasonStatisticsRepository SeasonStatistics { get; }
         ICommentRepository Comment { get; }
         ILeagueRepository League { get; }
         ITeamRepository Team { get; }
         IPlayerRepository Player { get; }
-        IGameRepository Game { get; }
         IStadiumRepository Stadium{ get; }
-        IGamePlayerStatsRepository GamePlayerStats { get; }
        
         void Save();
 

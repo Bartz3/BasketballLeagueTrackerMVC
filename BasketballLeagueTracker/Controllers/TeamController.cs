@@ -85,7 +85,7 @@ namespace BasketballLeagueTracker.Controllers
         public IActionResult Details(int teamId)
         {
 
-            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Stadium,Players");
+            var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Stadium,Players,League");
             //Team? team = _unitOfWork.Team.Get(p => p.TeamId == teamId, "Stadium");
 
             ViewBag.Coach = null;
@@ -139,6 +139,30 @@ namespace BasketballLeagueTracker.Controllers
 
                 return View(teamVM);
             }
+        }
+     
+        public IActionResult DeleteTeamFromLeague(int teamId, int leagueId)
+        {
+
+            Team teamToDelete = _unitOfWork.Team.Get(t => t.TeamId == teamId,"League");
+            League league= _unitOfWork.League.Get(t => t.LeagueId == leagueId,"Teams");
+            if (teamToDelete != null)
+            {
+                teamToDelete.League = null;
+                teamToDelete.LeagueId = null;
+                teamToDelete.IsInTheLeague=false;
+                league.Teams.Remove(teamToDelete);
+
+                TempData["success"] = "Zespół został usunięty z ligi.";
+            }
+            else
+            {
+                TempData["error"] = "Błąd usuwania zespołu z ligi.";
+
+            }
+            _unitOfWork.Save();
+
+            return RedirectToAction("Details", "League", new { leagueId = leagueId });
         }
 
         [HttpPost]
@@ -227,20 +251,6 @@ namespace BasketballLeagueTracker.Controllers
         public IActionResult DeletePOST(int? id)
         {
             Team? team = _unitOfWork.Team.Get(p => p.TeamId == id, null);
-            //if (team == null)
-            //{
-            //    return NotFound();
-            //}
-            //var players = _unitOfWork.Player.GetAll(null).Where(p=>p.TeamId==id);
-            //_unitOfWork.Team.RemovePlayerFromTeam();
-            ////List<Player> playersInTeam=players.Where(p=>p.TeamId== id).ToList();
-
-            //foreach (var player in players)
-            //{
-            //    player.TeamId = null;
-            //    player.Team = null;
-
-            //}
 
             _unitOfWork.Team.Delete(team);
             _unitOfWork.Save();

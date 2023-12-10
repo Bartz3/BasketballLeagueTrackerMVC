@@ -16,11 +16,12 @@ namespace BasketballLeagueTracker.DataAccess.Repository
         public IPlayerRepository Player {get;private set;}
         public ITeamRepository Team {get;private set;}
         public ILeagueRepository League {get;private set;}
-        public IArticleRepository Article {get;private set;}
+        public ISeasonStatisticsRepository Article {get;private set;}
         public ICommentRepository Comment {get;private set;}
         public IGameRepository Game {get;private set;}
         public IGamePlayerStatsRepository GamePlayerStats { get;private set;}
         public IStadiumRepository Stadium{ get;private set;}
+        public ISeasonStatisticsRepository SeasonStatistics{ get;private set;}
         private  AppDbContext _db;
 
         public UnitOfWork(AppDbContext db)
@@ -34,6 +35,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             Game= new GameRepository(_db);
             GamePlayerStats= new GamePlayerStatsRepository(_db);
             Stadium= new StadiumRepository(_db);
+            SeasonStatistics= new SeasonStatisticsRepository(_db);
         }
 
         public void Save()

@@ -93,10 +93,13 @@
                             <th class="equal-width">Punkty</th>
                             <th class="equal-width">2PM</th>
                             <th class="equal-width">2PA</th>
+                            <th class="equal-width">2P %</th>
                             <th class="equal-width">3PM</th>
                             <th class="equal-width">3PA</th>
+                            <th class="equal-width">3P %</th>
                             <th class="equal-width">FTM</th>
                             <th class="equal-width">FTA</th>
+                            <th class="equal-width">FT %</th>
                             <th class="equal-width">Zbiórki</th>
                             <th class="equal-width">Zbiórki def</th>
                             <th class="equal-width">Zbiórki off</th>
@@ -105,25 +108,31 @@
                             <th class="equal-width">Bloki</th>
                             <th class="equal-width">Straty</th>
 
-                            <th class="equal-width">2P %</th>
-                            <th class="equal-width">3P %</th>
-                            <th class="equal-width">FT %</th>
                         </tr>
                     </thead>
                     <tbody>
                         @for (int i = 0; i < Model.AwayTeamGPS.Count; i++)
                         {
+                        var playerNameAndNumber = Model.HomeTeamGPS[i].Player.FullName + " (#" + Model.HomeTeamGPS[i].Player.UniformNumber + ")";
+
                             <tr>
-                                <td class="equal-width3">@Model.HomeTeamGPS[i].Player.FullName (#@Model.HomeTeamGPS[i].Player.UniformNumber)</td>
-                                @*<td class="equal-width2">@Model.HomeTeamGPS[i].TimeSpend</td>*@
+          
+                                <td class="equal-width3">
+                                    <a href="@Url.Action("Details", "Player", new { playerId = Model.HomeTeamGPS[i].Player.PlayerId })" class="no-underline">
+                                        @playerNameAndNumber
+                                    </a>        
+                                    </td>
                                 <td class="equal-width2">@Model.HomeTeamGPS[i].TimeSpend.Value.ToString(@"mm\:ss")</td>
                                 <td class="equal-width">@Model.HomeTeamGPS[i].Points</td>
                                 <td class="equal-width">@Model.HomeTeamGPS[i].FGM</td>
                                 <td class="equal-width">@Model.HomeTeamGPS[i].FGA</td>
+                                <td class="equal-width"></td> <!-- 2P % -->
                                 <td class="equal-width">@Model.HomeTeamGPS[i].PM3</td>
                                 <td class="equal-width">@Model.HomeTeamGPS[i].PA3</td>
+                                <td class="equal-width"></td> <!-- 3P % -->
                                 <td class="equal-width">@Model.HomeTeamGPS[i].FTM</td>
                                 <td class="equal-width">@Model.HomeTeamGPS[i].FTA</td>
+                                <td class="equal-width"></td> <!-- FT % -->
                                 <td class="equal-width">@Model.HomeTeamGPS[i].Rebounds</td>
                                 <td class="equal-width">@Model.HomeTeamGPS[i].DefensiveRebounds</td>
                                 <td class="equal-width">@Model.HomeTeamGPS[i].OffensiveRebounds</td>
@@ -132,9 +141,6 @@
                                 <td class="equal-width">@Model.HomeTeamGPS[i].Blocks</td>
                                 <td class="equal-width">@Model.HomeTeamGPS[i].Turnovers</td>
 
-                                <td class="equal-width"></td> <!-- 2P % -->
-                                <td class="equal-width"></td> <!-- 3P % -->
-                                <td class="equal-width"></td> <!-- FT % -->
 
                             </tr>
                         }
@@ -144,10 +150,13 @@
                             <td id="HomeTeam_Points"></td>
                             <td id="HomeTeam_FGM"></td>
                             <td id="HomeTeam_FGA"></td>
+                            <td id="HomeTeam_2P_Percent"></td> <!-- 2P % -->
                             <td id="HomeTeam_PM3"></td>
                             <td id="HomeTeam_PA3"></td>
+                            <td id="HomeTeam_3P_Percent"></td> <!-- 3P % -->
                             <td id="HomeTeam_FTM"></td>
                             <td id="HomeTeam_FTA"></td>
+                            <td id="HomeTeam_FT_Percent"></td> <!-- FT % -->
                             <td id="HomeTeam_Rebounds"></td>
                             <td id="HomeTeam_DefensiveRebounds"></td>
                             <td id="HomeTeam_OffensiveRebounds"></td>
@@ -156,9 +165,6 @@
                             <td id="HomeTeam_Blocks"></td>
                             <td id="HomeTeam_Turnovers"></td>
 
-                            <td id="HomeTeam_2P_Percent"></td> <!-- 2P % -->
-                            <td id="HomeTeam_3P_Percent"></td> <!-- 3P % -->
-                            <td id="HomeTeam_FT_Percent"></td> <!-- FT % -->
                         </tr>
                     </tbody>
                 </table>
@@ -174,10 +180,13 @@
                             <th class="equal-width">Punkty</th>
                             <th class="equal-width">2PM</th>
                             <th class="equal-width">2PA</th>
+                            <th class="equal-width">2P %</th>
                             <th class="equal-width">3PM</th>
                             <th class="equal-width">3PA</th>
+                            <th class="equal-width">3P %</th>
                             <th class="equal-width">FTM</th>
                             <th class="equal-width">FTA</th>
+                            <th class="equal-width">FT %</th>
                             <th class="equal-width">Zbiórki</th>
                             <th class="equal-width">Zbiórki def</th>
                             <th class="equal-width">Zbiórki off</th>
@@ -186,24 +195,30 @@
                             <th class="equal-width">Bloki</th>
                             <th class="equal-width">Straty</th>
 
-                            <th class="equal-width">2P %</th>
-                            <th class="equal-width">3P %</th>
-                            <th class="equal-width">FT %</th>
                         </tr>
                     </thead>
                     <tbody>
                         @for (int i = 0; i < Model.AwayTeamGPS.Count; i++)
-                        {
+                        {                  var playerNameAndNumber = Model.HomeTeamGPS[i].Player.FullName + " (#" + Model.HomeTeamGPS[i].Player.UniformNumber + ")";
+
                             <tr>
-                                <td class="equal-width3">@Model.AwayTeamGPS[i].Player.FullName (#@Model.AwayTeamGPS[i].Player.UniformNumber)</td>
+          
+                                <td class="equal-width3">
+                                    <a href="@Url.Action("Details", "Player", new { playerId = Model.AwayTeamGPS[i].Player.PlayerId })" class="no-underline">
+                                        @playerNameAndNumber
+                                    </a>        
+                                    </td>
                                 <td class="equal-width2">@Model.AwayTeamGPS[i].TimeSpend.Value.ToString(@"mm\:ss")</td>
                                 <td class="equal-width">@Model.AwayTeamGPS[i].Points</td>
                                 <td class="equal-width">@Model.AwayTeamGPS[i].FGM</td>
                                 <td class="equal-width">@Model.AwayTeamGPS[i].FGA</td>
+                                <td class="equal-width"></td> <!-- 2P % -->
                                 <td class="equal-width">@Model.AwayTeamGPS[i].PM3</td>
                                 <td class="equal-width">@Model.AwayTeamGPS[i].PA3</td>
+                                <td class="equal-width"></td> <!-- 3P % -->
                                 <td class="equal-width">@Model.AwayTeamGPS[i].FTM</td>
                                 <td class="equal-width">@Model.AwayTeamGPS[i].FTA</td>
+                                <td class="equal-width"></td> <!-- FT % -->
                                 <td class="equal-width">@Model.AwayTeamGPS[i].Rebounds</td>
                                 <td class="equal-width">@Model.AwayTeamGPS[i].DefensiveRebounds</td>
                                 <td class="equal-width">@Model.AwayTeamGPS[i].OffensiveRebounds</td>
@@ -212,9 +227,6 @@
                                 <td class="equal-width">@Model.AwayTeamGPS[i].Blocks</td>
                                 <td class="equal-width">@Model.AwayTeamGPS[i].Turnovers</td>
 
-                                <td class="equal-width"></td> <!-- 2P % -->
-                                <td class="equal-width"></td> <!-- 3P % -->
-                                <td class="equal-width"></td> <!-- FT % -->
                             </tr>
                         }
                         <tr>
@@ -223,10 +235,13 @@
                             <td id="AwayTeam_Points"></td>
                             <td id="AwayTeam_FGM"></td>
                             <td id="AwayTeam_FGA"></td>
+                            <td id="AwayTeam_2P_Percent"></td> <!-- 2P % -->
                             <td id="AwayTeam_PM3"></td>
                             <td id="AwayTeam_PA3"></td>
+                            <td id="AwayTeam_3P_Percent"></td> <!-- 3P % -->
                             <td id="AwayTeam_FTM"></td>
                             <td id="AwayTeam_FTA"></td>
+                            <td id="AwayTeam_FT_Percent"></td> <!-- FT % -->
                             <td id="AwayTeam_Rebounds"></td>
                             <td id="AwayTeam_DefensiveRebounds"></td>
                             <td id="AwayTeam_OffensiveRebounds"></td>
@@ -235,9 +250,6 @@
                             <td id="AwayTeam_Blocks"></td>
                             <td id="AwayTeam_Turnovers"></td>
 
-                            <td id="AwayTeam_2P_Percent"></td> <!-- 2P % -->
-                            <td id="AwayTeam_3P_Percent"></td> <!-- 3P % -->
-                            <td id="AwayTeam_FT_Percent"></td> <!-- FT % -->
                         </tr>
                     </tbody>
 

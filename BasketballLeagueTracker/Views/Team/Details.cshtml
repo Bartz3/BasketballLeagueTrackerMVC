@@ -1,4 +1,5 @@
-﻿<div class="container mt-4">
+﻿@model Team
+<div class="container mt-4">
     <div class="card team-details-card">
         <div class="card-header">
             <h2 class="card-title">@ViewBag.TeamName</h2>
@@ -28,6 +29,16 @@
                             <a href="#map" class="stadium-address-link" onclick="scrollToMap()"> @Model.Stadium.Address</a>
                         }
                     </div>
+                        <div class="coach-info mb-3">
+                        <strong class="coach-label">Liga:</strong>
+                        @if(Model.LeagueId!=null && Model.LeagueId != 0)
+                        {
+                        <span class="coach-name">  <a asp-controller="League" asp-action="Details" asp-route-leagueId="@Model.LeagueId" class="link">@Model.League.Name</a></span><br>
+                            
+                        }else{
+                             <span class="coach-name">-</span>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
@@ -36,6 +47,7 @@
                 <i class="bi @(ViewBag.IsFavourite ? "bi-heart-fill" : "bi-heart")"></i> Dodaj do ulubionych
             </a>
             <a asp-controller="Player" asp-action="AddPlayerToTeam" asp-route-teamId="@Model?.TeamId" class="btn btn-success">Dodaj zawodnika</a>
+            <a asp-controller="Team" asp-action="DeleteTeamFromLeague" asp-route-teamId="@Model?.TeamId" asp-route-leagueId="@Model?.LeagueId" class="btn btn-outline-danger">Usuń drużynę z ligi</a>
         </div>
     </div>
 </div>

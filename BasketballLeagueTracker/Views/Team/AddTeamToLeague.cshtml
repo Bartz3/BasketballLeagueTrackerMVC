@@ -25,12 +25,17 @@
             </tr>
         </thead>
     </table>
+    <a asp-controller="League" asp-action="Details" asp-route-leagueId="@ViewBag.LeagueId" class="btn btn-primary">
+        Przejdź Ligi @ViewBag.leagueName
+    </a>
+
 </div>
+
 @section Scripts{
     @Html.Partial("_NotificationJS");
     @*<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>*@
     <script src="~/js/team.js"></script>
 }
 <link rel="stylesheet" type="text/css" href="~/css/player.css" />
-
+<link rel="stylesheet" type="text/css" href="~/css/default.css" />
 

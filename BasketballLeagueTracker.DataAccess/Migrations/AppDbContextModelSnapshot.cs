@@ -393,22 +393,22 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                     b.Property<int?>("LeagueId")
                         .HasColumnType("int");
 
-                    b.Property<int>("GamesPlayed")
+                    b.Property<int?>("GamesPlayed")
                         .HasColumnType("int");
 
-                    b.Property<int>("LeaguePoints")
+                    b.Property<int?>("LeaguePoints")
                         .HasColumnType("int");
 
-                    b.Property<int>("Losses")
+                    b.Property<int?>("Losses")
                         .HasColumnType("int");
 
-                    b.Property<double>("OpponentPointsPerGame")
+                    b.Property<double?>("OpponentPoints")
                         .HasColumnType("float");
 
-                    b.Property<double>("PointsPerGame")
+                    b.Property<double?>("TeamPoints")
                         .HasColumnType("float");
 
-                    b.Property<int>("Wins")
+                    b.Property<int?>("Wins")
                         .HasColumnType("int");
 
                     b.HasKey("TeamId", "LeagueId");

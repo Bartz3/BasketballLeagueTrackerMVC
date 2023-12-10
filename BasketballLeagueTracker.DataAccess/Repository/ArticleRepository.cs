@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BasketballLeagueTracker.DataAccess.Repository
 {
-    public class ArticleRepository : Repository<Article>, IArticleRepository
+    public class ArticleRepository : Repository<Article>, ISeasonStatisticsRepository
     {
         private AppDbContext _db;
 

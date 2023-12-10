@@ -210,34 +210,41 @@ namespace BasketballLeagueTracker.Controllers
                     var homeTeamPlayers = new List<Player>();
                     var awayTeamPlayers = new List<Player>();
 
-                    var test = gameVM.Game.GameId;
+                    
 
                     foreach (var player in players)
                     {
                         if (player.TeamId == gameVM.Game.HomeTeamId) homeTeamPlayers.Add(player);
                         else if (player.TeamId == gameVM.Game.AwayTeamId) awayTeamPlayers.Add(player);
                     }
-
+                    GamePlayerStats playerStats = null;
                     foreach (var player in homeTeamPlayers)
                     {
-                        var playerStats = new GamePlayerStats
+                        if(player.Positions != PlayerPosition.Coach)
                         {
-                            PlayerId = player.PlayerId,
-                            GameId = gameVM.Game.GameId
+                            playerStats = new GamePlayerStats
+                            {
+                                PlayerId = player.PlayerId,
+                                GameId = gameVM.Game.GameId
 
-                        };
+                            };
+                        }
+
                         //gameVM.HomeTeamGPS.Add(playerStats);
                         _unitOfWork.GamePlayerStats.Add(playerStats);
                     }
 
                     foreach (var player in awayTeamPlayers)
                     {
-                        var playerStats = new GamePlayerStats
+                        if (player.Positions != PlayerPosition.Coach)
                         {
-                            PlayerId = player.PlayerId,
-                            GameId = gameVM.Game.GameId
+                            playerStats = new GamePlayerStats
+                            {
+                                PlayerId = player.PlayerId,
+                                GameId = gameVM.Game.GameId
 
-                        };
+                            };
+                        }
                         //gameVM.AwayTeamGPS.Add(playerStats);
                         _unitOfWork.GamePlayerStats.Add(playerStats);
                     }
