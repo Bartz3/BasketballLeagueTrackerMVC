@@ -47,7 +47,7 @@ namespace BasketballLeagueTracker.Controllers
             {
                 gameVM.AwayTeamGPS.Add(awayPlayerStats);
             }
-            
+
 
             return View(gameVM);
         }
@@ -116,15 +116,18 @@ namespace BasketballLeagueTracker.Controllers
             if (ModelState.IsValid)
             {
 
+                if (gameVM.HomeTeamGPS != null)
+                    foreach (var homeStat in gameVM.HomeTeamGPS)
+                    {
+                        _unitOfWork.GamePlayerStats.Update(homeStat);
+                    }
 
-                foreach (var homeStat in gameVM.HomeTeamGPS)
-                {
-                    _unitOfWork.GamePlayerStats.Update(homeStat);
-                }
-                foreach (var awayStat in gameVM.AwayTeamGPS)
-                {
-                    _unitOfWork.GamePlayerStats.Update(awayStat);
-                }
+                if (gameVM.AwayTeamGPS != null)
+                    foreach (var awayStat in gameVM.AwayTeamGPS)
+                    {
+                        _unitOfWork.GamePlayerStats.Update(awayStat);
+                    }
+
                 _unitOfWork.Save();
 
                 var game = _unitOfWork.Game.Get(x => x.GameId == gameVM.Game.GameId, "HomeTeam.Players.PlayerStats,AwayTeam.Players.PlayerStats");
@@ -146,6 +149,40 @@ namespace BasketballLeagueTracker.Controllers
                 {
                     game.GameDate = gameVM.Game.GameDate.Add(gameVM.GameDateHour);
 
+                    // Updating info about season stats
+                    if (gameVM.Game.Status == GameStatus.Completed)
+                    {
+                        var homeSeasonStats = _unitOfWork.SeasonStatistics.Get(s => s.TeamId == game.HomeTeamId
+                        && s.LeagueId == game.LeagueId, null);
+
+                        var awaySeasonStats = _unitOfWork.SeasonStatistics.Get(s => s.TeamId == game.AwayTeamId
+                         && s.LeagueId == game.LeagueId, null);
+
+                        if (gameVM.Game.HomeTeamScore > gameVM.Game.AwayTeamScore)// HomeTeam won
+                        {
+                            homeSeasonStats.LeaguePoints += 3;
+                            homeSeasonStats.Wins += 1;
+
+                            awaySeasonStats.Losses += 1;
+
+                        }
+                        else // AwayTeam won
+                        {
+                            awaySeasonStats.LeaguePoints += 3;
+                            awaySeasonStats.Wins += 1;
+                            homeSeasonStats.Losses += 1;
+
+                        }
+                        awaySeasonStats.GamesPlayed += 1;
+                        awaySeasonStats.TeamPoints += gameVM.Game.AwayTeamScore;
+                        awaySeasonStats.OpponentPoints += gameVM.Game.HomeTeamScore;
+
+                        homeSeasonStats.GamesPlayed += 1;
+                        homeSeasonStats.OpponentPoints += gameVM.Game.AwayTeamScore;
+                        homeSeasonStats.TeamPoints += gameVM.Game.HomeTeamScore;
+
+
+                    }
                     _unitOfWork.Game.Update(game.GameId, gameVM.Game);
                     TempData["success"] = "Mecz został zmodyfikowany";
                 }
@@ -210,7 +247,7 @@ namespace BasketballLeagueTracker.Controllers
                     var homeTeamPlayers = new List<Player>();
                     var awayTeamPlayers = new List<Player>();
 
-                    
+
 
                     foreach (var player in players)
                     {
@@ -220,7 +257,7 @@ namespace BasketballLeagueTracker.Controllers
                     GamePlayerStats playerStats = null;
                     foreach (var player in homeTeamPlayers)
                     {
-                        if(player.Positions != PlayerPosition.Coach)
+                        if (player.Positions != PlayerPosition.Coach)
                         {
                             playerStats = new GamePlayerStats
                             {
@@ -288,20 +325,25 @@ namespace BasketballLeagueTracker.Controllers
             gameVM.AwayTeamSL = new List<SelectListItemWithImage>();
             foreach (var team in teams)
             {
-                gameVM.HomeTeamSL.Add(new SelectListItemWithImage
+                if (team.LeagueId == gameVM.LeagueId)
                 {
-                    Text = team.Name,
-                    Value = team.TeamId.ToString(),
-                    Logo = team.TeamLogo
+                    gameVM.HomeTeamSL.Add(new SelectListItemWithImage
+                    {
+                        Text = team.Name,
+                        Value = team.TeamId.ToString(),
+                        Logo = team.TeamLogo
 
 
-                });
-                gameVM.AwayTeamSL.Add(new SelectListItemWithImage
-                {
-                    Text = team.Name,
-                    Value = team.TeamId.ToString(),
-                    Logo = team.TeamLogo
-                });
+                    });
+                    gameVM.AwayTeamSL.Add(new SelectListItemWithImage
+                    {
+                        Text = team.Name,
+                        Value = team.TeamId.ToString(),
+                        Logo = team.TeamLogo
+                    });
+
+                }
+
             }
             if (gameVM.Game != null)
             {

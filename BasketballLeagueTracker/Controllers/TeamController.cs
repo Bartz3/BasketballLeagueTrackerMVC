@@ -327,6 +327,8 @@ namespace BasketballLeagueTracker.Controllers
         {
             var team = _unitOfWork.Team.Get(p => p.TeamId == teamId, null);
             var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams");
+
+
             string messageToDisplay = "";
 
             if (league == null)
@@ -353,6 +355,26 @@ namespace BasketballLeagueTracker.Controllers
             {
                 team.LeagueId = leagueId;
                 team.IsInTheLeague = true;
+
+                SeasonStatistics newTeamSS;
+                // Season statistic
+                bool teamHasSS = false;
+                foreach (var seasonStats in _unitOfWork.SeasonStatistics.GetAll(null).ToList())
+                {
+                    if(seasonStats.LeagueId== leagueId && seasonStats.TeamId == team.TeamId)
+                    {
+                        teamHasSS=true;
+                    }
+                }
+
+                if(!teamHasSS)
+                {
+                    newTeamSS = new SeasonStatistics();
+                    newTeamSS.LeagueId= leagueId;
+                    newTeamSS.TeamId= team.TeamId;
+                    _unitOfWork.SeasonStatistics.Add(newTeamSS);
+                }
+
                 _unitOfWork.Save();
                 messageToDisplay = $"Drużyna {team.Name} została dodana do ligi";
             }

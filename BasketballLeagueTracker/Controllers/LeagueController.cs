@@ -102,12 +102,21 @@ namespace BasketballLeagueTracker.Controllers
         }
         public IActionResult Details(int leagueId)
         {
-            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles,Games.HomeTeam,Games.AwayTeam"); 
-
+            var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams,Articles,Games.HomeTeam,Games.AwayTeam,SeasonStatistics");
+            LeagueViewModel leagueVM = new LeagueViewModel();
+            leagueVM.League = league;
             ViewBag.IsFavourite = IsFavourite(leagueId);
+            //List<SeasonStatistics> seasonStatistic= new List<SeasonStatistics>();
+            //var allStats= _unitOfWork.SeasonStatistics.GetAll("Teams");
+            //foreach (var stat in allStats)
+            //{
+            //    if(stat.LeagueId==leagueId)seasonStatistic.Add(stat);
+            //}
+
+
             //TempData["SelectedTeam"] = team;
 
-            return View(league);
+            return View(leagueVM);
         }
 
         [HttpPost]

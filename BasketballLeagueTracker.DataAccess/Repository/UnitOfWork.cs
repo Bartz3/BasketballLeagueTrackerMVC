@@ -12,16 +12,16 @@ namespace BasketballLeagueTracker.DataAccess.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-
+       public  IArticleRepository Article { get; set; }
         public IPlayerRepository Player {get;private set;}
         public ITeamRepository Team {get;private set;}
         public ILeagueRepository League {get;private set;}
-        public ISeasonStatisticsRepository Article {get;private set;}
         public ICommentRepository Comment {get;private set;}
         public IGameRepository Game {get;private set;}
         public IGamePlayerStatsRepository GamePlayerStats { get;private set;}
         public IStadiumRepository Stadium{ get;private set;}
         public ISeasonStatisticsRepository SeasonStatistics{ get;private set;}
+
         private  AppDbContext _db;
 
         public UnitOfWork(AppDbContext db)

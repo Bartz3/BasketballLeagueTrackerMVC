@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace BasketballLeagueTracker.DataAccess.Repository
 {
-    public class SeasonStatisticsRepository : Repository<Article>, ISeasonStatisticsRepository
+    public class SeasonStatisticsRepository : Repository<SeasonStatistics>, ISeasonStatisticsRepository
     {
         private AppDbContext _db;
 
-        public SeasonStatisticsRepository(AppDbContext db) : base(db) // Passing db to Repository<Player>
+        public SeasonStatisticsRepository(AppDbContext db) : base(db)
         { 
             _db=db;
         }
 
-        public void Update(Article article)
+        public void Update(SeasonStatistics seasonStatistics)
         {
-            _db.Articles.Update(article);
+            _db.SeasonStatistics.Update(seasonStatistics);
         }
     }
 

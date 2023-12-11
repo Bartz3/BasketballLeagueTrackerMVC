@@ -1,9 +1,9 @@
-﻿@model League
-
+﻿@using BasketballLeagueTracker.ViewModels;
+@model LeagueViewModel
 @{
-    if (Model != null && Model.LeagueId != 0)
+    if (Model != null && Model.League.LeagueId != 0)
     {
-        TempData["LeagueId"] = Model.LeagueId;
+        TempData["LeagueId"] = Model.League.LeagueId;
     }
 }
 
@@ -12,19 +12,19 @@
    <div class="league-header">
         <div class="row justify-content-center align-items-right">
         <div class="col-md-8 text-center">
-            @if (Model.Logo != null)
+                @if (Model.League.Logo != null)
             {
-                <img src="data:image/png;base64,@(Convert.ToBase64String(Model.Logo))" alt="League Logo" width="80" class="league-logo">
+                    <img src="data:image/png;base64,@(Convert.ToBase64String(Model.League.Logo))" alt="League Logo" width="80" class="league-logo">
             }
             else
             {
                 <img src="/images/deafult-league.png" class="league-logo">
             }
-            <h1 class="league-name">@Model.Name</h1>
-            <p class="league-description">@Model.Description</p>
+            <h1 class="league-name">@Model.League.Name</h1>
+                <p class="league-description">@Model.League.Description</p>
         </div>
         <div class="col-md-4 text-md-end ">
-            <a asp-controller="League" asp-action="AddLeagueToFavourites" asp-route-leagueId="@Model?.LeagueId" class="favourite-button">
+                <a asp-controller="League" asp-action="AddLeagueToFavourites" asp-route-leagueId="@Model.League?.LeagueId" class="favourite-button">
                 @if (ViewBag.IsFavourite)
                 {
                     <i class="bi bi-heart-fill"></i>
@@ -45,9 +45,9 @@
     @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Moderator))
     {
         <div class="admin-panel text-center my-3">
-            <a asp-controller="Team" asp-action="AddTeamToLeague" asp-route-leagueId="@Model.LeagueId" class="btn btn-primary">Dodaj drużynę</a>
-            <a asp-controller="Article" asp-action="Upsert" asp-route-leagueId="@Model.LeagueId" class="btn btn-secondary">Dodaj artykuł</a>
-            <a asp-controller="Game" asp-action="Create" asp-route-leagueId="@Model.LeagueId" class="btn btn-secondary">Dodaj mecz</a>
+        <a asp-controller="Team" asp-action="AddTeamToLeague" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-primary">Dodaj drużynę</a>
+        <a asp-controller="Article" asp-action="Upsert" asp-route-leagueId="@Model..LeagueLeagueId" class="btn btn-secondary">Dodaj artykuł</a>
+            <a asp-controller="Game" asp-action="Create" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-secondary">Dodaj mecz</a>
         </div>
     }
 
@@ -57,25 +57,29 @@
             <h2>Tabela Punków</h2>
              <table class="table table-sm">
         <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Drużyna</th>
-                <th scope="col">Mecze</th>
-                <th scope="col">Punkty</th>
-                <th scope="col">Zdobyte/Stracone</th>
-                <th scope="col">Bilans</th>
-            </tr>
+                <tr>
+                    <th>Drużyna</th>
+                    <th>Zwycięstwa</th>
+                    <th>Porażki</th>
+                    <th>Punkty Ligowe</th>
+                    <th>Mecze Rozegrane</th>
+                    <th>Punkty Drużyny</th>
+                    <th>Punkty Przeciwnika</th>
+                </tr>
         </thead>
         <tbody>
-           
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Wilkołaki otwock</td>
-                    <td>3</td>
-                    <td>4</td>
-                    <td>432/233</td>
-                    <td>3-2</td>
-                </tr>
+                @foreach (var stat in Model.League.SeasonStatistics.OrderByDescending(s => s.LeaguePoints))
+                {
+                    <tr>
+                        <td>@stat.Team.Name</td>
+                        <td>@stat.Wins</td>
+                        <td>@stat.Losses</td>
+                        <td>@stat.LeaguePoints</td>
+                        <td>@stat.GamesPlayed</td>
+                        <td>@stat.TeamPoints</td>
+                        <td>@stat.OpponentPoints</td>
+                    </tr>
+                }
            
         </tbody>
     </table>
@@ -98,7 +102,7 @@
                 <!-- Games section -->
                 <div class="tab-pane fade show active" id="games" role="tabpanel" aria-labelledby="games-tab">
                     <div class="row mt-3">
-                        @foreach (var game in Model.Games)
+                    @foreach (var game in Model.League.Games)
                         {
                             <div class="col-md-3 col-12 mb-4">
                                 <div class="card">
@@ -107,11 +111,11 @@
                                             <div class="col-md-12">
                                                 <div class="text-end">
                                                     <div class="btn-group" role="group" aria-label="Przyciski">
-                                                        <a asp-controller="Game" asp-action="DeletePOST" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.LeagueId"
+                                                    <a asp-controller="Game" asp-action="DeletePOST" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.League.LeagueId"
                                                        class="btn btn-sm btn-outline-danger float-end" onclick="return confirm('Czy na pewno chcesz usunąć to spotkanie?')">
                                                             <i class="bi bi-trash"></i>
                                                         </a>
-                                                        <a asp-controller="Game" asp-action="Update" asp-route-id="@game.GameId" asp-route-leagueId="@Model.LeagueId"
+                                                        <a asp-controller="Game" asp-action="Update" asp-route-id="@game.GameId" asp-route-leagueId="@Model..LeagueLeagueId"
                                                        class="btn btn-sm btn-outline-primary float-end" style="margin-left: 10px;">
                                                             <i class="bi bi-pencil"></i>
                                                         </a>
@@ -120,7 +124,7 @@
                                             </div>
                                         </div>
 
-                                        <a asp-controller="Game" asp-action="Details" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.LeagueId" style="text-decoration:none">
+                                    <a asp-controller="Game" asp-action="Details" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.League.LeagueId" style="text-decoration:none">
                                             <!-- Nazwa drużyny gospodarzy i wynik -->
                                             <h5 class="card-title link">@game.HomeTeam.Name</h5>
                                             <p class="card-text link">@game.HomeTeamScore</p>
@@ -143,7 +147,7 @@
                 <!-- Teams section -->
                 <div class="tab-pane fade" id="teams" role="tabpanel" aria-labelledby="teams-tab">
                     <div class="row mt-3">
-                        @foreach (var team in Model.Teams)
+                    @foreach (var team in Model.League.Teams)
                         {
                             <div class="col-md-3 col-12 mb-4">
                                 <div class="card">
@@ -170,7 +174,7 @@
                 <!-- Article section-->
                 <div class="tab-pane fade" id="articles" role="tabpanel" aria-labelledby="articles-tab">
                     <div class="row mt-3">
-                        @foreach (var article in Model.Articles)
+                    @foreach (var article in Model.League.Articles)
                         {
                             <div class="col-md-4 col-12 mb-4">
                                 <div class="card">
@@ -179,10 +183,10 @@
                                             <h5 class="mb-0">@article.Title</h5>
                                         </a>
                                         <div class="justify-content-end">
-                                            <a asp-controller="Article" asp-action="Upsert" asp-route-id="@article.ArticleId" asp-route-leagueId="@Model.LeagueId" class="btn btn-warning btn-sm me-2 ">
+                                            <a asp-controller="Article" asp-action="Upsert" asp-route-id="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-warning btn-sm me-2 ">
                                                 <i class="bi bi-pencil-square"></i>
                                             </a>
-                                            <a asp-controller="Article" asp-action="DeletePOST" asp-route-articleId="@article.ArticleId" asp-route-leagueId="@Model.LeagueId" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć ten artykuł?');">
+                                        <a asp-controller="Article" asp-action="DeletePOST" asp-route-articleId="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć ten artykuł?');">
                                                 <i class="bi bi-trash3"></i>
                                             </a>
 
@@ -243,8 +247,9 @@
 }
 
 .favourite-button {
-    padding: 5px 10px; /* Zmniejszenie paddingu przycisku */
-        background-color: #70cce6;
+    padding: 5px 10px; 
+        background-color: #bbe2ed;
+        border: 2px dotted white; /* Czarny kolor ramki */
     color: white;
     text-align: center;
     border-radius: 5px;
