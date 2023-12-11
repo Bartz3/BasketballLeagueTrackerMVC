@@ -1,55 +1,88 @@
 ﻿@model List<League>
-@Html.Partial("_MainHeader")
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-12 text-center">
-            <h1 class="display-4 mb-4 text-primary">Ligi</h1>
-        </div>
+@{
+    ViewData["Title"] = "Strona główna";
+}
+
+
+<style>
+
+    .jumbotron {
+        background-color: #f8f9fa;
+        border-bottom: 5px solid #17a2b8;
+        padding: 20px 0;
+        margin-bottom: 0; 
+    }
+
+        .jumbotron h1, jumbotron h2 {
+            color: #007bff; 
+            font-family: 'Arial', sans-serif; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2); 
+        }
+
+        .jumbotron h2 {
+            color: #007bff;
+        }
+
+        .jumbotron p {
+            font-size: 1.2rem;
+            color: #343a40; 
+        }
+
+    .card {
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+</style>
+
+<div class="jumbotron mb-4">
+    <div class="container text-center">
+        <h1 class="display-4">Witaj w BasketballLeagueTracker</h1>
+        <p class="lead">Twoje miejsce do śledzenia lig koszykarskich i zawodników.</p>
+        <hr class="my-4">
+        <h2 class="display-4 mb-4">Odkryj nasze ligi</h2>
     </div>
-    <div class="row mb-3">
-        <div class="col-6">
-            <a asp-controller="League" asp-action="Upsert" class="btn btn-primary">
-                <i class="bi bi-patch-plus-fill"></i>
-                Dodaj nową ligę
+</div>
+
+<div class="container mt-0">
+
+
+    @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin))
+    {
+        <div class="col-12 text-center mb-4">
+            <a asp-controller="League" asp-action="Upsert" class="btn btn-outline-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Dodaj Nową Ligę
             </a>
         </div>
-    </div>
+    }
+
     <div class="row">
         @foreach (var league in Model)
         {
- <!--  col-md-4 -> col-md-3 -->
-            <div class="col-md-3 mb-4">
-                <div class="card h-100">
-
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card h-100 shadow-sm">
                     <div class="card-body text-center">
-                    @if (league.Logo != null)
-                    {
-                        <img src="data:image/png;base64,@(Convert.ToBase64String(league.Logo))" alt="League Logo" class="card-img-top" style="width: 80%;">
-                    }else{
-                            <img src="/images/deafult-league.png" alt=":(" style="width: 80%; ">
-                    }
-                    <hr>
-                        <a asp-controller="League" asp-action="Details" asp-route-leagueId="@league.LeagueId" class="link">
+                        @if (league.Logo != null)
+                        {
+                            <img src="data:image/png;base64,@(Convert.ToBase64String(league.Logo))" alt="League Logo" class="card-img-top" style="width: 80%;">
+                        }
+                        else
+                        {
+                            <img src="/images/deafult-league.png" alt="Default Image" style="width: 80%;">
+                        }
+                        <hr>
+                        <a asp-controller="League" asp-action="Details" asp-route-leagueId="@league.LeagueId" class="link stretched-link">
                             <h5 class="card-title">@league.Name</h5>
                             <p class="card-text">@league.Description</p>
                         </a>
                     </div>
-                    <div class="card-footer text-center">
-                        <div class="btn-group " role="group">
-                            <a asp-controller="League" asp-action="Upsert" asp-route-id="@league.LeagueId" class="btn btn-warning">
-                                <i class="bi bi-pencil-square"></i> Edytuj
-                            </a>
-                        </div>
-                        <div class="btn-group ms-lg-2 " role="group">
-                            <a asp-controller="League" asp-action="Delete" asp-route-id="@league.LeagueId" class="btn btn-danger">
-                                <i class="bi bi-trash3"></i> Usuń
-                            </a>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         }
     </div>
 </div>
+
 <link rel="stylesheet" type="text/css" href="~/css/default.css" />

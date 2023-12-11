@@ -9,287 +9,216 @@
 
 <div class="container">
     <!-- Nagłówek ligi z logo, nazwą, opisem i przyciskiem dodania do ulubionych -->
-   <div class="league-header">
+    <div class="league-header">
         <div class="row justify-content-center align-items-right">
-        <div class="col-md-8 text-center">
+            <div class="col-md-8 text-center">
                 @if (Model.League.Logo != null)
-            {
-                    <img src="data:image/png;base64,@(Convert.ToBase64String(Model.League.Logo))" alt="League Logo" width="80" class="league-logo">
-            }
-            else
-            {
-                <img src="/images/deafult-league.png" class="league-logo">
-            }
-            <h1 class="league-name">@Model.League.Name</h1>
-                <p class="league-description">@Model.League.Description</p>
-        </div>
-        <div class="col-md-4 text-md-end ">
-                <a asp-controller="League" asp-action="AddLeagueToFavourites" asp-route-leagueId="@Model.League?.LeagueId" class="favourite-button">
-                @if (ViewBag.IsFavourite)
                 {
-                    <i class="bi bi-heart-fill"></i>
+                    <img src="data:image/png;base64,@(Convert.ToBase64String(Model.League.Logo))" alt="League Logo" width="80" class="league-logo">
                 }
                 else
                 {
-                    <i class="bi bi-heart"></i>
+                    <img src="/images/deafult-league.png" class="league-logo">
                 }
-            </a>
+                <h1 class="league-name">@Model.League.Name</h1>
+                <p class="league-description">@Model.League.Description</p>
+            </div>
+            <div class="col-md-4 text-md-end ">
+                <a asp-controller="League" asp-action="AddLeagueToFavourites" asp-route-leagueId="@Model.League?.LeagueId" class="favourite-button">
+                    @if (ViewBag.IsFavourite)
+                    {
+                        <i class="bi bi-heart-fill"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-heart"></i>
+                    }
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
 
 </div>
 
-    <!-- Panel Administratora/Moderatora -->
-    @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Moderator))
-    {
-        <div class="admin-panel text-center my-3">
+<!-- Panel Administratora/Moderatora -->
+@if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Moderator))
+{
+    <div class="admin-panel text-center my-3">
         <a asp-controller="Team" asp-action="AddTeamToLeague" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-primary">Dodaj drużynę</a>
         <a asp-controller="Article" asp-action="Upsert" asp-route-leagueId="@Model..LeagueLeagueId" class="btn btn-secondary">Dodaj artykuł</a>
-            <a asp-controller="Game" asp-action="Create" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-secondary">Dodaj mecz</a>
-        </div>
-    }
+        <a asp-controller="Game" asp-action="Create" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-secondary">Dodaj mecz</a>
+        <a asp-controller="League" asp-action="Upsert" asp-route-id="@Model.League.LeagueId" class="btn btn-primary">Edytuj ligę</a>
+    </div>
+}
 
-    <div class="row mt-4">
-        <!-- Tabela punktów po lewej stronie -->
-        <div class="col-md-4">
-            <h2>Tabela Punków</h2>
-             <table class="table table-sm">
-        <thead>
-                <tr>
-                    <th>Drużyna</th>
-                    <th>Zwycięstwa</th>
-                    <th>Porażki</th>
-                    <th>Punkty Ligowe</th>
-                    <th>Mecze Rozegrane</th>
-                    <th>Punkty Drużyny</th>
-                    <th>Punkty Przeciwnika</th>
+<div class="row mt-4">
+    <!-- Tabela punktów po lewej stronie -->
+    <div class="col-md-4">
+        @{
+            int place = 1;
+        }
+        <table class="table table-sm">
+            <thead>
+                <tr class="text-center">
+                    <th title="Miejsce">M</th>
+                    <th title="Drużyna">Drużyna</th>
+                    <th title="Zwycięstwa">Zw</th>
+                    <th title="Porażki">Por</th>
+                    <th title="Ilość rozegranych meczów">Mecze </th>
+                    <th title="Punkty zdobyte - Punkty stracone">Bilans pkt</th>
+                    <th title="Punkty Ligowe">Punkty</th>
                 </tr>
-        </thead>
-        <tbody>
+            </thead>
+
+            <tbody class="text-center">
                 @foreach (var stat in Model.League.SeasonStatistics.OrderByDescending(s => s.LeaguePoints))
                 {
                     <tr>
-                        <td>@stat.Team.Name</td>
+                        <td>@place</td>
+
+                        <td>     <a asp-controller="Team" asp-action="Details" asp-route-teamId="@stat.TeamId" class="link"> @stat.Team.Name   </a></td>
+
                         <td>@stat.Wins</td>
                         <td>@stat.Losses</td>
-                        <td>@stat.LeaguePoints</td>
                         <td>@stat.GamesPlayed</td>
-                        <td>@stat.TeamPoints</td>
-                        <td>@stat.OpponentPoints</td>
+                        <td>@stat.TeamPoints - @stat.OpponentPoints</td>
+                        <td>@stat.LeaguePoints</td>
                     </tr>
+                    place++;
                 }
-           
-        </tbody>
-    </table>
-        </div>
 
-        <!-- Zakładki po prawej stronie -->
-        <div class="col-md-8">
-            <ul class="nav nav-tabs" id="leagueTabs">
-                <li class="nav-item">
-                    <a class="nav-link active" id="games-tab" data-bs-toggle="tab" href="#games" role="tab">Mecze</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="teams-tab" data-bs-toggle="tab" href="#teams" role="tab">Drużyny</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="articles-tab" data-bs-toggle="tab" href="#articles" role="tab">Artykuły</a>
-                </li>
-            </ul>
-            <div class="tab-content" id="leagueTabsContent">
-                <!-- Games section -->
-                <div class="tab-pane fade show active" id="games" role="tabpanel" aria-labelledby="games-tab">
-                    <div class="row mt-3">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Zakładki po prawej stronie -->
+    <div class="col-md-8">
+        <ul class="nav nav-tabs" id="leagueTabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="games-tab" data-bs-toggle="tab" href="#games" role="tab">Mecze</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="teams-tab" data-bs-toggle="tab" href="#teams" role="tab">Drużyny</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="articles-tab" data-bs-toggle="tab" href="#articles" role="tab">Artykuły</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="leagueTabsContent">
+            <!-- Games section -->
+            <div class="tab-pane fade show active" id="games" role="tabpanel" aria-labelledby="games-tab">
+                <div class="row mt-3">
                     @foreach (var game in Model.League.Games)
-                        {
-                            <div class="col-md-3 col-12 mb-4">
-                                <div class="card">
-                                    <div class="card-body text-center" style="max-height: 60%;">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="text-end">
-                                                    <div class="btn-group" role="group" aria-label="Przyciski">
+                    {
+                        <div class="col-md-3 col-12 mb-4">
+                            <div class="card">
+                                <div class="card-body text-center" style="max-height: 60%;">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="text-end">
+                                                <div class="btn-group" role="group" aria-label="Przyciski">
                                                     <a asp-controller="Game" asp-action="DeletePOST" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.League.LeagueId"
-                                                       class="btn btn-sm btn-outline-danger float-end" onclick="return confirm('Czy na pewno chcesz usunąć to spotkanie?')">
-                                                            <i class="bi bi-trash"></i>
-                                                        </a>
-                                                        <a asp-controller="Game" asp-action="Update" asp-route-id="@game.GameId" asp-route-leagueId="@Model..LeagueLeagueId"
-                                                       class="btn btn-sm btn-outline-primary float-end" style="margin-left: 10px;">
-                                                            <i class="bi bi-pencil"></i>
-                                                        </a>
-                                                    </div>
+                                                   class="btn btn-sm btn-outline-danger float-end" onclick="return confirm('Czy na pewno chcesz usunąć to spotkanie?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </a>
+                                                    <a asp-controller="Game" asp-action="Update" asp-route-id="@game.GameId" asp-route-leagueId="@Model..LeagueLeagueId"
+                                                   class="btn btn-sm btn-outline-primary float-end" style="margin-left: 10px;">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
 
                                     <a asp-controller="Game" asp-action="Details" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.League.LeagueId" style="text-decoration:none">
-                                            <!-- Nazwa drużyny gospodarzy i wynik -->
-                                            <h5 class="card-title link">@game.HomeTeam.Name</h5>
-                                            <p class="card-text link">@game.HomeTeamScore</p>
+                                        <!-- Nazwa drużyny gospodarzy i wynik -->
+                                        <h5 class="card-title link">@game.HomeTeam.Name</h5>
+                                        <p class="card-text link">@game.HomeTeamScore</p>
 
-                                            <!-- Nazwa drużyny gości i wynik -->
-                                            <h5 class="card-title link">@game.AwayTeam.Name</h5>
-                                            <p class="card-text link">@game.AwayTeamScore</p>
+                                        <!-- Nazwa drużyny gości i wynik -->
+                                        <h5 class="card-title link">@game.AwayTeam.Name</h5>
+                                        <p class="card-text link">@game.AwayTeamScore</p>
 
-                                            <!-- Dodanie daty spotkania -->
-                                            <h6 class="card-subtitle mb-2 text-muted">@game.GameDate.ToString("dd.MM.yyyy HH:mm")</h6>
-                                        </a>
-                                    </div>
+                                        <!-- Dodanie daty spotkania -->
+                                        <h6 class="card-subtitle mb-2 text-muted">@game.GameDate.ToString("dd.MM.yyyy HH:mm")</h6>
+                                    </a>
                                 </div>
-
                             </div>
-                        }
-                    </div>
-                </div>
 
-                <!-- Teams section -->
-                <div class="tab-pane fade" id="teams" role="tabpanel" aria-labelledby="teams-tab">
-                    <div class="row mt-3">
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Teams section -->
+            <div class="tab-pane fade" id="teams" role="tabpanel" aria-labelledby="teams-tab">
+                <div class="row mt-3">
                     @foreach (var team in Model.League.Teams)
-                        {
-                            <div class="col-md-3 col-12 mb-4">
-                                <div class="card">
-                                    <div class="card-body text-center" style="max-height: 60%;">
-                                        <a asp-controller="Team" asp-action="Details" asp-route-teamId="@team.TeamId" class="link">
-                                            @if (team.TeamLogo != null)
-                                            {
-                                                <img src="data:image/jpeg;base64,@Convert.ToBase64String(team.TeamLogo)" alt="@team.Name" class="img-fluid mb-2" style="max-height: 100px;">
-                                            }
-                                            else
-                                            {
-                                                <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid mb-2" style="max-height: 100px;">
-                                            }
-                                            <h5 class="card-title link">@team.Name</h5>
-                                            <p class="card-text link">@team.Description</p>
-                                        </a>
-                                    </div>
+                    {
+                        <div class="col-md-3 col-12 mb-4">
+                            <div class="card">
+                                <div class="card-body text-center" style="max-height: 60%;">
+                                    <a asp-controller="Team" asp-action="Details" asp-route-teamId="@team.TeamId" class="link">
+                                        @if (team.TeamLogo != null)
+                                        {
+                                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(team.TeamLogo)" alt="@team.Name" class="img-fluid mb-2" style="max-height: 100px;">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid mb-2" style="max-height: 100px;">
+                                        }
+                                        <h5 class="card-title link">@team.Name</h5>
+                                        <p class="card-text link">@team.Description</p>
+                                    </a>
                                 </div>
                             </div>
-                        }
-                    </div>
+                        </div>
+                    }
                 </div>
+            </div>
 
-                <!-- Article section-->
-                <div class="tab-pane fade" id="articles" role="tabpanel" aria-labelledby="articles-tab">
-                    <div class="row mt-3">
+            <!-- Article section-->
+            <div class="tab-pane fade" id="articles" role="tabpanel" aria-labelledby="articles-tab">
+                <div class="row mt-3">
                     @foreach (var article in Model.League.Articles)
-                        {
-                            <div class="col-md-4 col-12 mb-4">
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">
-                                            <h5 class="mb-0">@article.Title</h5>
+                    {
+                        <div class="col-md-4 col-12 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">
+                                        <h5 class="mb-0">@article.Title</h5>
+                                    </a>
+                                    <div class="justify-content-end">
+                                        <a asp-controller="Article" asp-action="Upsert" asp-route-id="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-warning btn-sm me-2 ">
+                                            <i class="bi bi-pencil-square"></i>
                                         </a>
-                                        <div class="justify-content-end">
-                                            <a asp-controller="Article" asp-action="Upsert" asp-route-id="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-warning btn-sm me-2 ">
-                                                <i class="bi bi-pencil-square"></i>
-                                            </a>
                                         <a asp-controller="Article" asp-action="DeletePOST" asp-route-articleId="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć ten artykuł?');">
-                                                <i class="bi bi-trash3"></i>
-                                            </a>
-
-                                        </div>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">
-                                            <p class="card-text link">
-                                                @if (article.MainPhoto != null)
-                                                {
-                                                    <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(article.MainPhoto))" class="rounded-circle" />
-                                                }
-                                            </p>
+                                            <i class="bi bi-trash3"></i>
                                         </a>
+
                                     </div>
                                 </div>
+                                <div class="card-body text-center">
+                                    <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">
+                                        <p class="card-text link">
+                                            @if (article.MainPhoto != null)
+                                            {
+                                                <img height="100" width="100" src="data:image/png;base64,@(Convert.ToBase64String(article.MainPhoto))" class="rounded-circle" />
+                                            }
+                                        </p>
+                                    </a>
+                                </div>
                             </div>
+                        </div>
 
-                        }
-                    </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<style>
-    .container {
-        max-width: 95%;
-        margin: auto;
-    }
 
-  .league-header {
-        background: linear-gradient(to bottom, #bbe2ed, #ffffff);
-        border: 2px solid #bbe2ed; /* Czarny kolor ramki */
-    padding: 10px; 
-    margin-bottom: 20px;
-    border-radius:20px;
-    margin-top:15px;
-    max-width:100%;
-}
-
-.league-logo {
-    max-width: 80px; 
-    height: auto;
-    margin-bottom: 5px; 
-}
-
-.league-name {
-    margin: 0;
-    color: #333;
-
-}
-
-.league-description {
-    color: #555;
-    
-}
-
-.favourite-button {
-    padding: 5px 10px; 
-        background-color: #bbe2ed;
-        border: 2px dotted white; /* Czarny kolor ramki */
-    color: white;
-    text-align: center;
-    border-radius: 5px;
- 
-}
-
-.favourite-button:hover {
-    background-color: #0056b3;
-}
-
-    .admin-panel {
-        margin-bottom: 20px;
-    }
-
-        .admin-panel .btn {
-            margin: 0 10px;
-        }
-
-    .nav-tabs .nav-item .nav-link {
-        color: #007bff;
-        margin-right: 5px;
-        border-radius: 0.25rem;
-    }
-
-        .nav-tabs .nav-item .nav-link.active {
-            color: #fff;
-            background-color: #007bff;
-        }
-
-    .tab-content {
-        margin-top: 15px;
-    }
-
-    .btn-outline-primary {
-        border: none;
-    }
-
-        .btn-outline-primary:hover {
-            background-color: #007bff;
-            color: white;
-        }
-</style>
 <link rel="stylesheet" type="text/css" href="~/css/default.css" />
+<link rel="stylesheet" type="text/css" href="~/css/leagueDetails.css" />

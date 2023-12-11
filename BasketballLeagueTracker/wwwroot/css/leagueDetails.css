@@ -1,0 +1,105 @@
+﻿.table {
+    border-collapse: collapse;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    .table th, .table td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table thead {
+        background-color: #17a2b8;
+        color: #fff;
+    }
+
+    .table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table tbody tr:hover {
+        background-color: #ddd;
+    }
+
+
+
+
+
+.container {
+    max-width: 95%;
+    margin: auto;
+}
+
+.league-header {
+    background: linear-gradient(to bottom, #bbe2ed, #ffffff);
+    border: 2px solid #bbe2ed; /* Czarny kolor ramki */
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 20px;
+    margin-top: 15px;
+    max-width: 100%;
+}
+
+.league-logo {
+    max-width: 80px;
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.league-name {
+    margin: 0;
+    color: #333;
+}
+
+.league-description {
+    color: #555;
+}
+
+.favourite-button {
+    padding: 5px 10px;
+    background-color: #bbe2ed;
+    border: 2px dotted white; /* Czarny kolor ramki */
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+}
+
+    .favourite-button:hover {
+        background-color: #0056b3;
+    }
+
+.admin-panel {
+    margin-bottom: 20px;
+}
+
+    .admin-panel .btn {
+        margin: 0 10px;
+    }
+
+.nav-tabs .nav-item .nav-link {
+    color: #007bff;
+    margin-right: 5px;
+    border-radius: 0.25rem;
+}
+
+    .nav-tabs .nav-item .nav-link.active {
+        color: #fff;
+        background-color: #007bff;
+    }
+
+.tab-content {
+    margin-top: 15px;
+}
+
+.btn-outline-primary {
+    border: none;
+}
+
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: white;
+    }

@@ -5,6 +5,7 @@ using BasketballLeagueTracker.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace BasketballLeagueTracker.Controllers
 {
@@ -21,6 +22,17 @@ namespace BasketballLeagueTracker.Controllers
             _userManager = userManager;
             _favouriteLeagueRepository = favouriteLeagueRepository;
         }
+
+        //public IActionResult Index(int? page)
+        //{
+        //    var leagues = _unitOfWork.League.GetAll(null);
+
+        //    int pageSize = 10; 
+        //    int pageNumber = (page ?? 1);
+        //    var model = leagues.ToPagedList(pageNumber, pageSize);
+
+        //    return View(model);
+        //}
 
         public IActionResult Index()
         {
