@@ -25,7 +25,8 @@ services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultUI()
-        .AddDefaultTokenProviders();
+        .AddDefaultTokenProviders()
+        .AddErrorDescriber<CustomIdentityErrorDescriber>();
 
 var configuration = builder.Configuration;
 

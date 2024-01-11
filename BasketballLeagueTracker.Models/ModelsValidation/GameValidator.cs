@@ -17,13 +17,13 @@ namespace BasketballLeagueTracker.Models.ModelsValidation
             //RuleFor(x => x.HomeTeamId)
             //    .NotEqual(x => x.AwayTeamId)
             //    .WithMessage("Nie");
-            RuleFor(x => x.AwayTeamScore)
-                .InclusiveBetween(0, 256).
-                WithMessage("Wynik powinien być w zakresie od 0 do 256.");
+            //RuleFor(x => x.AwayTeamScore)
+            //    .InclusiveBetween(0, 256).
+            //    WithMessage("Wynik powinien być w zakresie od 0 do 256.");
 
-            RuleFor(x => x.HomeTeamScore)
-                .InclusiveBetween(0, 256)
-                .WithMessage("Wynik powinien być w zakresie od 0 do 256.");
+            //RuleFor(x => x.HomeTeamScore)
+            //    .InclusiveBetween(0, 256)
+            //    .WithMessage("Wynik powinien być w zakresie od 0 do 256.");
 
             //RuleFor(x => x.AwayTeamScore)
             //    .LessThan(256).WithMessage("Cześć")

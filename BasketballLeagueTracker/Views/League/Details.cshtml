@@ -49,6 +49,7 @@
         <a asp-controller="Article" asp-action="Upsert" asp-route-leagueId="@Model..LeagueLeagueId" class="btn btn-secondary">Dodaj artykuł</a>
         <a asp-controller="Game" asp-action="Create" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-secondary">Dodaj mecz</a>
         <a asp-controller="League" asp-action="Upsert" asp-route-id="@Model.League.LeagueId" class="btn btn-primary">Edytuj ligę</a>
+        <a asp-controller="League" asp-action="Delete" asp-route-id="@Model.League.LeagueId" class="btn btn-danger">Usuń ligę</a>
     </div>
 }
 

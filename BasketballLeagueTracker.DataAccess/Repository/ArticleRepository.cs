@@ -14,7 +14,7 @@ namespace BasketballLeagueTracker.DataAccess.Repository
     {
         private AppDbContext _db;
 
-        public ArticleRepository(AppDbContext db) : base(db) // Passing db to Repository<Player>
+        public ArticleRepository(AppDbContext db) : base(db) 
         { 
             _db=db;
         }

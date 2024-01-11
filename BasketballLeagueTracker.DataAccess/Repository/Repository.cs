@@ -52,8 +52,6 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-
-
         public IEnumerable<T> GetAll(string? includeProp)
         {
             IQueryable<T> query = dbSet;
@@ -61,9 +59,8 @@ namespace BasketballLeagueTracker.DataAccess.Repository
             if (includeProp != null)
             {
                 AddIncludedProperties(includeProp, ref query);
-
             }
-
+        
             if (query == null)
             {
                 return Enumerable.Empty<T>();

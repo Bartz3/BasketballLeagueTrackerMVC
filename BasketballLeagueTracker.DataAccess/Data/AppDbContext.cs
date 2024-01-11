@@ -13,6 +13,24 @@ namespace BasketballLeagueTracker.DataAccess.Data
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder); // Needed for IdentityDbContext
+
+            ConfigureEntityRelationships(modelBuilder);
+
+
+            modelBuilder.Entity<Player>().HasData(
+                new Player { PlayerId = 1, Name = "Bartosz", Surname = "Późniewski", UniformNumber = 10, Positions = PlayerPosition.PointGuard | PlayerPosition.ShootingGuard, TeamId = 1, IsInTeam = true },
+                new Player { PlayerId = 2, Name = "Tom", Surname = "Noname", UniformNumber = 20, Positions = PlayerPosition.ShootingGuard },
+                new Player { PlayerId = 3, Name = "Test", Surname = "Example", UniformNumber = 30, Positions = PlayerPosition.Center }
+                );
+
+            modelBuilder.Entity<League>().HasData(
+                new League { LeagueId = 1, Name = "Testowa liga", Description = "Liga 1 " }
+              );
+        }
+
         public DbSet<League> Leagues { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
@@ -27,28 +45,12 @@ namespace BasketballLeagueTracker.DataAccess.Data
 
         public DbSet<FavouritePlayer> FavouritePlayers { get; set; }
         public DbSet<FavouriteTeam> FavouriteTeams { get; set; }
-        public DbSet<FavouriteTeam> FavouriteLeagues { get; set; }
+        public DbSet<FavouriteLeague> FavouriteLeagues { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
         public DbSet<UserCommentRating> UserCommentRatings { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder); // Needed for IdentityDbContext
 
-            ConfigureEntityRelationships(modelBuilder);
-          
-
-            modelBuilder.Entity<Player>().HasData(
-                new Player { PlayerId = 1, Name = "Bartosz", Surname = "Późniewski", UniformNumber = 10, Positions = PlayerPosition.PointGuard | PlayerPosition.ShootingGuard, TeamId = 1, IsInTeam = true },
-                new Player { PlayerId = 2, Name = "Tom", Surname = "Noname", UniformNumber = 20, Positions = PlayerPosition.ShootingGuard },
-                new Player { PlayerId = 3, Name = "Test", Surname = "Example", UniformNumber = 30, Positions = PlayerPosition.Center }
-                );
-
-            modelBuilder.Entity<League>().HasData(
-                new League { LeagueId = 1, Name = "Testowa liga", Description = "Liga 1 " }
-              );
-        }
 
         private void ConfigureEntityRelationships(ModelBuilder modelBuilder)
         {

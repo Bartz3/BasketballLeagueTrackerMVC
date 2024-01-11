@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BasketballLeagueTracker.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,3 +21,21 @@ namespace BasketballLeagueTracker.Models
         public Comment Comment { get; set; }
     }
 }
+
+//public class Player
+//{
+//    public int PlayerId { get; set; }
+
+//    public int? TeamId { get; set; }
+//    public Team? Team { get; set; }
+
+//    ...
+//}
+
+//public class Team
+//{
+//    public int? TeamId { get; set; }
+//    public ICollection<Player>? Players { get; set; }
+
+//    ...
+//}

@@ -1,16 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="BasketballLeagueTracker.Models.ApplicationUser">
-    <Position X="7" Y="0.5" Width="1.5" />
+    <Position X="7.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIABAAAIAAAAAAABECAACAAAAADAAAAAIAAAAAAAIAA=</HashCode>
       <FileName>Models\ApplicationUser.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="FavouritePlayers" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.Article">
-    <Position X="10" Y="0.5" Width="1.5" />
+    <Position X="1.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAAgAAAEAAAAAAAAgCAAAAABAQgACEAAAAIAA=</HashCode>
+      <HashCode>AAABAAAAAgAAAEAAAAAAAAgCAAAAAAAQgACEAAAAIAA=</HashCode>
       <FileName>Models\Article.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -19,13 +22,14 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.Comment">
-    <Position X="11.75" Y="0.5" Width="1.5" />
+    <Position X="4.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAgAAAAAAAgAAAAgAEAAAAAAggQAAAAAQAAA=</HashCode>
       <FileName>Models\Comment.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Article" />
+      <Property Name="User" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.FavouriteLeague">
@@ -34,9 +38,12 @@
       <HashCode>AAABAAAAAAAAAAAAAAAAAAgAAAAAAAAQAQCAAAAAAAA=</HashCode>
       <FileName>Models\FavouriteLeague.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="League" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.FavouritePlayer">
-    <Position X="9" Y="3.25" Width="1.5" />
+    <Position X="10.5" Y="3" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQAIAQAAAAA=</HashCode>
       <FileName>Models\FavouritePlayer.cs</FileName>
@@ -47,7 +54,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.FavouriteTeam">
-    <Position X="5.25" Y="3.5" Width="1.5" />
+    <Position X="5" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAABAAAAAAAAAAAAAAAAAAgCAAAAAAAAEQAAAAAAAAA=</HashCode>
       <FileName>Models\FavouriteTeam.cs</FileName>
@@ -58,52 +65,63 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.Game">
-    <Position X="7" Y="5.5" Width="1.5" />
+    <Position X="7.75" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAABEAAAAAAAAAIEAAAAAAAgAAAAQAACQAIAhAAA=</HashCode>
       <FileName>Models\Game.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="League" />
+      <Property Name="AwayTeam" />
+      <Property Name="HomeTeam" />
+      <Property Name="Status" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.GamePlayerStats">
     <Position X="7" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAUAAAAAAAggAAAAAEAAAQAAAgAAgAAQAMIhQAAAAA=</HashCode>
+      <HashCode>ICGUAAAAAAAggAAAAAEAIAQAAQgAAgAAQAMIhQAAAAA=</HashCode>
       <FileName>Models\GamePlayerStats.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Player" />
       <Property Name="Game" />
+      <Property Name="Player" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.League">
-    <Position X="3.25" Y="5.5" Width="1.5" />
+    <Position X="1" Y="6" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAACQAIAQAgAAAAEAAAAAQgAAAAEAAQAAAABEAAAAA=</HashCode>
       <FileName>Models\League.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Articles" />
+      <Property Name="LeagueFollowers" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.Player">
-    <Position X="9" Y="5.5" Width="1.5" />
+    <Position X="10.5" Y="5.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>ABAEAgAABAAAAKAgAAABAAQCBCIIAAAKFAAIAQAAAAA=</HashCode>
       <FileName>Models\Player.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="Team" />
+      <Property Name="Positions" />
     </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="PlayerFollowers" />
+    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.SeasonStatistics">
-    <Position X="3" Y="9.25" Width="1.5" />
+    <Position X="3" Y="9.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAEAEIAAiAAAAAAAAAAACAAAAAAAwEACAAQAAAAA=</HashCode>
+      <HashCode>AAAAAAAEAAAgAAAAAAAAABACAACAAAAwEACAAQAAAAA=</HashCode>
       <FileName>Models\SeasonStatistics.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="League" />
       <Property Name="Team" />
+      <Property Name="League" />
     </ShowAsAssociation>
   </Class>
   <Class Name="BasketballLeagueTracker.Models.Stadium">
@@ -118,6 +136,11 @@
   </Class>
   <Class Name="BasketballLeagueTracker.Models.Team">
     <Position X="5.25" Y="5.5" Width="1.5" />
+    <AssociationLine Name="Stadium" Type="BasketballLeagueTracker.Models.Stadium">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.183" Y="0.05" />
+      </MemberNameLabel>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAEEAAwCAAAYCAAAkEAAQAACIAAAAAAg=</HashCode>
       <FileName>Models\Team.cs</FileName>
@@ -128,14 +151,14 @@
     </ShowAsAssociation>
   </Class>
   <Enum Name="BasketballLeagueTracker.Models.GameStatus">
-    <Position X="9.75" Y="10.75" Width="1.5" />
+    <Position X="9" Y="11.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AQAAAAAAACAAAAIAAAAAAAAAQAAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>Models\Game.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="BasketballLeagueTracker.Models.PlayerPosition">
-    <Position X="11.5" Y="10.5" Width="1.5" />
+    <Position X="11" Y="11.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQAACAAAAAAAAAAAAAgAAAAAAAAAAAAAJAAg=</HashCode>
       <FileName>Models\Player.cs</FileName>

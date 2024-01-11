@@ -15,7 +15,7 @@ function loadTable() {
         ajaxURL = '/player/GetAllAvailablePlayers';
     }
     else {
-        ajaxURL = '/player/getallPlayers';
+        ajaxURL = '/player/getAllPlayers';
     }
     dataTable = $('#playerData',).DataTable({
         ajax: { url: ajaxURL },

@@ -26,24 +26,21 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-@*                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Strona główna</a>
-                        </li>*@
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Player" asp-action="Index">Zawodnicy</a>
+                       <li class="nav-item">
+                            <a class="nav-link" asp-controller="League" asp-action="Index">Strona główna</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Team" asp-action="Index">Drużyny</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="League" asp-action="Index">Ligi</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="User" asp-action="Index">Użytkownicy</a>
-                        </li>
-@*                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Game" asp-action="Index">Mecze</a>
-                        </li>*@
+                        @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Moderator))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Player" asp-action="Index">Zawodnicy</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Team" asp-action="Index">Drużyny</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="User" asp-action="Index">Użytkownicy</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">

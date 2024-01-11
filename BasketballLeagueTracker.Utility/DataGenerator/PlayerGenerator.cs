@@ -25,7 +25,6 @@ namespace BasketballLeagueTracker.Utility.DataGenerator
             fakePlayerModel = new Faker<Player>("pl")
                  .RuleFor(p => p.Name, f => f.Person.FirstName)
                  .RuleFor(p => p.Surname, f => f.Person.LastName)
-                 /*.RuleFor(p => p.Photo, f => f.Random.Bytes(100))*/ 
                  .RuleFor(p => p.Birthday, f => f.Person.DateOfBirth)
                  .RuleFor(p => p.UniformNumber, f => f.Random.Number(1, 99))
                  .RuleFor(p => p.Height, f => f.Random.Number(170, 215))
@@ -48,10 +47,14 @@ namespace BasketballLeagueTracker.Utility.DataGenerator
                  .RuleFor(p=>p.TeamId,f=>9);
 
         }
-
         public Player GeneratePlayer()
         {
             return fakePlayerModel.Generate();
         }
+        public List<Player> GeneratePlayers(int amount)
+        {
+            return fakePlayerModel.Generate(amount);
+        }
+
     }
 }

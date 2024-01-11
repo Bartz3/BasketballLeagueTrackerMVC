@@ -108,7 +108,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("LeagueId");
 
-                    b.ToTable("FavouriteLeague");
+                    b.ToTable("FavouriteLeagues");
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.FavouritePlayer", b =>
@@ -144,7 +144,7 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("FavouriteTeam");
+                    b.ToTable("FavouriteTeams");
                 });
 
             modelBuilder.Entity("BasketballLeagueTracker.Models.Game", b =>
@@ -471,12 +471,6 @@ namespace BasketballLeagueTracker.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StadiumLatitude")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StadiumLongitude")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("TeamLogo")

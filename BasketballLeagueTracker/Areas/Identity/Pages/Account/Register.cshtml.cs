@@ -113,8 +113,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
                 _roleManager.CreateAsync(new IdentityRole(Utility.RoleNames.Role_User)).GetAwaiter().GetResult();           
             }
 
-          
-
+      
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             
