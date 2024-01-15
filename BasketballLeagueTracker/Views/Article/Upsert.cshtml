@@ -33,6 +33,7 @@
                 <div class="card-body">
                     <form method="post" asp-controller="Article" asp-action="Upsert" enctype="multipart/form-data">
                         <input asp-for="Article.ArticleId" type="hidden" />
+                        @*<input asp-for="Article.League.LeagueId" type="hidden" />*@
 
                         <div class="mb-3">
                             <label asp-for="Article.Title" class="form-label label "></label>

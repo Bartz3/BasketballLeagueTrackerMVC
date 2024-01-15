@@ -52,7 +52,12 @@ function loadPlayerTable() {
             {
                 data: 'Team.Name',
                 render: function (data, type, row) {
-                    return '<a href="/team/details?teamId=' + row.TeamId + '" class="player-link">' + data + '</a>';
+                    if (row.Team) {
+                        return '<a href="/team/details?teamId=' + row.TeamId + '" class="player-link">' + data + '</a>';
+                    } else {
+                        return 'Brak';
+                    }
+                    //return '<a href="/team/details?teamId=' + row.TeamId + '" class="player-link">' + data + '</a>';
                 }
             },
             { data: 'Weight' },

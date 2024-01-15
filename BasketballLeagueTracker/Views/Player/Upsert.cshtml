@@ -56,7 +56,8 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="Player.Weight" class="form-label"></label>
-                            <input asp-for="Player.Weight" class="form-control" placeholder="Waga w kg" />
+                            <input asp-for="Player.Weight" class="form-control customWeightClass" placeholder="Waga w kg" />
+
                             <span asp-validation-for="Player.Weight" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
@@ -102,3 +103,18 @@
     <partial name="_ValidationScriptsPartial"/>
     }
 }
+<script>
+    $(function() {
+        // Dodaj niestandardową metodę walidacji
+        jQuery.validator.addMethod("customWeight", function(value, element) {
+            // Tutaj możesz dodać logikę sprawdzającą, czy wartość jest prawidłową wagą
+            // Na przykład, możesz użyć wyrażenia regularnego do sprawdzenia formatu
+            return this.optional(element) || /^\d+(\.\d+)?$/.test(value);
+        }, "Proszę podać prawidłową wagę (użyj kropki jako separatora dziesiętnego).");
+
+        // Dodaj tę metodę do klasy
+        jQuery.validator.addClassRules({
+            customWeightClass: { customWeight: true }
+        });
+    });
+</script>

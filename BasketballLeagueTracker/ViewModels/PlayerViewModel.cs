@@ -13,6 +13,7 @@ namespace BasketballLeagueTracker.ViewModels
         [Display(Name = "Pozycje")]
         public List<int>? SelectedPositions { get; set; }
         public List<SelectListItem>? Countries { get; set; }     
+        public List<Game>? PlayerGames { get; set; }     
 
     }
 }

@@ -62,7 +62,7 @@ namespace BasketballLeagueTracker.Models
         public int? Height { get; set; }
 
         [Display(Name = "Waga")]
-        [Range(40,180,ErrorMessage ="Podana waga jest nieprawidłowa. (40-180kg)")]
+        [Range(40.0,180.0,ErrorMessage ="Podana waga jest nieprawidłowa. (40-180kg)")]
         public double? Weight { get; set; }
         [Display(Name = "Kraj")]
         public string? Country { get; set; } = "Polska";

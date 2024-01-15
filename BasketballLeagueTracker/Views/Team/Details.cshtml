@@ -66,7 +66,7 @@
             <th>Wzrost (cm)</th>
             <th>Waga (kg)</th>
             <th>Kraj</th>
-            <th>Test</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -95,7 +95,7 @@
                     <form asp-action="RemovePlayerFromTeam" asp-controller="Team" method="post" onsubmit="return confirm('Czy na pewno chcesz usunąć tego zawodnika z drużyny?');">
                         <input type="hidden" name="playerId" value="@player.PlayerId" />
                         <input type="hidden" name="teamId" value="@Model.TeamId" />
-                        <input type="submit" value="Usuń z drużyny" class="btn btn-danger" />
+                        <input type="submit" value="Usuń z drużyny" class="btn btn-sm btn-danger" />
                     </form>
                 </td>
             </tr>

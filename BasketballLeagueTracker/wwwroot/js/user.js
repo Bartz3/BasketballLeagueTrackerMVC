@@ -15,14 +15,14 @@ function loadTable() {
             url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pl.json',
         },
         columns: [
-            { data: 'Id' },
+           
             {
                 data: 'Email',
                 width: '10%',
             },
             {
                 data: 'Nickname'
-            },
+            }, { data: 'Id' },
             {
                 data: 'CreatedAt',
                 render: function (data, type, row) {
@@ -38,9 +38,6 @@ function loadTable() {
                     }
                     return data;
                 }
-            },
-            {
-                data: 'PhoneNumber'
             },
             {
                 data: 'Role'

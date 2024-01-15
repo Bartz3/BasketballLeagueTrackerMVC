@@ -30,8 +30,8 @@ namespace BasketballLeagueTracker.DataAccess.Extensions
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 6;
+                options.Password.RequiredLength = 8;
+                options.Password.RequiredUniqueChars = 8;
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
                 options.SignIn.RequireConfirmedAccount = false;

@@ -111,7 +111,7 @@
                                     <td class="equal-width3">@Model.HomeTeamGPS[i].Player.FullName (#@Model.HomeTeamGPS[i].Player.UniformNumber)</td>
 
                                     <td class="equal-width2">
-                                        <input asp-for="@Model.HomeTeamGPS[i].TimeSpend" class="form-control"  />
+                                        <input asp-for="@Model.HomeTeamGPS[i].TimeSpend" class="form-control" type="time" step="1" />
                                     </td>
                                     <td class="equal-width">
                                         <input asp-for="@Model.HomeTeamGPS[i].Points" class="form-control" min="0" />
@@ -215,7 +215,7 @@
                                     <td class="equal-width3">@Model.AwayTeamGPS[i].Player.FullName (#@Model.AwayTeamGPS[i].Player.UniformNumber)</td>
 
                                     <td class="equal-width2">
-                                        <input asp-for="@Model.AwayTeamGPS[i].TimeSpend" class="form-control" />
+                                        <input asp-for="@Model.AwayTeamGPS[i].TimeSpend" class="form-control" type="time" step="2" />
                                     </td>
                                     <td class="equal-width">
                                         <input asp-for="@Model.AwayTeamGPS[i].Points" class="form-control" min="0" />
@@ -333,7 +333,7 @@
     }
 
     .equal-width {
-        width: 6.25%;
+        width: 5.25%;
     }
 
     .equal-width2 {
@@ -343,5 +343,7 @@
     .equal-width3 {
         width: 14%;
     }
+
+
 
 </style>

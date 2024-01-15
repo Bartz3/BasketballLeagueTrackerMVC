@@ -27,10 +27,24 @@ namespace BasketballLeagueTracker.Controllers
 
         public IActionResult Details(int? playerId)
         {
+            PlayerViewModel playerVM = new PlayerViewModel();
             var player = _unitOfWork.Player.Get(t => t.PlayerId == playerId, "Team");
+            playerVM.Player = player;
+            var allStats = _unitOfWork.GamePlayerStats.GetAll(null);
+            List<int?> gameIds =new List<int?>();
+            List<Game> playerGames = new List<Game>();
+            foreach (var stat in allStats)
+            {
+                if (stat.PlayerId == playerId) gameIds.Add(stat.GameId);
+            }
+            foreach (var id in gameIds)
+            {
+                playerGames.Add(_unitOfWork.Game.Get(g => g.GameId == id, "AwayTeam,HomeTeam"));
+            }
+            playerVM.PlayerGames=playerGames;
             ViewBag.IsFavourite = IsFavourite(playerId);
 
-            return View(player);
+            return View(playerVM);
         }
 
         public IActionResult Index()

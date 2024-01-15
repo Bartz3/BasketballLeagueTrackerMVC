@@ -81,7 +81,7 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account
             /// </summary>
 
             [Required(ErrorMessage ="Hasło jest wymagane.")]
-            [StringLength(100, ErrorMessage = "{0} musi mieć co najmniej {2} znaków.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} musi mieć co najmniej {2} znaków.", MinimumLength = 8)]
             [DataType(DataType.Password)]
             [Display(Name = "Hasło")]
             public string Password { get; set; }
