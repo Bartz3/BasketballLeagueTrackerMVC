@@ -1,9 +1,12 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.Utility.DataGenerator;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.VisualStudio.Services.Notifications.VssNotificationEvent;
 
 namespace BasketballLeagueTracker.Controllers
 {
+    [Authorize(Roles = Utility.RoleNames.Role_Admin)]
     public class AdminController : Controller
     {
 

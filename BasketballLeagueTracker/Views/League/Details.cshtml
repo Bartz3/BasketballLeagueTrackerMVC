@@ -40,22 +40,26 @@
 
 
 </div>
-
+@*druzyn art mecz edyt usun*@
 <!-- Panel Administratora/Moderatora -->
 @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Moderator))
 {
     <div class="admin-panel text-center my-3">
+        @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) )
+        {
         <a asp-controller="Team" asp-action="AddTeamToLeague" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-primary">Dodaj drużynę</a>
-        <a asp-controller="Article" asp-action="Upsert" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-secondary">Dodaj artykuł</a>
-        <a asp-controller="Game" asp-action="Create" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-secondary">Dodaj mecz</a>
         <a asp-controller="League" asp-action="Upsert" asp-route-id="@Model.League.LeagueId" class="btn btn-primary">Edytuj ligę</a>
         <a asp-controller="League" asp-action="Delete" asp-route-id="@Model.League.LeagueId" class="btn btn-danger">Usuń ligę</a>
+        }
+            
+        <a asp-controller="Article" asp-action="Upsert" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-primary">Dodaj artykuł</a>
+        <a asp-controller="Game" asp-action="Create" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-secondary">Dodaj mecz</a>
     </div>
 }
 
 <div class="row mt-4">
     <!-- Tabela punktów po lewej stronie -->
-    <div class="col-md-4">
+    <div class="col-lg-4 col-md-12">
         @{
             int place = 1;
         }
@@ -94,7 +98,7 @@
     </div>
 
     <!-- Zakładki po prawej stronie -->
-    <div class="col-md-8">
+   <div class="col-lg-8 col-md-12">
         <ul class="nav nav-tabs" id="leagueTabs">
             <li class="nav-item">
                 <a class="nav-link active" id="games-tab" data-bs-toggle="tab" href="#games" role="tab">Mecze</a>
@@ -118,16 +122,19 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="text-end">
-                                                <div class="btn-group" role="group" aria-label="Przyciski">
-                                                    <a asp-controller="Game" asp-action="DeletePOST" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.League.LeagueId"
+                                                @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Moderator))
+                                                {
+                                                    <div class="btn-group" role="group" aria-label="Przyciski">
+                                                        <a asp-controller="Game" asp-action="DeletePOST" asp-route-gameId="@game.GameId" asp-route-leagueId="@Model.League.LeagueId"
                                                    class="btn btn-sm btn-outline-danger float-end" onclick="return confirm('Czy na pewno chcesz usunąć to spotkanie?')">
-                                                        <i class="bi bi-trash"></i>
-                                                    </a>
-                                                    <a asp-controller="Game" asp-action="Update" asp-route-id="@game.GameId" asp-route-leagueId="@Model.League.LeagueId"
+                                                            <i class="bi bi-trash"></i>
+                                                        </a>
+                                                        <a asp-controller="Game" asp-action="Update" asp-route-id="@game.GameId" asp-route-leagueId="@Model.League.LeagueId"
                                                    class="btn btn-sm btn-outline-primary float-end" style="margin-left: 10px;">
-                                                        <i class="bi bi-pencil"></i>
-                                                    </a>
-                                                </div>
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                    </div>
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -188,17 +195,19 @@
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
                                     <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">
-                                        <h5 class="mb-0">@article.Title</h5>
+                                        <h5 class="mb-">@article.Title</h5>
                                     </a>
-                                    <div class="justify-content-end">
-                                        <a asp-controller="Article" asp-action="Upsert" asp-route-id="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-warning btn-sm me-2 ">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        <a asp-controller="Article" asp-action="DeletePOST" asp-route-articleId="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć ten artykuł?');">
-                                            <i class="bi bi-trash3"></i>
-                                        </a>
-
+                                    @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Moderator))
+                                    {
+                                        <div class="justify-content-end">
+                                            <a asp-controller="Article" asp-action="Upsert" asp-route-id="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-warning btn-sm me-2 ">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </a>
+                                            <a asp-controller="Article" asp-action="DeletePOST" asp-route-articleId="@article.ArticleId" asp-route-leagueId="@Model.League.LeagueId" class="btn btn-danger btn-sm" onclick="return confirm('Czy na pewno chcesz usunąć ten artykuł?');">
+                                                <i class="bi bi-trash3"></i>
+                                            </a>
                                     </div>
+                                    }
                                 </div>
                                 <div class="card-body text-center">
                                     <a asp-controller="Article" asp-action="Details" asp-route-articleId="@article.ArticleId" class="link">

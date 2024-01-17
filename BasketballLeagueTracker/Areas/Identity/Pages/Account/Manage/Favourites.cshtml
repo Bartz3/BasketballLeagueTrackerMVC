@@ -21,25 +21,31 @@
     <div class="tab-content mt-2">
         <div class="tab-pane fade mt-4 show active" id="leagues">
             <div class="row">
-                @foreach (var league in Model.Fav.FavouriteLeagues)
+                @foreach (var favLeague in Model.Fav.FavouriteLeagues)
                 {
                     <div class="col-md-4 mb-4">
                         <div class="card">
                             <div class="card-img-top text-center">
-                                @if (league.Logo != null)
+                                @if (favLeague.League.Logo != null)
                                 {
-                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(league.Logo)" alt="@league.Name" class="img-fluid rounded-circle mb-2 mt-2" style="max-height:150px; width: auto; display: inline-block;">
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(favLeague.League.Logo)" alt="@favLeague.League.Name" class="img-fluid rounded-circle mb-2 mt-2" style="max-height:150px; width: auto; display: inline-block;">
                                 }
                                 else
                                 {
                                     <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid rounded-circle mb-2 mt-2" style="max-height: 150px; width: auto; display: inline-block;">
                                 }
                             </div>
-                            <a class="link" asp-controller="League" asp-action="Details" asp-route-leagueId="@league.LeagueId">
+                            <a class="link" asp-controller="League" asp-action="Details" asp-route-leagueId="@favLeague.League.LeagueId">
                                 <div class="card-body text-center">
-                                    <h5 class="card-title">@league.Name</h5>
+                                    <h5 class="card-title">@favLeague.League.Name</h5>
+
+                                    <h9 class="card-title">
+                                        Dodano @favLeague.DateAdded.ToString("dd.MM.yyyy")
+                                    </h9>
                                 </div>
+
                             </a>
+                                      
                         </div>
                     </div>
                 }
@@ -50,24 +56,28 @@
         @*///////////////// FAVOURITE TEAMS //////////////////////////////////*@
         <div class="container mt-4 tab-pane fade" id="teams">
             <div class="row">
-                @foreach (var team in Model.Fav.FavouriteTeams)
+                @foreach (var favTeam in Model.Fav.FavouriteTeams)
                 {
                     <div class="col-md-3 col-2 mb-4">
                         <div class="card">
                             <div class="card-body text-center">
-                                    @if (team.TeamLogo != null)
+                                    @if (favTeam.Team.TeamLogo != null)
                                     {
-                                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(team.TeamLogo)" alt="@team.Name" class="img-fluid mb-2" style="max-height:150px;">
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(favTeam.Team.TeamLogo)" alt="@favTeam.Team.Name" class="img-fluid mb-2" style="max-height:150px;">
                                     }
                                     else
                                     {
                                         <img src="~/images/default-team.png" alt="Domyślne zdjęcie" class="img-fluid mb-2" style="max-height: 150px;">
                                     }
-                                <a class="link" asp-controller="Team" asp-action="Details" asp-route-teamId="@team.TeamId">
+                                <a class="link" asp-controller="Team" asp-action="Details" asp-route-teamId="@favTeam.Team.TeamId">
                                     <div class="card-body">
-                                        <h5 class="card-title">@team.Name</h5>                             
+                                        <h5 class="card-title">@favTeam.Team.Name</h5>
+
                                     </div>
                                 </a>
+                                <h9 class="card-title">
+                                    Dodano @favTeam.DateAdded.ToString("dd.MM.yyyy")
+                                </h9>
                             </div>
                         </div>
                     </div>
@@ -78,14 +88,14 @@
         @*///////////////// FAVOURITE PLAYERS //////////////////////////////////*@
         <div class="tab-pane fade mt-4" id="players">
             <div class="row">
-                @foreach (var player in Model.Fav.FavouritePlayers)
+                @foreach (var favPlayer in Model.Fav.FavouritePlayers)
                 {
                     <div class="col-md-4 mb-2">
                         <div class="card">
                             <div class="card-img-top text-center">
-                                @if (player.Photo != null)
+                                @if (favPlayer.Player.Photo != null)
                                 {
-                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(player.Photo)" alt="@player.Name" class="img-fluid rounded-circle mb-2 mt-2" style="max-height:150px; width: auto; display: inline-block;">
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(favPlayer.Player.Photo)" alt="@favPlayer.Player.Name" class="img-fluid rounded-circle mb-2 mt-2" style="max-height:150px; width: auto; display: inline-block;">
                                 }
                                 else
                                 {
@@ -94,16 +104,20 @@
                             </div>
 
                             <div class="card-body text-center">
-                                <a class="link" asp-controller="Player" asp-action="Details" asp-route-playerId="@player.PlayerId">
-                                    <h5 class="card-title">@player.FullName</h5>
+                                <a class="link" asp-controller="Player" asp-action="Details" asp-route-playerId="@favPlayer.PlayerId">
+                                    <h4 class="card-title">@favPlayer.Player.FullName</h4>
+
                                 </a>
+                                <h9 class="card-title">
+                                    Dodano @favPlayer.DateAdded.ToString("dd.MM.yyyy")
+                                </h9>
                             </div>
                         </div>
                     </div>
                 }
             </div>
         </div>
-
+</div>
     
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

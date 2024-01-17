@@ -2,10 +2,12 @@
 using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.Models;
 using BasketballLeagueTracker.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using static Microsoft.VisualStudio.Services.Notifications.VssNotificationEvent;
 
 namespace BasketballLeagueTracker.Controllers
 {
@@ -52,6 +54,7 @@ namespace BasketballLeagueTracker.Controllers
             return View(gameVM);
         }
 
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + ","+Utility.RoleNames.Role_Moderator)]
         public IActionResult Create(int? id, int? leagueId)
         {
 
@@ -65,9 +68,8 @@ namespace BasketballLeagueTracker.Controllers
             gameVM.Game = new Game();
             gameVM.Game.GameDate = DateTime.Now;
             return View(gameVM);
-
-
         }
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + "," + Utility.RoleNames.Role_Moderator)]
         public IActionResult Update(int? id, int? leagueId)
         {
 
@@ -108,7 +110,7 @@ namespace BasketballLeagueTracker.Controllers
             return View(gameVM);
 
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + "," + Utility.RoleNames.Role_Moderator)]
         [HttpPost]
         public IActionResult Update(GameViewModel gameVM, List<GamePlayerStats> gps)
         {
@@ -216,7 +218,7 @@ namespace BasketballLeagueTracker.Controllers
             }
 
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + "," + Utility.RoleNames.Role_Moderator)]
         [HttpPost]
         public IActionResult Create(GameViewModel gameVM)
         {
@@ -300,7 +302,7 @@ namespace BasketballLeagueTracker.Controllers
         }
 
 
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + "," + Utility.RoleNames.Role_Moderator)]
         public IActionResult DeletePOST(int? gameId, int? leagueId)
         {
             Game? game = _unitOfWork.Game.Get(p => p.GameId == gameId, null);

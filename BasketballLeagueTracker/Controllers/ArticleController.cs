@@ -1,9 +1,11 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.ViewModels;
 using Ganss.Xss;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using static Microsoft.VisualStudio.Services.Notifications.VssNotificationEvent;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BasketballLeagueTracker.Controllers
@@ -35,7 +37,9 @@ namespace BasketballLeagueTracker.Controllers
             return View(article);
         }
 
+
         // id - ArticleId
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + "," + Utility.RoleNames.Role_Moderator)]
         public IActionResult Upsert(int? id,int? leagueId)
         {
             var articleVM = new ArticleViewModel();
@@ -60,7 +64,7 @@ namespace BasketballLeagueTracker.Controllers
         }
 
 
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + "," + Utility.RoleNames.Role_Moderator)]
         [HttpPost]
         public IActionResult Upsert(ArticleViewModel articleVM, IFormFile? file)
         {
@@ -111,7 +115,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             return View();
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + "," + Utility.RoleNames.Role_Moderator)]
         public IActionResult Delete(int? id)
         {
 
@@ -128,6 +132,7 @@ namespace BasketballLeagueTracker.Controllers
             return View(article);
         }
 
+        [Authorize(Roles = Utility.RoleNames.Role_Admin + "," + Utility.RoleNames.Role_Moderator)]
         public IActionResult DeletePOST(int? articleId, int? leagueId)
         {
             Article? article = _unitOfWork.Article.Get(p => p.ArticleId == articleId, null);

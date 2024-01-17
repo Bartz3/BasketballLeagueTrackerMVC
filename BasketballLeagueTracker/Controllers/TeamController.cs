@@ -108,7 +108,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return View(team);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult Upsert(int? id)
         {
             if (id == null || id == 0)
@@ -140,7 +140,7 @@ namespace BasketballLeagueTracker.Controllers
                 return View(teamVM);
             }
         }
-     
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult DeleteTeamFromLeague(int teamId, int leagueId)
         {
 
@@ -166,6 +166,7 @@ namespace BasketballLeagueTracker.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult Upsert(TeamViewModel teamVM, IFormFile? file)
         {
             if (ModelState.IsValid)
@@ -233,6 +234,7 @@ namespace BasketballLeagueTracker.Controllers
             TempData["error"] = "Wystąpił błąd przy dodawaniu";
             return View(teamVM);
         }
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -247,6 +249,7 @@ namespace BasketballLeagueTracker.Controllers
             return View(team);
         }
 
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
@@ -295,7 +298,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return Json(new { data = availableTeams.ToList() });
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost]
         public IActionResult RemovePlayerFromTeam(int teamId, int playerId)
         {
@@ -312,7 +315,7 @@ namespace BasketballLeagueTracker.Controllers
             }
         }
 
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult AddTeamToLeague(int? leagueId)
         {
             var league = _unitOfWork.League.Get(t => t.LeagueId == leagueId, "Teams");
@@ -321,7 +324,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return View();
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost]
         public IActionResult AddTeamToLeaguePOST(int teamId, int leagueId)
         {

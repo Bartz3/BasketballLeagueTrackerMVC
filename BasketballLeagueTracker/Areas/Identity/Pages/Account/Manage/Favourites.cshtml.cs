@@ -40,9 +40,9 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class FavModel
         {
-            public List<Team> FavouriteTeams { get; set; }
-            public List<League> FavouriteLeagues { get; set; }
-            public List<Player> FavouritePlayers { get; set; }
+            public List<FavouriteTeam> FavouriteTeams { get; set; }
+            public List<FavouriteLeague> FavouriteLeagues { get; set; }
+            public List<FavouritePlayer> FavouritePlayers { get; set; }
 
         }
 
@@ -51,25 +51,26 @@ namespace BasketballLeagueTracker.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
 
             var userTeams = _userRepo.Get(u => u.Id == user.Id, "FavouriteTeams.Team");
-            List<Team> favouriteTeams = new List<Team>();
+            List<FavouriteTeam> favouriteTeams = new List<FavouriteTeam>();
 
             foreach (var favTeam in userTeams.FavouriteTeams)
             {
-                favouriteTeams.Add(favTeam.Team);
+                favouriteTeams.Add(favTeam);
             }
 
             var userPlayers = _userRepo.Get(u => u.Id == user.Id, "FavouritePlayers.Player");
-            List<Player> favouritePlayers = new List<Player>();
+            List<FavouritePlayer> favouritePlayers = new List<FavouritePlayer>();
             foreach (var favPlayer in userPlayers.FavouritePlayers)
             {
-                favouritePlayers.Add(favPlayer.Player);
+                favouritePlayers.Add(favPlayer);
+                
             }
 
             var userLeagues= _userRepo.Get(u => u.Id == user.Id, "FavouriteLeagues.League");
-            List<League> favouriteLeagues = new List<League>();
+            List<FavouriteLeague> favouriteLeagues = new List<FavouriteLeague>();
             foreach (var favLeague in userPlayers.FavouriteLeagues)
             {
-                favouriteLeagues.Add(favLeague.League);
+                favouriteLeagues.Add(favLeague);
             }
 
 

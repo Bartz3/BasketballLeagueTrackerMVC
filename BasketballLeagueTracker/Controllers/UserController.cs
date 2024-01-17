@@ -1,5 +1,6 @@
 ﻿using BasketballLeagueTracker.DataAccess.Repository.IRepository;
 using BasketballLeagueTracker.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -30,6 +31,7 @@ namespace BasketballLeagueTracker.Controllers
         {
             return View();
         }
+        [Authorize(Roles = Utility.RoleNames.Role_Admin )]
         [HttpGet]
         public IActionResult GetAllUsers()
         {
@@ -69,7 +71,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             return View(user);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin )]
         public IActionResult EditUserRole(string userId)
         {
             var user = _userRepository.Get(x=>x.Id==userId, null);
@@ -97,7 +99,7 @@ namespace BasketballLeagueTracker.Controllers
             roleVM.User.Role = _userRepository.GetRoles().FirstOrDefault(x => x.Id == roleId).Name;
             return View(roleVM);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin )]
         [HttpPost]
         public IActionResult EditUserRole(RoleViewModel roleVM)
         {
@@ -115,7 +117,7 @@ namespace BasketballLeagueTracker.Controllers
             TempData["success"] = "Rola została zmieniona";
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(string? id)
         {
@@ -132,7 +134,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost]
         public IActionResult LockAccount([FromBody] string Id)
         {

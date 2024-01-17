@@ -29,7 +29,7 @@
                        <li class="nav-item">
                             <a class="nav-link" asp-controller="League" asp-action="Index">Strona główna</a>
                         </li>
-                        @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin) || User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Moderator))
+                        @if (User.IsInRole(BasketballLeagueTracker.Utility.RoleNames.Role_Admin))
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Player" asp-action="Index">Zawodnicy</a>

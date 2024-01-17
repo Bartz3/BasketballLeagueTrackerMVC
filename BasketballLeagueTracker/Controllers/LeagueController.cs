@@ -40,7 +40,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return View(leagueList);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult Upsert(int? id)
         {
             if (id == null || id == 0)
@@ -130,7 +130,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return View(leagueVM);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost]
         public IActionResult Upsert(LeagueViewModel leagueVM, IFormFile? file)
         {
@@ -163,7 +163,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             return View();
         }
-        
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -178,7 +178,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             return View(league);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin )]
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {

@@ -54,6 +54,7 @@ namespace BasketballLeagueTracker.Controllers
             return View(playersList);
         }
 
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult Upsert(int? id)
         {
             if (id == null || id == 0) // Adding player
@@ -93,6 +94,7 @@ namespace BasketballLeagueTracker.Controllers
             }
         }
 
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost]
         public IActionResult Upsert(PlayerViewModel playerVM, IFormFile? file)
         {
@@ -141,7 +143,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return View(playerVM);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
@@ -156,7 +158,7 @@ namespace BasketballLeagueTracker.Controllers
             }
             return View(player);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
@@ -174,7 +176,7 @@ namespace BasketballLeagueTracker.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         public IActionResult AddPlayerToTeam(int? teamId)
         {
             var team = _unitOfWork.Team.Get(t => t.TeamId == teamId, "Players");
@@ -182,7 +184,7 @@ namespace BasketballLeagueTracker.Controllers
             ViewBag.TeamName = team.Name;
             return View();
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpPost]
         public IActionResult AddPlayerToTeamPOST(int playerId, int teamId)
         {
@@ -241,7 +243,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return Json(new { data = players }, ignoreCyclesInJSON);
         }
-
+        [Authorize(Roles = Utility.RoleNames.Role_Admin)]
         [HttpGet]
         public IActionResult GetAllAvailablePlayers()
         {
@@ -260,7 +262,7 @@ namespace BasketballLeagueTracker.Controllers
 
             return Json(new { data = availablePlayers.ToList() }, ignoreCyclesInJSON);
         }
-
+        [Authorize(Roles =Utility.RoleNames.Role_Admin)]
         [HttpPost]
         public IActionResult DeleteSelectedPlayers(List<int> selectedPlayers)
         {
