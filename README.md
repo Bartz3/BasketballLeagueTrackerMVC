@@ -21,5 +21,11 @@ Widkok szczegółów meczu
 ![image](https://github.com/user-attachments/assets/890c24dd-8450-4b1f-bfc3-498ceb13592d)
 UX Beauty - strona ligi
 ![image](https://github.com/user-attachments/assets/919129cf-36ca-4457-bc09-a0dfb3e3ec40)
-Komentowanie postów 
+Komentowanie postów
+![image](https://github.com/user-attachments/assets/8f11a12c-98fa-461b-bbd0-7aec8ea4ba20)
+Profil użytkownika
+![image](https://github.com/user-attachments/assets/973e7113-5629-459f-98df-42ab0d6200e3)
 ![Uploading image.png…]()
+
+
+
