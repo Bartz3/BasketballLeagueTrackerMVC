@@ -16,10 +16,10 @@ Edycja drużyn <br/>
 ![image](https://github.com/user-attachments/assets/a59656dd-2dad-4865-9ba5-877e164d6503) <br/>
 Edytowanie statystyk meczowych <br/>
 ![image](https://github.com/user-attachments/assets/3b8d250a-ab67-41fb-83df-7dc22c143d0a) <br/>
-![image](https://github.com/user-attachments/assets/77766013-700c-42b1-b11e-077f9abd3ac6) <br/>
 Widkok szczegółów meczu <br/>
-![image](https://github.com/user-attachments/assets/890c24dd-8450-4b1f-bfc3-498ceb13592d) <br/>
+![image](https://github.com/user-attachments/assets/77766013-700c-42b1-b11e-077f9abd3ac6) <br/>
 UX Beauty - strona ligi <br/>
+![image](https://github.com/user-attachments/assets/890c24dd-8450-4b1f-bfc3-498ceb13592d) <br/>
 ![image](https://github.com/user-attachments/assets/919129cf-36ca-4457-bc09-a0dfb3e3ec40) <br/>
 Komentowanie postów <br/>
 ![image](https://github.com/user-attachments/assets/8f11a12c-98fa-461b-bbd0-7aec8ea4ba20) <br/>
