@@ -25,7 +25,4 @@ Komentowanie postów
 ![image](https://github.com/user-attachments/assets/8f11a12c-98fa-461b-bbd0-7aec8ea4ba20)
 Profil użytkownika
 ![image](https://github.com/user-attachments/assets/973e7113-5629-459f-98df-42ab0d6200e3)
-![Uploading image.png…]()
-
-
-
+![image](https://github.com/user-attachments/assets/03b4945a-3745-430f-8057-4bdce05786e5)
